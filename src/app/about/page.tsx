@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -13,8 +13,9 @@ export default function AboutPage() {
             About Me
           </h1>
           <p className="mt-3 text-gray-300 max-w-2xl">
-            I’m Aditya Kumar, a passionate Web Developer with expertise in both front-end and back-end 
-            development. I love building modern, scalable, and user-friendly applications.
+            I’m Aditya Kumar, a passionate Web Developer with expertise in both
+            front-end and back-end development. I love building modern,
+            scalable, and user-friendly applications.
           </p>
         </header>
 
@@ -43,22 +44,34 @@ export default function AboutPage() {
             className="md:col-span-2 space-y-4 text-gray-300"
           >
             <p>
-              I’m currently pursuing a <b>Diploma in Computer Science & Engineering (2022–2025)</b> 
-              from <i>Government Polytechnic Aadampur, Tarabganj Gonda</i>.
+              I have completed my{" "}
+              <b>Diploma in Computer Science & Engineering (2022–2025)</b>
+              from <i>Government Polytechnic Aadampur, Tarabganj Gonda</i>, and
+              I am currently pursuing a <b>B.Tech in Computer Science & Engineering </b>
+              from <i>Dr. A.P.J. Abdul Kalam Technical University (AKTU)</i>.
             </p>
             <p>
-              My expertise includes technologies like <b>HTML, CSS, JavaScript, React, Next.js, 
-              Node.js, Express.js, MongoDB, and MySQL</b>. I also work with modern UI frameworks 
-              like <b>TailwindCSS, Shadcn UI, and Aceternity UI</b>.
+              My expertise includes technologies like{" "}
+              <b>
+                HTML, CSS, JavaScript, React, Next.js, Node.js, Express.js,
+                MongoDB, and MySQL
+              </b>
+              . I also work with modern UI frameworks like{" "}
+              <b>TailwindCSS, Shadcn UI, and Aceternity UI</b>.
             </p>
             <p>
-              I have built impactful projects including learning platforms, event management 
-              systems, productivity apps, and college management solutions.
+              I have built impactful projects including learning platforms,
+              event management systems, productivity apps, and college
+              management solutions.
             </p>
             <p>
-              Beyond coding, I’m a <b>fast learner, creative thinker, and collaborative team player</b>. 
-              My goal is to contribute to innovative solutions, write clean maintainable code, and 
-              create applications that make a real impact.
+              Beyond coding, I’m a{" "}
+              <b>
+                fast learner, creative thinker, and collaborative team player
+              </b>
+              . My goal is to contribute to innovative solutions, write clean
+              maintainable code, and create applications that make a real
+              impact.
             </p>
           </motion.div>
         </div>
@@ -77,7 +90,9 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               className="bg-glass border border-white/6 rounded-xl p-6 shadow-neon-lg"
             >
-              <h3 className="font-semibold text-white mb-4">Technical Skills</h3>
+              <h3 className="font-semibold text-white mb-4">
+                Technical Skills
+              </h3>
               <ul className="space-y-2 text-gray-300">
                 <li>HTML / CSS / TailwindCSS / Bootstrap</li>
                 <li>JavaScript / React / Next.js</li>
@@ -94,7 +109,9 @@ export default function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-glass border border-white/6 rounded-xl p-6 shadow-neon-lg"
             >
-              <h3 className="font-semibold text-white mb-4">Professional Skills</h3>
+              <h3 className="font-semibold text-white mb-4">
+                Professional Skills
+              </h3>
               <ul className="space-y-2 text-gray-300">
                 <li>Teamwork & Collaboration</li>
                 <li>Creativity & Problem Solving</li>
@@ -107,5 +124,5 @@ export default function AboutPage() {
         </section>
       </div>
     </div>
-  )
+  );
 }
