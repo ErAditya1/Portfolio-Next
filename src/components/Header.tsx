@@ -32,7 +32,7 @@ export function Header() {
                 className="object-cover"
               />
             </div>
-            <div className="hidden sm:block">
+            <div className=" sm:block">
               <div className="text-lg font-bold text-white">{NAME}</div>
               <div className="text-xs text-gray-300">{ROLE}</div>
             </div>
