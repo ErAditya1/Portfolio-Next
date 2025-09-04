@@ -135,7 +135,7 @@ function Projects() {
       <Container>
         <NeonHeading>Selected Projects</NeonHeading>
         <div className="grid md:grid-cols-2 gap-6 mt-8">
-          {PROJECTS.slice(0,4).map((p:any, i:number) => (
+          {PROJECTS.slice(0,4).map((p, i) => (
             <motion.article key={p.title} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="bg-white/5 p-6 rounded-2xl border border-white/6 shadow-sm">
               <div className="flex gap-4 items-start">
                 <div className="relative w-28 h-20 rounded-md overflow-hidden ">
@@ -159,55 +159,55 @@ function Projects() {
   )
 }
 
-function References() {
-  return (
-    <section className="py-20">
-      <Container>
-        <NeonHeading>References</NeonHeading>
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                <Image src="/image/durgesh.png" alt="Durgesh" fill sizes="48px" className="object-cover" />
-              </div>
-              <div>
-                <div className="font-semibold text-white">Durgesh Kumar</div>
-                <div className="text-sm text-gray-300">Engineer • Senior</div>
-              </div>
-            </div>
-            <p className="mt-3 text-gray-300">“Highly skilled and supportive — strong problem solving and mentoring.”</p>
-          </div>
+// function References() {
+//   return (
+//     <section className="py-20">
+//       <Container>
+//         <NeonHeading>References</NeonHeading>
+//         <div className="grid md:grid-cols-3 gap-6 mt-8">
+//           <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
+//             <div className="flex items-center gap-3">
+//               <div className="w-12 h-12 rounded-full overflow-hidden relative">
+//                 <Image src="/image/durgesh.png" alt="Durgesh" fill sizes="48px" className="object-cover" />
+//               </div>
+//               <div>
+//                 <div className="font-semibold text-white">Durgesh Kumar</div>
+//                 <div className="text-sm text-gray-300">Engineer • Senior</div>
+//               </div>
+//             </div>
+//             <p className="mt-3 text-gray-300">“Highly skilled and supportive — strong problem solving and mentoring.”</p>
+//           </div>
 
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                <Image src="/image/aditya_profile.png" alt="Aditya" fill sizes="48px" className="object-cover" />
-              </div>
-              <div>
-                <div className="font-semibold text-white">Aditya Kumar</div>
-                <div className="text-sm text-gray-300">Student • Developer</div>
-              </div>
-            </div>
-            <p className="mt-3 text-gray-300">“Focused on building practical solutions, continuously learning, and sharing knowledge.”</p>
-          </div>
+//           <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
+//             <div className="flex items-center gap-3">
+//               <div className="w-12 h-12 rounded-full overflow-hidden relative">
+//                 <Image src="/image/aditya_profile.png" alt="Aditya" fill sizes="48px" className="object-cover" />
+//               </div>
+//               <div>
+//                 <div className="font-semibold text-white">Aditya Kumar</div>
+//                 <div className="text-sm text-gray-300">Student • Developer</div>
+//               </div>
+//             </div>
+//             <p className="mt-3 text-gray-300">“Focused on building practical solutions, continuously learning, and sharing knowledge.”</p>
+//           </div>
 
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                <Image src="/image/Suraj.png.jpg" alt="Suraj" fill sizes="48px" className="object-cover" />
-              </div>
-              <div>
-                <div className="font-semibold text-white">Suraj Verma</div>
-                <div className="text-sm text-gray-300">Peer</div>
-              </div>
-            </div>
-            <p className="mt-3 text-gray-300">“A reliable teammate with strong technical fundamentals and great attitude.”</p>
-          </div>
-        </div>
-      </Container>
-    </section>
-  )
-}
+//           <div className="bg-white/5 p-6 rounded-2xl border border-white/6">
+//             <div className="flex items-center gap-3">
+//               <div className="w-12 h-12 rounded-full overflow-hidden relative">
+//                 <Image src="/image/Suraj.png.jpg" alt="Suraj" fill sizes="48px" className="object-cover" />
+//               </div>
+//               <div>
+//                 <div className="font-semibold text-white">Suraj Verma</div>
+//                 <div className="text-sm text-gray-300">Peer</div>
+//               </div>
+//             </div>
+//             <p className="mt-3 text-gray-300">“A reliable teammate with strong technical fundamentals and great attitude.”</p>
+//           </div>
+//         </div>
+//       </Container>
+//     </section>
+//   )
+// }
 
 function Contact() {
   return (

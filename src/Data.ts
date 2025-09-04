@@ -23,6 +23,19 @@ export const SKILLS = [
   { name: 'Firebase', level: 70, category: 'Other' },
 ]
 
+/** Project type */
+export interface Project {
+  id: string
+  title: string
+  tag: string
+  desc: string
+  live: string
+  repo: string
+  img: string
+  year: number
+  tech: string[]
+}
+
 export const PROJECTS= [
      {
   id: 'supertasky',

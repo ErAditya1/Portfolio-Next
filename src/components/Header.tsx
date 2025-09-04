@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Container } from "./Container";
 import { NAME, RESUME, ROLE } from "@/Data";
+import Link from "next/link";
 
 export function Header() {
   
@@ -25,21 +26,21 @@ export function Header() {
           </div>
 
           <nav className="hidden md:flex items-center gap-6 text-sm text-gray-200">
-            <a href="/" className="hover:text-cyan-300 transition">
+            <Link href="/" className="hover:text-cyan-300 transition">
               Home
-            </a>
-            <a href="/about" className="hover:text-cyan-300 transition">
+            </Link>
+            <Link href="/about" className="hover:text-cyan-300 transition">
               About
-            </a>
-            <a href="/skills" className="hover:text-cyan-300 transition">
+            </Link>
+            <Link href="/skills" className="hover:text-cyan-300 transition">
               Skills
-            </a>
-            <a href="/projects" className="hover:text-cyan-300 transition">
+            </Link>
+            <Link href="/projects" className="hover:text-cyan-300 transition">
               Projects
-            </a>
-            <a href="/contact" className="hover:text-cyan-300 transition">
+            </Link>
+            <Link href="/contact" className="hover:text-cyan-300 transition">
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
