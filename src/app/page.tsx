@@ -37,7 +37,7 @@ function Hero() {
             <motion.p variants={fadeUp} className="text-lg text-gray-300 max-w-xl">I build secure, scalable, and user-friendly web applications. I work across React/Next.js, Node.js, Django, and modern UI systems. I’m passionate about education technology and developer tools.</motion.p>
 
             <motion.div variants={fadeUp} className="flex gap-3 flex-wrap">
-              <a href={RESUME} download className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-indigo-600 text-black font-medium shadow hover:scale-105 transition">Resume</a>
+              <a href={RESUME}  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-indigo-600 text-black font-medium shadow hover:scale-105 transition">Resume</a>
               <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-cyan-600 text-cyan-200 hover:bg-white/3 transition">Contact</a>
             </motion.div>
 
