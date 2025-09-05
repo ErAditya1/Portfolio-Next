@@ -64,6 +64,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="QZGHW3TKf81ROqgPri-jbIyHS7Ib79bAgcFPOOQiJfs" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><div className="antialiased text-white min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#12020A] via-[#250821] to-[#0b0710]">
