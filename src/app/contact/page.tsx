@@ -3,7 +3,7 @@
 import { Container } from "@/components/Container";
 import { EMAIL } from "@/Data";
 import { motion } from "framer-motion";
-import { Mail, Phone, Linkedin, Github, MapPin } from "lucide-react";
+import { Mail, Phone, Linkedin, Github, MapPin, Twitter, Instagram, Youtube } from "lucide-react";
 
 export default function ContactPage() {
   return (
@@ -94,19 +94,56 @@ export default function ContactPage() {
                 Connect with Me
               </h2>
               <div className="flex gap-4">
+                {/* GitHub */}
                 <a
-                  href="https://github.com/aditya"
+                  href="https://github.com/ErAditya1"
                   target="_blank"
                   className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-cyan-500/20 transition"
                 >
                   <Github className="w-6 h-6 text-white" />
                 </a>
+
+                {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com/in/aditya"
+                  href="https://linkedin.com/in/adityaji1"
                   target="_blank"
                   className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-indigo-500/20 transition"
                 >
                   <Linkedin className="w-6 h-6 text-white" />
+                </a>
+
+                {/* Twitter */}
+                <a
+                  href="https://twitter.com/excited_adi"
+                  target="_blank"
+                  className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-sky-500/20 transition"
+                >
+                  <Twitter className="w-6 h-6 text-white" />
+                </a>
+
+                {/* Instagram */}
+                <a
+                  href="https://www.instagram.com/iamadi_dev/"
+                  target="_blank"
+                  className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-pink-500/20 transition"
+                >
+                  <Instagram className="w-6 h-6 text-white" />
+                </a>
+
+                {/* Email */}
+                <a
+                  href="mailto:mradityaji2@gmail.com"
+                  className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-red-500/20 transition"
+                >
+                  <Mail className="w-6 h-6 text-white" />
+                </a>
+                {/* Youtube */}
+                 <a
+                  href="https://youtube.com/channel/UC9DF4j1XiimKQiP0Vj--oxg"
+                  target="_blank"
+                  className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-red-500/50 transition"
+                >
+                  <Youtube className="w-6 h-6 text-white" />
                 </a>
               </div>
             </div>
