@@ -130,13 +130,7 @@ export default function ContactPage() {
                   <Instagram className="w-6 h-6 text-white" />
                 </a>
 
-                {/* Email */}
-                <a
-                  href="mailto:mradityaji2@gmail.com"
-                  className="p-3 rounded-full bg-white/10 border border-white/10 hover:bg-red-500/20 transition"
-                >
-                  <Mail className="w-6 h-6 text-white" />
-                </a>
+                
                 {/* Youtube */}
                  <a
                   href="https://youtube.com/channel/UC9DF4j1XiimKQiP0Vj--oxg"
