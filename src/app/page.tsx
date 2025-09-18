@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
 import { Container } from '@/components/Container'
 import { NeonHeading } from '@/components/NeonHeading'
-import { EMAIL, LOCATION, NAME, PHONE, PROJECTS, RESUME, services, skills } from '@/Data'
+import { BLOGS, EMAIL, LOCATION, NAME, PHONE, PROJECTS, RESUME, services, skills } from '@/Data'
 
 /* -----------------------
    Types
@@ -306,6 +306,48 @@ function ProjectsSection(): JSX.Element {
   )
 }
 
+function BlogSection(): JSX.Element {
+  return (
+    <section id="blog" className="py-20">
+      <Container>
+        <NeonHeading>Latest Articles</NeonHeading>
+
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-3 gap-6 mt-8">
+          {BLOGS.map((post, i) => (
+            <motion.article
+              key={post.slug}
+              variants={fadeUp}
+              whileHover={{ translateY: -6 }}
+              className="bg-white/5 p-4 rounded-2xl border border-white/6 overflow-hidden shadow-sm transition-transform"
+            >
+              <div className="relative w-full h-40 rounded-md overflow-hidden">
+                <Image src={post.img} alt={post.title} fill sizes="320px" className="object-cover" />
+              </div>
+
+              <div className="mt-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs text-cyan-300 font-medium">{(post.tags || []).slice(0, 2).join(' • ')}</div>
+                  <div className="text-xs text-gray-300">{post.date}</div>
+                </div>
+
+                <h3 className="mt-2 font-semibold text-white">{post.title}</h3>
+                <p className="mt-2 text-sm text-gray-300 line-clamp-3">{post.excerpt}</p>
+
+                <div className="mt-4 flex items-center justify-between">
+                  <a href={post.url || '#'} target="_blank" rel="noreferrer" className="text-sm px-3 py-1 rounded-md border border-white/10 hover:bg-white/6 transition">
+                    Read article
+                  </a>
+                  <div className="text-xs text-gray-400"> • {post.tags?.length ? post.tags[0] : 'Article'}</div>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </motion.div>
+      </Container>
+    </section>
+  )
+}
+
 function Contact(): JSX.Element {
   return (
     <section id="contact" className="py-20 bg-gradient-to-b from-transparent to-white/2">
@@ -343,6 +385,7 @@ export default function Page(): JSX.Element {
       <SkillsSection />
       <ServicesSection />
       <ProjectsSection />
+      <BlogSection/>
       <Contact />
     </main>
   )
