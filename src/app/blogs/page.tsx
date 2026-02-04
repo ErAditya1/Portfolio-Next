@@ -135,7 +135,7 @@ export default function BlogsPage() {
           ) : (
             <>
               <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {visiblePosts.map((post, i) => (
+                {visiblePosts.map((post) => (
                   <motion.article key={post.slug} variants={fadeUp} whileHover={{ y: -6 }} className="rounded-2xl overflow-hidden border border-white/8 shadow-sm bg-white/5">
                     <Link href={post.url || `/blog/${post.slug}`} className="group block">
                       <div className="relative w-full h-48 bg-white/3">

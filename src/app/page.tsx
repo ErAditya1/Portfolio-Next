@@ -128,7 +128,7 @@ function Hero(): JSX.Element {
             </motion.h1>
             <motion.p variants={fadeUp} className="text-md md:text-lg text-gray-300 max-w-xl">
               I build secure, scalable, and user-friendly applications — web, native apps, and backend systems. I work with React/Next.js,
-              Node.js, Django, and .NET. Passionate about edtech and practical cybersecurity research.
+              Node.js and Django Passionate about edtech and practical cybersecurity research.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex gap-3 flex-wrap">
@@ -149,7 +149,7 @@ function Hero(): JSX.Element {
           <motion.div initial={{ scale: 0.95, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="flex justify-center">
             <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-cyan-300/20 transform-gpu hover:scale-105 transition">
               <Image src="/image/aditya_profile.png" alt="Aditya" fill sizes="320px" className="object-cover" />
-              <div className="absolute -bottom-2 -right-2 bg-gradient-to-tr from-indigo-500 to-cyan-400 px-3 py-1 rounded-md text-xs font-semibold text-black">Web • Mobile • .NET</div>
+              <div className="absolute -bottom-2 -right-2 bg-gradient-to-tr from-indigo-500 to-cyan-400 px-3 py-1 rounded-md text-xs font-semibold text-black">Web • Mobile </div>
             </div>
           </motion.div>
         </div>
@@ -313,7 +313,7 @@ function BlogSection(): JSX.Element {
         <NeonHeading>Latest Articles</NeonHeading>
 
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-3 gap-6 mt-8">
-          {BLOGS.map((post, i) => (
+          {BLOGS.map((post) => (
             <motion.article
               key={post.slug}
               variants={fadeUp}

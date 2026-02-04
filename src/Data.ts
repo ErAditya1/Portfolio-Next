@@ -22,7 +22,7 @@ export const skills = [
   { name: 'Express.js', level: 78, category: 'Backend' },
   { name: 'Python', level: 65, category: 'Backend' },
   { name: 'Django', level: 55, category: 'Backend' },
-  { name: '.NET / C# (Basics)', level: 60, category: 'Backend' },
+
 
   // -------- Database --------
   { name: 'MongoDB', level: 75, category: 'Database' },
@@ -34,7 +34,7 @@ export const skills = [
   { name: 'Firebase / Appwrite / Clerk', level: 70, category: 'Other' },
   { name: 'Cloudinary / ImageKit', level: 68, category: 'Other' },
   { name: 'Razorpay (Payments)', level: 65, category: 'Other' },
-  { name: 'Hosting & CI/CD', level: 75, category: 'Other' },
+  
 ];
 
 
@@ -53,7 +53,7 @@ export const services = [
   },
   {
     title: "Backend & APIs",
-    desc: "Secure, optimized APIs with Node.js, Express.js, Django, and .NET Core.",
+    desc: "Secure, optimized APIs with Node.js, Express.js, Django",
     icon: "⚙️"
   },
   {
