@@ -259,7 +259,7 @@ function ServicesSection(): JSX.Element {
       <Container>
         <NeonHeading>Services</NeonHeading>
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {svc.map((s, i) => (
+          {svc.map((s) => (
             <motion.div key={s.title} variants={fadeUp} whileHover={{ translateY: -6 }} className="bg-gradient-to-br from-white/3 to-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/8 text-center shadow-lg transition-transform">
               <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center text-2xl bg-white/6 mb-4">{s.icon}</div>
               <h3 className="font-semibold text-white">{s.title}</h3>

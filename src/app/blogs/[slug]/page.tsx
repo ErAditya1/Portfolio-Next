@@ -36,7 +36,7 @@ export default async function BlogPage({ params }: Props) {
       <Container>
         <div className="py-24 text-center">
           <h1 className="text-2xl font-bold">Post not found</h1>
-          <p className="mt-4 text-gray-500">We couldn't find the post you requested.</p>
+          <p className="mt-4 text-gray-500">We couldn&apos;t find the post you requested.</p>
         </div>
       </Container>
     )
