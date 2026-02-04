@@ -133,7 +133,7 @@ function CircularSkill({
               <stop offset="0%" stopColor="#22d3ee" />
               <stop offset="100%" stopColor="#6366f1" />
             </linearGradient>
-          </defs>
+          </defs> 
         </svg>
         <span className="absolute text-white text-sm font-bold">
           {percent}%
