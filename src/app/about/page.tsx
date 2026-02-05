@@ -29,7 +29,7 @@ export default function AboutPage() {
             className="relative w-48 h-48 md:w-64 md:h-64 mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-cyan-400 shadow-neon-lg"
           >
             <Image
-              src="/image/aditya_profile.png"
+              src="/images/aditya_profile.png"
               alt="Aditya Kumar"
               fill
               className="object-cover"

@@ -148,7 +148,7 @@ function Hero(): JSX.Element {
 
           <motion.div initial={{ scale: 0.95, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="flex justify-center">
             <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-cyan-300/20 transform-gpu hover:scale-105 transition">
-              <Image src="/image/aditya_profile.png" alt="Aditya" fill sizes="320px" className="object-cover" />
+              <Image src="/images/aditya_profile.png" alt="Aditya" fill sizes="320px" className="object-cover" />
               <div className="absolute -bottom-2 -right-2 bg-gradient-to-tr from-indigo-500 to-cyan-400 px-3 py-1 rounded-md text-xs font-semibold text-black">Web • Mobile </div>
             </div>
           </motion.div>

@@ -4,7 +4,7 @@ export const ROLE = 'Full‑Stack Web Developer'
 export const LOCATION = 'Barabanki / Lucknow, India'
 export const EMAIL = 'mradityaji2@gmail.com'
 export const PHONE = '+91 9473774390'
-export const RESUME = '/image/ADITYA_RESUME.pdf'
+export const RESUME = '/images/ADITYA_RESUME.pdf'
 
 export const skills = [
   // -------- Frontend --------
@@ -94,7 +94,7 @@ export const PROJECTS = [
     desc: 'Task management web app with project tracking, deadlines, reminders, and team collaboration features.',
     live: 'https://supertasky.vercel.app/',
     repo: 'https://github.com/ErAditya1/Super-Tasky',
-    img: '/image/projects/super_tasky.png',
+    img: '/images/projects/super_tasky.png',
     year: 2025,
     tech: ['Next.js', 'Tailwind', 'MongoDB', 'Express.js']
   },
@@ -105,7 +105,7 @@ export const PROJECTS = [
     desc: 'Feature-rich learning platform with video courses, payment integration, instructor dashboards, and learner analytics.',
     live: 'https://brightveil.vercel.app/',
     repo: 'https://github.com/ErAditya1/BrightVeil-Next',
-    img: '/image/projects/Bright_Veil.png',
+    img: '/images/projects/Bright_Veil.png',
     year: 2024,
     tech: ['Next.js', 'React', 'Tailwind', 'Node.js', 'MongoDB']
   },
@@ -116,7 +116,7 @@ export const PROJECTS = [
     desc: 'Event booking & management platform with booking workflows, event dashboards, and organizer tools.',
     live: 'https://whiteswanevent.vercel.app/',
     repo: 'https://github.com/ErAditya1/white-swan-event',
-    img: '/image/projects/white_swan_event.png',
+    img: '/images/projects/white_swan_event.png',
     year: 2025,
     tech: ['React', 'Tailwind', 'Node.js']
   },
@@ -127,7 +127,7 @@ export const PROJECTS = [
     desc: 'College management portal with modules for admissions, attendance tracking, exam results, and teacher dashboards.',
     live: 'https://clg-ms-django.onrender.com',
     repo: 'https://github.com/ErAditya1/adarsh-inter-college',
-    img: '/image/projects/Adarsh_inter_college.png',
+    img: '/images/projects/Adarsh_inter_college.png',
     year: 2025,
     tech: ['Django', 'Python', 'Bootstrap']
   },
@@ -138,7 +138,7 @@ export const PROJECTS = [
     desc: 'Resource booking platform for mentha distillation tanks with real-time availability and slot management.',
     live: 'https://mintslot.vercel.app/',
     repo: 'https://github.com/ErAditya1/MintSlot-Next/',
-    img: '/image/projects/mint_slot.png',
+    img: '/images/projects/mint_slot.png',
     year: 2025,
     tech: ['Next.js', 'Tailwind', 'Firebase']
   },
@@ -149,7 +149,7 @@ export const PROJECTS = [
     desc: 'Simple online music player with play, pause, and track navigation features.',
     live: 'https://eraditya1.github.io/music-player/',
     repo: 'https://github.com/ErAditya1/music-player.git',
-    img: '/image/projects/music_player.png',
+    img: '/images/projects/music_player.png',
     year: 2025,
     tech: ['HTML', 'Tailwind', 'Java Script']
   },
@@ -160,7 +160,7 @@ export const PROJECTS = [
     desc: 'Frontend clone of Spotify with playlists, song cards, and responsive UI design.',
     live: 'https://eraditya1.github.io/spotify-clone/',
     repo: 'https://github.com/ErAditya1/spotify-clone.git',
-    img: '/image/projects/spotify_clone.png',
+    img: '/images/projects/spotify_clone.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
   },
@@ -171,7 +171,7 @@ export const PROJECTS = [
     desc: 'Static frontend clone of the REC Gonda official website with responsive design.',
     live: 'https://recgonda.vercel.app/',
     repo: 'https://github.com/ErAditya1/REC-frontend.git',
-    img: '/image/projects/rec_gonda.png',
+    img: '/images/projects/rec_gonda.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
   },
@@ -182,7 +182,7 @@ export const PROJECTS = [
     desc: 'Food ordering website for pizza lovers with menu showcase and order placement UI.',
     live: 'https://pizza-hub-self.vercel.app/',
     repo: 'https://github.com/ErAditya1/PizzaHub.git',
-    img: '/image/projects/pizza_hub.png',
+    img: '/images/projects/pizza_hub.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
   },
@@ -193,7 +193,7 @@ export const PROJECTS = [
     desc: 'Frontend web app for browsing food items, cart management, and simple ordering flow.',
     live: 'https://food-cart-green.vercel.app/',
     repo: 'https://github.com/ErAditya1/FoodCart.git',
-    img: '/image/projects/food_cart.png',
+    img: '/images/projects/food_cart.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
   },
@@ -204,7 +204,7 @@ export const PROJECTS = [
     desc: 'Frontend clone of Flipkart with product listings, categories, and responsive layouts.',
     live: 'https://flipkart-clone-aditya.vercel.app/',
     repo: 'https://github.com/ErAditya1/Flipkart-Clone.git',
-    img: '/image/projects/flipkart_clone.png',
+    img: '/images/projects/flipkart_clone.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Angular JS', 'Bootstrap', 'Java Script']
   },
@@ -215,7 +215,7 @@ export const PROJECTS = [
     desc: 'Frontend clone of YouTube with video thumbnails, navigation, and responsive UI design.',
     live: 'https://youtube-clone-aditya.vercel.app/',
     repo: 'https://github.com/ErAditya1/Youtube-Clone.git',
-    img: '/image/projects/youtube_clone.png',
+    img: '/images/projects/youtube_clone.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Angular JS', 'Java Script', 'Bootstrap']
   },
@@ -226,7 +226,7 @@ export const PROJECTS = [
     desc: 'Frontend clone of Disney+ Hotstar with movie cards, banners, and responsive UI.',
     live: 'https://hotstarclone-aditya.vercel.app/',
     repo: 'https://github.com/ErAditya1/Hotstar-Clone-Angular.git',
-    img: '/image/projects/hotstar_clone.png',
+    img: '/images/projects/hotstar_clone.png',
     year: 2025,
     tech: ['HTML', 'CSS', 'Angular JS', 'Java Script', 'Bootstrap']
   }

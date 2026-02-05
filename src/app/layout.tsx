@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "Aditya Kumar Portfolio",
     images: [
       {
-        url: "/image/aditya_profile.png",
+        url: "/images/aditya_profile.png",
         width: 800,
         height: 600,
         alt: "Aditya Kumar Portfolio",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "Aditya Kumar | Full-Stack Web Developer",
     description:
       "Portfolio of Aditya Kumar — showcasing projects, skills, and experience in React, Next.js, and MERN stack.",
-    images: ["/image/aditya_profile.png"],
+    images: ["/images/aditya_profile.png"],
   },
 };
 

@@ -25,7 +25,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 rounded-full overflow-hidden ring-1 ring-cyan-300/30">
               <Image
-                src="/image/aditya_profile.png"
+                src="/images/aditya_profile.png"
                 alt="Aditya"
                 fill
                 sizes="40px"
