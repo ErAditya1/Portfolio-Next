@@ -46,14 +46,14 @@ export function Header() {
             <Link href="/about" className="hover:text-cyan-300 transition">
               About
             </Link>
-            <Link href="/skills" className="hover:text-cyan-300 transition">
+            <Link href="/#skills" className="hover:text-cyan-300 transition">
               Skills
             </Link>
             <Link href="/projects" className="hover:text-cyan-300 transition">
               Projects
             </Link>
-            <Link href="/blogs" className="hover:text-cyan-300 transition">
-              Blogs
+            <Link href="/blog" className="hover:text-cyan-300 transition">
+              Blog
             </Link>
             <Link href="/contact" className="hover:text-cyan-300 transition">
               Contact
@@ -86,14 +86,14 @@ export function Header() {
                     <Link href="/about" onClick={handleClose} className="hover:text-cyan-300 transition">
                       About
                     </Link>
-                    <Link href="/skills" onClick={handleClose} className="hover:text-cyan-300 transition">
+                    <Link href="/#skills" onClick={handleClose} className="hover:text-cyan-300 transition">
                       Skills
                     </Link>
                     <Link href="/projects" onClick={handleClose} className="hover:text-cyan-300 transition">
                       Projects
                     </Link>
-                    <Link href="/blogs" onClick={handleClose} className="hover:text-cyan-300 transition">
-                      Blogs
+                    <Link href="/blog" onClick={handleClose} className="hover:text-cyan-300 transition">
+                      Blog
                     </Link>
                     <Link href="/contact" onClick={handleClose} className="hover:text-cyan-300 transition">
                       Contact
