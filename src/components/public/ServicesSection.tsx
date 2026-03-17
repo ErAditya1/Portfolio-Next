@@ -16,7 +16,7 @@ const services = [
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-24 bg-gradient-to-t from-black/20 to-transparent">
+    <section id="services" className="py-24 bg-accent/5 relative">
       <Container>
         <NeonHeading>Expertise</NeonHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
@@ -28,13 +28,13 @@ export function ServicesSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8 }}
-              className="p-8 bg-gray-900 border border-gray-800 rounded-3xl hover:border-purple-500/30 transition-all group"
+              className="p-8 bg-card border border-border rounded-3xl hover:border-primary/30 transition-all group shadow-sm"
             >
-              <div className={`w-14 h-14 rounded-2xl bg-gray-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${s.color}`}>
+              <div className={`w-14 h-14 rounded-2xl bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${s.color}`}>
                 <s.icon className="w-7 h-7" />
               </div>
-              <h3 className="text-white font-bold text-xl mb-3">{s.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+              <h3 className="text-foreground font-bold text-xl mb-3">{s.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
         </div>

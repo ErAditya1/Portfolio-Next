@@ -45,13 +45,13 @@ export default async function BlogPage({ searchParams }: PageProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             My{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
               Blog
             </span>
           </h1>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto">
             Thoughts on code, design, and everything in between.
           </p>
         </div>
@@ -64,14 +64,14 @@ export default async function BlogPage({ searchParams }: PageProps) {
         {/* Tags Filter */}
         {allTags.length > 0 && (
           <div className=" flex-wrap justify-center gap-2 mb-10 hidden sm:flex">
-            <Link href="/blog" className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${!tag ? "bg-blue-500/20 text-blue-300 border-blue-500/30" : "bg-gray-900 text-gray-400 border-gray-800 hover:text-gray-300"}`}>
+            <Link href="/blog" className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${!tag ? "bg-blue-600/10 text-blue-600 border-blue-600/30 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30" : "bg-card text-muted-foreground border-border hover:text-foreground hover:bg-accent"}`}>
               All
             </Link>
             {allTags.map((t: string) => (
               <Link
                 key={t}
                 href={`/blog?tag=${t}`}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${tag === t ? "bg-blue-500/20 text-blue-300 border-blue-500/30" : "bg-gray-900 text-gray-400 border-gray-800 hover:text-gray-300"}`}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${tag === t ? "bg-blue-600/10 text-blue-600 border-blue-600/30 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30" : "bg-card text-muted-foreground border-border hover:text-foreground hover:bg-accent"}`}
               >
                 #{t}
               </Link>
@@ -82,7 +82,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         {/* Grid */}
         {blogs.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No articles found.</p>
+            <p className="text-muted-foreground text-lg">No articles found.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,7 +90,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <Link
                 key={blog._id.toString()}
                 href={`/blog/${blog.slug}`}
-                className="group bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 flex flex-col shadow-sm"
               >
                 {blog.coverImage && (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -99,19 +99,19 @@ export default async function BlogPage({ searchParams }: PageProps) {
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex flex-wrap gap-1.5 mb-3">
                     {blog.tags.slice(0, 2).map((t: string) => (
-                      <span key={t} className="text-xs px-2 py-0.5 bg-blue-500/10 text-blue-300 border border-blue-500/20 rounded-full flex items-center gap-1">
+                      <span key={t} className="text-xs px-2 py-0.5 bg-blue-600/10 text-blue-600 border border-blue-600/20 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/20 rounded-full flex items-center gap-1">
                         <Tag className="w-2.5 h-2.5" />{t}
                       </span>
                     ))}
                   </div>
-                  <h2 className="text-white font-bold text-lg mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{blog.title}</h2>
-                  <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">{blog.excerpt}</p>
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-800">
-                    <div className="flex items-center gap-3 text-gray-600 text-xs">
+                  <h2 className="text-foreground font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h2>
+                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 flex-1">{blog.excerpt}</p>
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                    <div className="flex items-center gap-3 text-muted-foreground/80 text-xs">
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{blog.readTime} min</span>
                       <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{blog.views}</span>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-muted-foreground/80 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>
                 </div>
               </Link>
@@ -126,7 +126,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <a
                 key={p}
                 href={`/blog?page=${p}${search ? `&search=${search}` : ""}${tag ? `&tag=${tag}` : ""}`}
-                className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${p === currentPage ? "bg-blue-600 text-white" : "bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"}`}
+                className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${p === currentPage ? "bg-primary text-primary-foreground font-bold" : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-accent"}`}
               >
                 {p}
               </a>

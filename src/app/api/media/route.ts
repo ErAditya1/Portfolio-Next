@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type"); // image or raw (pdf)
     const search = searchParams.get("search");
 
-    let query: any = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: Record<string, any> = {};
     if (type) query.resourceType = type;
     if (search) {
       query.filename = { $regex: search, $options: "i" };

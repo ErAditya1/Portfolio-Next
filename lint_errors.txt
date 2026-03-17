@@ -1,0 +1,4 @@
+D:\Projects\Portfolios\portfolio-next\src\app\api\gallery\route.ts
+  13:@typescript-eslint/no-explicit-any - Unexpected any. Specify a different type.
+D:\Projects\Portfolios\portfolio-next\src\app\api\media\route.ts
+  13:@typescript-eslint/no-explicit-any - Unexpected any. Specify a different type.

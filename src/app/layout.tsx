@@ -95,7 +95,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <div className="antialiased text-white min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#12020A] via-[#250821] to-[#0b0710]">
+          <div className="antialiased min-h-screen bg-[var(--bg-gradient)] text-foreground transition-colors duration-300">
           
             {children}
             

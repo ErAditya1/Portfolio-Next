@@ -5,7 +5,7 @@ import { NeonHeading } from "@/components/NeonHeading";
 import { GalleryGrid } from "@/components/public/GalleryGrid";
 import { IGallery } from "@/types";
 import { Metadata } from "next";
-
+import Link from "next/link";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
@@ -28,9 +28,9 @@ export default async function GalleryPage() {
 
       <Container>
         <div className="text-center mb-16 space-y-4">
-          <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.4em]">Visual Storytelling</span>
-          <NeonHeading>My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Creative</span> Workspace</NeonHeading>
-          <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">
+          <span className="text-primary font-bold text-xs uppercase tracking-[0.4em]">Visual Storytelling</span>
+          <NeonHeading>My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-500">Creative</span> Workspace</NeonHeading>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             A curated look at the blueprints, interfaces, and technical milestones that define my engineering journey.
           </p>
         </div>
@@ -38,12 +38,12 @@ export default async function GalleryPage() {
         <GalleryGrid items={items} />
 
         {/* Dynamic CTA */}
-        <section className="mt-24 p-12 bg-gray-900/40 border border-white/5 rounded-[3rem] text-center backdrop-blur-md">
-           <h3 className="text-2xl font-bold text-white mb-4">See something interesting?</h3>
-           <p className="text-gray-500 mb-8 max-w-lg mx-auto">Most of these visuals represent deeper technical case studies. Explore the engineering behind them in my projects section.</p>
-           <a href="/projects" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-2xl hover:scale-105 transition-transform">
+        <section className="mt-24 p-12 bg-card border border-border rounded-[3rem] text-center backdrop-blur-md shadow-sm">
+           <h3 className="text-2xl font-bold text-foreground mb-4">See something interesting?</h3>
+           <p className="text-muted-foreground mb-8 max-w-lg mx-auto">Most of these visuals represent deeper technical case studies. Explore the engineering behind them in my projects section.</p>
+           <Link href="/projects" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-primary/20">
              View All Case Studies
-           </a>
+           </Link>
         </section>
       </Container>
     </main>

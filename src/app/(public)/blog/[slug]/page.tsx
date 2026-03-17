@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 import Link from "next/link";
-import { ArrowLeft, Clock, Eye, Tag } from "lucide-react";
+import { ArrowLeft, Clock, Eye } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
 
 export const revalidate = 3600;
@@ -59,7 +59,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
       <ViewTracker type="blog" slug={slug} />
       <div className="max-w-4xl mx-auto px-6">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-10 transition-colors group text-sm font-medium">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-10 transition-colors group text-sm font-medium">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Blog
         </Link>
@@ -68,26 +68,27 @@ export default async function BlogDetailPage({ params }: PageProps) {
         <div className="space-y-6 mb-12">
           <div className="flex flex-wrap gap-2">
             {blog.tags.map((tag: string) => (
-              <span key={tag} className="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-300 rounded-full uppercase tracking-widest font-bold">
+              <span key={tag} className="text-[10px] px-3 py-1 bg-card border border-border text-muted-foreground rounded-full uppercase tracking-widest font-bold shadow-sm">
                 #{tag}
               </span>
             ))}
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-black text-foreground leading-[1.1] tracking-tight">
             {blog.title}
           </h1>
 
           <div className="flex flex-wrap items-center gap-6 pt-2">
              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 p-[1px]">
-                  <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 dark:from-purple-500 dark:to-pink-500 p-[1px]">
+                  <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/aditya_profile.png" alt="Aditya" className="w-full h-full object-cover" />
                   </div>
                 </div>
-                <span className="text-sm font-bold text-white">Aditya Kumar</span>
+                <span className="text-sm font-bold text-foreground">Aditya Kumar</span>
              </div>
-             <div className="flex items-center gap-4 text-xs font-medium text-gray-500 border-l border-gray-800 pl-6">
+             <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground border-l border-border pl-6">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{blog.readTime} min read</span>
                 <span className="flex items-center gap-1.5"><Eye className="w-3.5 h-3.5" />{blog.views} views</span>
                 <span>{new Date(blog.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
@@ -97,22 +98,23 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
         {/* Cover Image */}
         {blog.coverImage && (
-          <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/5 shadow-2xl mb-16">
+          <div className="relative aspect-video rounded-3xl overflow-hidden border border-border shadow-md mb-16">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent pointer-events-none" />
           </div>
         )}
 
         {/* Content */}
         <article className="max-w-3xl mx-auto">
-          <div className="prose prose-invert prose-lg max-w-none 
-            prose-headings:text-white prose-headings:font-black tracking-tight
-            prose-p:text-gray-400 prose-p:leading-[1.8]
-            prose-a:text-purple-400 prose-a:no-underline hover:prose-a:underline
-            prose-code:text-pink-300 prose-code:bg-gray-800/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md
-            prose-pre:bg-gray-900/80 prose-pre:border prose-pre:border-white/5 prose-pre:rounded-2xl prose-pre:p-6
-            prose-blockquote:border-purple-500 prose-blockquote:bg-purple-500/5 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:text-gray-300 prose-blockquote:font-medium
-            prose-img:rounded-3xl prose-img:border prose-img:border-white/5 prose-img:shadow-xl"
+          <div className="prose prose-slate dark:prose-invert prose-lg max-w-none 
+            prose-headings:text-foreground prose-headings:font-black tracking-tight
+            prose-p:text-muted-foreground prose-p:leading-[1.8]
+            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+            prose-code:text-pink-600 dark:prose-code:text-pink-300 prose-code:bg-accent prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md
+            prose-pre:bg-card prose-pre:border prose-pre:border-border prose-pre:rounded-2xl prose-pre:p-6 prose-pre:shadow-sm
+            prose-blockquote:border-primary prose-blockquote:bg-accent/50 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:text-foreground prose-blockquote:font-medium
+            prose-img:rounded-3xl prose-img:border prose-img:border-border prose-img:shadow-md"
           >
             <div dangerouslySetInnerHTML={{ __html: blog.content }} />
           </div>

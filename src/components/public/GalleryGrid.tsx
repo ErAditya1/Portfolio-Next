@@ -19,7 +19,7 @@ export function GalleryGrid({ items }: { items: IGallery[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="group relative aspect-video rounded-2xl overflow-hidden cursor-pointer border border-white/10 glass"
+            className="group relative aspect-video rounded-2xl overflow-hidden cursor-pointer border border-border shadow-sm bg-card"
             onClick={() => setSelectedImage(item)}
           >
             <Image
@@ -28,11 +28,11 @@ export function GalleryGrid({ items }: { items: IGallery[] }) {
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
+            <div className="absolute inset-0 bg-black/60 dark:bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center pointer-events-none">
               <ZoomIn className="w-8 h-8 text-white mb-2" />
               <h3 className="text-white font-bold">{item.title}</h3>
-              <p className="text-gray-300 text-xs mt-1">{item.description}</p>
-              <span className="mt-2 px-2 py-1 bg-purple-500/20 text-purple-400 text-[10px] rounded-full uppercase tracking-wider border border-purple-500/30">
+              <p className="text-gray-200 text-xs mt-1">{item.description}</p>
+              <span className="mt-2 px-2 py-1 bg-primary text-primary-foreground font-bold text-[10px] rounded-full uppercase tracking-wider shadow-sm">
                 {item.category}
               </span>
             </div>
@@ -68,9 +68,9 @@ export function GalleryGrid({ items }: { items: IGallery[] }) {
                 className="object-contain"
               />
             </motion.div>
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center bg-black/60 px-6 py-4 rounded-2xl backdrop-blur-sm">
               <h2 className="text-2xl font-bold text-white">{selectedImage.title}</h2>
-              <p className="text-gray-400 mt-2">{selectedImage.description}</p>
+              <p className="text-gray-300 mt-2">{selectedImage.description}</p>
             </div>
           </div>
         </motion.div>

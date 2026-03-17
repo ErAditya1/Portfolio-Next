@@ -4,11 +4,12 @@ import Gallery from "@/models/Gallery";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
-    const item = await Gallery.findById(params.id);
+    const { id } = await params;
+    const item = await Gallery.findById(id);
     if (!item) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
@@ -21,12 +22,13 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
+    const { id } = await params;
     const body = await req.json();
-    const item = await Gallery.findByIdAndUpdate(params.id, body, {
+    const item = await Gallery.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
     });
@@ -42,11 +44,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
-    const item = await Gallery.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const item = await Gallery.findByIdAndDelete(id);
     if (!item) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }

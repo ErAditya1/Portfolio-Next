@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Upload, Copy, Trash2, FileText, Search, Image as ImageIcon, Filter, ExternalLink } from "lucide-react";
+import { Upload, Copy, Trash2, FileText, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
 
 interface MediaItem {
   _id: string;
@@ -30,7 +30,7 @@ export default function AdminMedia() {
       const res = await fetch(`/api/media?search=${search}&type=${type}`);
       const data = await res.json();
       setMedia(data || []);
-    } catch (error) {
+    } catch {
       toast.error("Failed to load media");
     } finally {
       setLoading(false);
@@ -64,7 +64,7 @@ export default function AdminMedia() {
             if (data._id) {
               setMedia((prev) => [data, ...prev]);
             }
-          } catch (error) {
+          } catch {
             toast.error(`Failed to upload ${file.name}`);
           }
           resolve();
@@ -93,7 +93,7 @@ export default function AdminMedia() {
         setMedia((prev) => prev.filter((m) => m._id !== item._id));
         toast.success("Deleted successfully");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete item");
     }
   };

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { Plus, Pencil, Trash2, Star, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
+import { Plus, Pencil, Trash2, Star, Search, Image as ImageIcon } from "lucide-react";
 
 interface GalleryItem {
   _id: string;

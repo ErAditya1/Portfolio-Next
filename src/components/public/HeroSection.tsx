@@ -28,18 +28,18 @@ export function HeroSection({ settings }: { settings: ISiteSettings }) {
             <motion.p variants={fadeUp} className="text-purple-400 font-semibold tracking-wider uppercase text-sm">
               Available for Hire
             </motion.p>
-            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-extrabold text-white leading-tight">
-              Crafting <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">Digital</span> Excellence
+            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-extrabold text-foreground leading-tight">
+              Crafting <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">Digital</span> Excellence
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed">
-              Hi, I&apos;m <span className="text-white font-medium">{name}</span>, a <span className="text-white font-medium">{title}</span>. {bio}
+            <motion.p variants={fadeUp} className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+              Hi, I&apos;m <span className="text-foreground font-semibold">{name}</span>, a <span className="text-foreground font-semibold">{title}</span>. {bio}
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex gap-4 flex-wrap">
-              <Link href="/projects" className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all hover:scale-105 flex items-center gap-2">
+              <Link href="/projects" className="px-8 py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 transition-all hover:scale-105 flex items-center gap-2">
                 View My Work <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link href="/contact" className="px-8 py-4 bg-gray-900 border border-gray-800 text-white font-bold rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2">
+              <Link href="/contact" className="px-8 py-4 bg-card border border-border text-foreground font-bold rounded-xl hover:bg-accent transition-all flex items-center gap-2">
                 Get in Touch
               </Link>
             </motion.div>
@@ -72,13 +72,13 @@ export function HeroSection({ settings }: { settings: ISiteSettings }) {
               </div>
             </div>
             {/* Floating metrics */}
-            <div className="absolute -top-4 -right-4 bg-gray-900/90 border border-white/10 backdrop-blur-xl p-4 rounded-2xl shadow-2xl z-20">
-              <span className="text-2xl font-bold text-white">1+</span>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Years Experience</p>
+            <div className="absolute -top-4 -right-4 bg-card/90 border border-border backdrop-blur-xl p-4 rounded-2xl shadow-xl z-20">
+              <span className="text-2xl font-bold text-foreground">1+</span>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Years Experience</p>
             </div>
-            <div className="absolute -bottom-4 -left-4 bg-gray-900/90 border border-white/10 backdrop-blur-xl p-4 rounded-2xl shadow-2xl z-20">
-              <span className="text-2xl font-bold text-white">50+</span>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Projects Done</p>
+            <div className="absolute -bottom-4 -left-4 bg-card/90 border border-border backdrop-blur-xl p-4 rounded-2xl shadow-xl z-20">
+              <span className="text-2xl font-bold text-foreground">15+</span>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Projects Done</p>
             </div>
           </motion.div>
         </div>

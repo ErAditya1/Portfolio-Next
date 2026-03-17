@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
     const featured = searchParams.get("featured");
     const search = searchParams.get("search");
 
-    let query: any = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: Record<string, any> = {};
     if (category) query.category = category;
     if (featured === "true") query.featured = true;
     if (search) {

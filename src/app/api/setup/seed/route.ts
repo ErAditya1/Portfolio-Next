@@ -3,7 +3,6 @@ import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import SiteSettings from "@/models/SiteSettings";
 import Gallery from "@/models/Gallery";
-import User from "@/models/User";
 import Blog from "@/models/Blog";
 
 export async function POST(req: NextRequest) {

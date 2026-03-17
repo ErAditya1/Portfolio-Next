@@ -8,7 +8,7 @@ import { ProjectCard } from "@/components/public/ProjectCard";
 import { NeonHeading } from "@/components/NeonHeading";
 import { Container } from "@/components/Container";
 import Link from "next/link";
-import { ArrowRight, Cpu, Rocket, ShieldCheck } from "lucide-react";
+import { ArrowRight, Cpu, ShieldCheck } from "lucide-react";
 import { HeroSection } from "@/components/public/HeroSection";
 import { AboutSection } from "@/components/public/AboutSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
@@ -56,21 +56,21 @@ export default async function HomePage() {
               <span className="px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest rounded-full">
                 Active status
               </span>
-              <h2 className="text-4xl md:text-5xl font-black text-white">Currently <span className="text-purple-500">Working</span> On</h2>
-              <p className="text-gray-400 max-w-lg">
+              <h2 className="text-4xl md:text-5xl font-black text-foreground">Currently <span className="text-purple-600 dark:text-purple-400">Working</span> On</h2>
+              <p className="text-muted-foreground max-w-lg">
                 I focus on building production-level systems that scale. Here are the core architectures I&apos;m currently refining and building in the wild.
               </p>
             </div>
             <div className="flex-1 grid gap-4 w-full">
               {inProgressProjects.map((p) => (
-                <div key={p._id.toString()} className="group p-6 bg-gray-900/40 border border-gray-800 rounded-2xl hover:border-purple-500/40 transition-all">
+                <div key={p._id.toString()} className="group p-6 bg-card border border-border rounded-2xl hover:border-purple-600/40 dark:hover:border-purple-400/40 transition-all shadow-sm">
                    <div className="flex items-center gap-4 mb-3">
-                     <span className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                     <span className="p-2 bg-purple-600/10 dark:bg-purple-400/20 rounded-lg text-purple-600 dark:text-purple-400">
                         {p.title.includes('Scraping') ? <ShieldCheck className="w-5 h-5" /> : <Cpu className="w-5 h-5" />}
                      </span>
-                     <h3 className="font-bold text-white group-hover:text-purple-400 transition-colors">{p.title}</h3>
+                     <h3 className="font-bold text-foreground group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{p.title}</h3>
                    </div>
-                   <p className="text-sm text-gray-500 line-clamp-2 mb-4">{p.description}</p>
+                   <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{p.description}</p>
                    <div className="flex flex-wrap gap-2">
                      {p.techStack.map(t => (
                        <span key={t} className="text-[10px] px-2 py-0.5 bg-gray-800 text-gray-400 rounded-md">{t}</span>
@@ -97,7 +97,7 @@ export default async function HomePage() {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link href="/projects" className="group inline-flex items-center gap-2 px-6 py-3 bg-gray-900 border border-gray-800 rounded-xl text-white font-medium hover:bg-gray-800 transition-all">
+            <Link href="/projects" className="group inline-flex items-center gap-2 px-6 py-3 bg-card border border-border rounded-xl text-foreground font-medium hover:bg-accent transition-all shadow-sm">
               Explore All Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -129,19 +129,20 @@ export default async function HomePage() {
               <Link
                 key={blog._id.toString()}
                 href={`/blog/${blog.slug}`}
-                className="group bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 flex flex-col shadow-sm"
               >
                 {blog.coverImage && (
                   <div className="relative aspect-video overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   </div>
                 )}
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="text-white font-bold text-lg mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{blog.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">{blog.excerpt}</p>
-                  <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
-                    <span className="text-gray-600 text-xs">{new Date(blog.createdAt).toLocaleDateString()}</span>
-                    <span className="text-blue-400 text-xs font-medium">Read More</span>
+                  <h3 className="text-foreground font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 flex-1">{blog.excerpt}</p>
+                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+                    <span className="text-muted-foreground text-xs">{new Date(blog.createdAt).toLocaleDateString()}</span>
+                    <span className="text-primary text-xs font-medium">Read More</span>
                   </div>
                 </div>
               </Link>
