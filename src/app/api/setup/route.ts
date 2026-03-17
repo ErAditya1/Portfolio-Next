@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const { name, email, password, secret } = body;
 
     // Guard with a setup secret
-    if (secret !== process.env.NEXT_PUBLIC_SETUP_SECRET) {
+    if (secret !== process.env.SETUP_SECRET) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
