@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Settings,
   Image as ImageIcon,
+  Upload,
   LogOut,
   ChevronRight,
 } from "lucide-react";
@@ -18,8 +19,9 @@ const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/blogs", label: "Blogs", icon: BookOpen },
+  { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
+  { href: "/admin/media", label: "Media", icon: Upload },
   { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquare },
-  { href: "/admin/media", label: "Media", icon: ImageIcon },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

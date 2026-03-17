@@ -11,6 +11,7 @@ export const revalidate = 3600; // ISR: revalidate every 1 hour
 export const metadata: Metadata = {
   title: "Projects",
   description: "Browse my portfolio of full-stack web development projects including React, Next.js, Node.js, and more.",
+  keywords: ["Projects", "Portfolio", "Web Development", "React", "Next.js", "Node.js", "Full-Stack"],
 };
 
 interface PageProps {

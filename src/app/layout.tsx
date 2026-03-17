@@ -13,62 +13,75 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Aditya Kumar | Full-Stack Web Developer Portfolio",
-    template: "%s | Aditya Kumar",
-  },
-  description:
-    "Portfolio of Aditya Kumar — Full-Stack Web Developer skilled in React, Next.js, Node.js, Express.js, MongoDB, and MySQL. Explore my projects, skills, and experience.",
-  keywords: [
-    "Aditya Kumar",
-    "Web Developer",
-    "Full Stack Developer",
-    "React Developer",
-    "Next.js Portfolio",
-    "MERN Stack",
-    "JavaScript",
-    "Frontend Developer",
-    "Backend Developer",
-  ],
-  authors: [{ name: "Aditya Kumar" }],
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
-  openGraph: {
-    title: "Aditya Kumar | Full-Stack Web Developer",
-    description:
-      "Explore my portfolio showcasing projects, skills, and experience in modern web development.",
-    url: "https://eraditya.vercel.app/",
-    siteName: "Aditya Kumar Portfolio",
-    images: [
-      {
-        url: "/images/aditya_profile.png",
-        width: 1200,
-        height: 630,
-        alt: "Aditya Kumar Portfolio",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  
+  // Default values
+  let title = "Aditya Kumar | Full-Stack Web Developer";
+  let description = "Portfolio of Aditya Kumar — specializing in MERN stack, Next.js, and scalable backend architecture.";
+  
+  try {
+    const res = await fetch(`${baseUrl}/api/settings`, { cache: 'no-store' });
+    if (res.ok) {
+      const settings = await res.json();
+      title = settings.siteTitle || title;
+      description = settings.siteDescription || description;
+    }
+  } catch (e) {
+    console.error("Failed to fetch settings for metadata", e);
+  }
+
+  return {
+    title: {
+      default: title,
+      template: `%s | ${title.split('|')[0].trim()}`,
+    },
+    description: description,
+    keywords: [
+      "Aditya Kumar",
+      "Web Developer",
+      "Full Stack Developer",
+      "Backend Engineer",
+      "Next.js Portfolio",
+      "MERN Stack",
     ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Aditya Kumar | Full-Stack Web Developer",
-    description:
-      "Portfolio of Aditya Kumar — showcasing projects, skills, and experience in React, Next.js, and MERN stack.",
-    images: ["/images/aditya_profile.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: "Aditya Kumar" }],
+    metadataBase: new URL(baseUrl),
+    openGraph: {
+      title: title,
+      description: description,
+      url: baseUrl,
+      siteName: title,
+      images: [
+        {
+          url: "/images/aditya_profile.png",
+          width: 1200,
+          height: 630,
+          alt: "Aditya Kumar Portfolio",
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: ["/images/aditya_profile.png"],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
+  };
+}
 
 export default function RootLayout({
   children,

@@ -11,16 +11,30 @@ export { cloudinary };
 export async function uploadImage(
   file: string,
   folder: string = "portfolio"
-): Promise<{ url: string; publicId: string }> {
+): Promise<{ 
+  url: string; 
+  publicId: string;
+  format: string;
+  resourceType: string;
+  width?: number;
+  height?: number;
+  bytes: number;
+  filename: string;
+}> {
   const result = await cloudinary.uploader.upload(file, {
     folder,
     resource_type: "auto",
-    transformation: [{ quality: "auto", fetch_format: "auto" }],
   });
 
   return {
     url: result.secure_url,
     publicId: result.public_id,
+    format: result.format,
+    resourceType: result.resource_type,
+    width: result.width,
+    height: result.height,
+    bytes: result.bytes,
+    filename: result.original_filename || "unknown",
   };
 }
 

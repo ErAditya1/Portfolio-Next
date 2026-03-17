@@ -16,16 +16,19 @@ export interface ISiteSettings extends Document {
   siteDescription: string;
   siteFavicon?: string;
   ogImage?: string;
-  skills: string[];
+  skills: { name: string; level: number; category: string }[];
+  currentlyLearning: string[];
+  recentlyLearned: string[];
+  emergingExpertise: string[];
   updatedAt: Date;
 }
 
 const SiteSettingsSchema = new Schema<ISiteSettings>(
   {
-    ownerName: { type: String, default: "John Doe" },
-    ownerTitle: { type: String, default: "Full Stack Developer" },
+    ownerName: { type: String, default: "Aditya Kumar" },
+    ownerTitle: { type: String, default: "Full Stack Web Developer" },
     ownerBio: { type: String, default: "" },
-    ownerEmail: { type: String, default: "" },
+    ownerEmail: { type: String, default: "mradityaji2@gmail.com" },
     ownerPhone: { type: String },
     ownerLocation: { type: String },
     avatarUrl: { type: String },
@@ -33,11 +36,20 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     githubUrl: { type: String },
     linkedinUrl: { type: String },
     twitterUrl: { type: String },
-    siteTitle: { type: String, default: "My Portfolio" },
-    siteDescription: { type: String, default: "A showcase of my work and thoughts." },
+    siteTitle: { type: String, default: "Aditya Kumar | Portfolio" },
+    siteDescription: { type: String, default: "Full-Stack Web Developer specializing in MERN and Modern UI frameworks." },
     siteFavicon: { type: String },
     ogImage: { type: String },
-    skills: [{ type: String }],
+    skills: [
+      {
+        name: { type: String },
+        level: { type: Number },
+        category: { type: String },
+      },
+    ],
+    currentlyLearning: [{ type: String }],
+    recentlyLearned: [{ type: String }],
+    emergingExpertise: [{ type: String }],
   },
   { timestamps: true }
 );

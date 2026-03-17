@@ -11,6 +11,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Blog",
   description: "Articles and thoughts on web development, programming, and technology.",
+  keywords: ["Blog", "Portfolio", "Web Development", "React", "Next.js", "Node.js", "Full-Stack"],
 };
 
 interface PageProps {
@@ -62,7 +63,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
         {/* Tags Filter */}
         {allTags.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className=" flex-wrap justify-center gap-2 mb-10 hidden sm:flex">
             <Link href="/blog" className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${!tag ? "bg-blue-500/20 text-blue-300 border-blue-500/30" : "bg-gray-900 text-gray-400 border-gray-800 hover:text-gray-300"}`}>
               All
             </Link>

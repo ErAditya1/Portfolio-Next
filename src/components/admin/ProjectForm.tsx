@@ -16,6 +16,7 @@ interface ProjectFormData {
   liveUrl: string;
   images: string[];
   featured: boolean;
+  status: string;
   seoTitle: string;
   seoDescription: string;
 }
@@ -30,6 +31,7 @@ const emptyForm: ProjectFormData = {
   liveUrl: "",
   images: [],
   featured: false,
+  status: "completed",
   seoTitle: "",
   seoDescription: "",
 };
@@ -289,6 +291,20 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
                 <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${form.featured ? "translate-x-4" : ""}`} />
               </div>
             </label>
+          </div>
+
+          {/* Status */}
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-3">
+            <h3 className="text-white font-medium">Project Status</h3>
+            <select
+              value={form.status}
+              onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500"
+            >
+              <option value="completed">Completed</option>
+              <option value="building">Currently Building</option>
+            </select>
+            <p className="text-[10px] text-gray-500 italic">Changing to &apos;Building&apos; shows a special badge on the card.</p>
           </div>
 
           {/* Links */}

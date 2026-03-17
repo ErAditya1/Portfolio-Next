@@ -2,38 +2,87 @@ import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import Blog from "@/models/Blog";
 import SiteSettings from "@/models/SiteSettings";
+import Gallery from "@/models/Gallery";
 
 import { ProjectCard } from "@/components/public/ProjectCard";
 import { NeonHeading } from "@/components/NeonHeading";
 import { Container } from "@/components/Container";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Cpu, Rocket, ShieldCheck } from "lucide-react";
 import { HeroSection } from "@/components/public/HeroSection";
 import { AboutSection } from "@/components/public/AboutSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
 import { ServicesSection } from "@/components/public/ServicesSection";
+import { GalleryGrid } from "@/components/public/GalleryGrid";
 
-import { ISiteSettings, IProject, IBlog } from "@/types";
+import { ISiteSettings, IProject, IBlog, IGallery } from "@/types";
+import { Metadata } from "next";
 
 export const revalidate = 3600; // ISR  
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Portfolio of Aditya Kumar — Backend & System Engineer specializing in scalable architecture and web scraping.",
+  keywords: ["Aditya Kumar", "Backend Engineer", "Web Scraping", "System Design", "BullMQ", "NestJS", "Next.js"],
+};
 
 export default async function HomePage() {
   await connectDB();
 
-  const [projectsRaw, blogsRaw, settingsRaw] = await Promise.all([
-    Project.find({ featured: true }).sort({ createdAt: -1 }).limit(4).lean(),
+  const [projectsRaw, inProgressRaw, blogsRaw, settingsRaw, galleryRaw] = await Promise.all([
+    Project.find({ featured: true, status: "completed" }).sort({ createdAt: -1 }).limit(3).lean(),
+    Project.find({ status: "building" }).sort({ createdAt: -1 }).limit(2).lean(),
     Blog.find({ published: true }).sort({ createdAt: -1 }).limit(3).lean(),
     SiteSettings.findOne().lean(),
+    Gallery.find({ featured: true }).sort({ order: 1 }).limit(6).lean(),
   ]);
 
-  // Serialize Mongoose objects for Client Components
+  // Serialize Mongoose objects
   const projects = JSON.parse(JSON.stringify(projectsRaw)) as IProject[];
+  const inProgressProjects = JSON.parse(JSON.stringify(inProgressRaw)) as IProject[];
   const blogs = JSON.parse(JSON.stringify(blogsRaw)) as IBlog[];
   const settings = JSON.parse(JSON.stringify(settingsRaw)) as ISiteSettings;
+  const galleryItems = JSON.parse(JSON.stringify(galleryRaw)) as IGallery[];
 
   return (
     <main>
       <HeroSection settings={settings} />
+      
+      {/* Current Focus Section */}
+      <section className="py-20 relative overflow-hidden">
+        <Container>
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            <div className="flex-1 space-y-6">
+              <span className="px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest rounded-full">
+                Active status
+              </span>
+              <h2 className="text-4xl md:text-5xl font-black text-white">Currently <span className="text-purple-500">Working</span> On</h2>
+              <p className="text-gray-400 max-w-lg">
+                I focus on building production-level systems that scale. Here are the core architectures I&apos;m currently refining and building in the wild.
+              </p>
+            </div>
+            <div className="flex-1 grid gap-4 w-full">
+              {inProgressProjects.map((p) => (
+                <div key={p._id.toString()} className="group p-6 bg-gray-900/40 border border-gray-800 rounded-2xl hover:border-purple-500/40 transition-all">
+                   <div className="flex items-center gap-4 mb-3">
+                     <span className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                        {p.title.includes('Scraping') ? <ShieldCheck className="w-5 h-5" /> : <Cpu className="w-5 h-5" />}
+                     </span>
+                     <h3 className="font-bold text-white group-hover:text-purple-400 transition-colors">{p.title}</h3>
+                   </div>
+                   <p className="text-sm text-gray-500 line-clamp-2 mb-4">{p.description}</p>
+                   <div className="flex flex-wrap gap-2">
+                     {p.techStack.map(t => (
+                       <span key={t} className="text-[10px] px-2 py-0.5 bg-gray-800 text-gray-400 rounded-md">{t}</span>
+                     ))}
+                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
       <AboutSection settings={settings} />
       <SkillsSection settings={settings} />
       <ServicesSection />
@@ -41,25 +90,41 @@ export default async function HomePage() {
       {/* Featured Projects */}
       <section id="projects" className="py-20 bg-gradient-to-b from-transparent to-white/2">
         <Container>
-          <NeonHeading>Featured Projects</NeonHeading>
+          <NeonHeading>Selected Works</NeonHeading>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             {projects.map((project) => (
               <ProjectCard key={project._id.toString()} project={project} />
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link href="/projects" className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium transition-colors group">
-              View All Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <Link href="/projects" className="group inline-flex items-center gap-2 px-6 py-3 bg-gray-900 border border-gray-800 rounded-xl text-white font-medium hover:bg-gray-800 transition-all">
+              Explore All Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </Container>
       </section>
 
-      {/* Latest Blogs */}
-      <section id="blog" className="py-20">
+      {/* Gallery Section */}
+      <section id="gallery" className="py-20">
         <Container>
-          <NeonHeading>Latest Articles</NeonHeading>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          <NeonHeading>Visual Gallery</NeonHeading>
+          <p className="text-gray-500 text-center mt-4 max-w-2xl mx-auto">
+            Glimpses into my development process, system architectures, and UI designs.
+          </p>
+          <GalleryGrid items={galleryItems} />
+        </Container>
+      </section>
+
+      {/* Latest Blogs */}
+      <section id="blog" className="py-20 bg-gray-900/20">
+        <Container>
+          <div className="flex items-center justify-between mb-12">
+            <NeonHeading>Insights</NeonHeading>
+            <Link href="/blog" className="text-blue-400 hover:text-blue-300 text-sm font-bold flex items-center gap-2">
+              All Articles <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogs.map((blog) => (
               <Link
                 key={blog._id.toString()}
@@ -67,24 +132,20 @@ export default async function HomePage() {
                 className="group bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
                 {blog.coverImage && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={blog.coverImage} alt={blog.title} className="w-full aspect-video object-cover" />
+                  <div className="relative aspect-video overflow-hidden">
+                    <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  </div>
                 )}
                 <div className="p-5 flex flex-col flex-1">
                   <h3 className="text-white font-bold text-lg mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{blog.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 flex-1">{blog.excerpt}</p>
                   <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
                     <span className="text-gray-600 text-xs">{new Date(blog.createdAt).toLocaleDateString()}</span>
-                    <span className="text-blue-400 text-xs font-medium">Read More →</span>
+                    <span className="text-blue-400 text-xs font-medium">Read More</span>
                   </div>
                 </div>
               </Link>
             ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium transition-colors group">
-              Visit Blog <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
           </div>
         </Container>
       </section>

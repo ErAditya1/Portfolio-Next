@@ -10,6 +10,7 @@ export interface IProject extends Document {
   liveUrl?: string;
   images: string[];
   featured: boolean;
+  status: "completed" | "building";
   views: number;
   seoTitle?: string;
   seoDescription?: string;
@@ -28,6 +29,7 @@ const ProjectSchema = new Schema<IProject>(
     liveUrl: { type: String, trim: true },
     images: [{ type: String }],
     featured: { type: Boolean, default: false },
+    status: { type: String, enum: ["completed", "building"], default: "completed" },
     views: { type: Number, default: 0 },
     seoTitle: { type: String, trim: true },
     seoDescription: { type: String, trim: true },
@@ -38,6 +40,7 @@ const ProjectSchema = new Schema<IProject>(
 // Indexes for common queries and search
 ProjectSchema.index({ slug: 1 });
 ProjectSchema.index({ featured: -1 });
+ProjectSchema.index({ status: 1 });
 ProjectSchema.index({ createdAt: -1 });
 ProjectSchema.index({ title: "text", description: "text" });
 

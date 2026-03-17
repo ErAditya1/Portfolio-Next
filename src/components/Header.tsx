@@ -55,6 +55,9 @@ export function Header() {
             <Link href="/blog" className="hover:text-cyan-300 transition">
               Blog
             </Link>
+            <Link href="/gallery" className="hover:text-cyan-300 transition">
+              Gallery
+            </Link>
             <Link href="/contact" className="hover:text-cyan-300 transition">
               Contact
             </Link>
@@ -92,8 +95,8 @@ export function Header() {
                     <Link href="/projects" onClick={handleClose} className="hover:text-cyan-300 transition">
                       Projects
                     </Link>
-                    <Link href="/blog" onClick={handleClose} className="hover:text-cyan-300 transition">
-                      Blog
+                    <Link href="/gallery" onClick={handleClose} className="hover:text-cyan-300 transition">
+                      Gallery
                     </Link>
                     <Link href="/contact" onClick={handleClose} className="hover:text-cyan-300 transition">
                       Contact

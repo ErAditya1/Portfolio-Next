@@ -9,6 +9,7 @@ export interface IProject {
   liveUrl?: string;
   images: string[];
   featured: boolean;
+  status: "completed" | "in-progress";
   views: number;
   seoTitle?: string;
   seoDescription?: string;
@@ -50,6 +51,21 @@ export interface ISiteSettings {
   siteDescription: string;
   siteFavicon?: string;
   ogImage?: string;
-  skills: string[];
+  skills: { name: string; level: number; category: string }[];
+  currentlyLearning: string[];
+  recentlyLearned: string[];
+  emergingExpertise: string[];
+  updatedAt: string | Date;
+}
+
+export interface IGallery {
+  _id: string;
+  title: string;
+  description?: string;
+  imageUrl: string;
+  category: string;
+  order: number;
+  featured: boolean;
+  createdAt: string | Date;
   updatedAt: string | Date;
 }

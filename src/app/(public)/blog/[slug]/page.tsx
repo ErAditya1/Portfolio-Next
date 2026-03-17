@@ -19,13 +19,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!blog) return { title: "Post Not Found" };
 
   return {
-    title: blog.seoTitle || blog.title,
+    title: blog.seoTitle || `${blog.title} | Blog`,
     description: blog.seoDescription || blog.excerpt,
+    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles"],
     openGraph: {
       title: blog.seoTitle || blog.title,
       description: blog.seoDescription || blog.excerpt,
       images: blog.coverImage ? [{ url: blog.coverImage }] : [],
       type: "article",
+      authors: ["Aditya Kumar"],
+      publishedTime: blog.createdAt.toString(),
     },
     twitter: {
       card: "summary_large_image",
@@ -49,46 +52,70 @@ export default async function BlogDetailPage({ params }: PageProps) {
   if (!blog) notFound();
 
   return (
-    <main className="min-h-screen pt-24 pb-16">
+    <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
+      {/* Background accents */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px] -z-10" />
+
       <ViewTracker type="blog" slug={slug} />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors group">
+      <div className="max-w-4xl mx-auto px-6">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-10 transition-colors group text-sm font-medium">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Blog
         </Link>
 
-        {/* Cover Image */}
-        {blog.coverImage && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={blog.coverImage} alt={blog.title} className="w-full aspect-video object-cover rounded-2xl mb-8 border border-gray-800" />
-        )}
-
-        {/* Header */}
-        <div className="mb-8">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
+        {/* Header Section */}
+        <div className="space-y-6 mb-12">
+          <div className="flex flex-wrap gap-2">
             {blog.tags.map((tag: string) => (
-              <Link key={tag} href={`/blog?tag=${tag}`} className="text-xs px-3 py-1 bg-blue-500/10 text-blue-300 border border-blue-500/20 rounded-full flex items-center gap-1 hover:bg-blue-500/20 transition-colors">
-                <Tag className="w-2.5 h-2.5" />#{tag}
-              </Link>
+              <span key={tag} className="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-300 rounded-full uppercase tracking-widest font-bold">
+                #{tag}
+              </span>
             ))}
           </div>
+          
+          <h1 className="text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tight">
+            {blog.title}
+          </h1>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">{blog.title}</h1>
-          <p className="text-gray-400 text-lg mb-4">{blog.excerpt}</p>
-
-          <div className="flex items-center gap-4 text-gray-500 text-sm">
-            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" />{blog.readTime} min read</span>
-            <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" />{blog.views} views</span>
-            <span>{new Date(blog.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+          <div className="flex flex-wrap items-center gap-6 pt-2">
+             <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 p-[1px]">
+                  <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
+                    <img src="/images/aditya_profile.png" alt="Aditya" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-white">Aditya Kumar</span>
+             </div>
+             <div className="flex items-center gap-4 text-xs font-medium text-gray-500 border-l border-gray-800 pl-6">
+                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{blog.readTime} min read</span>
+                <span className="flex items-center gap-1.5"><Eye className="w-3.5 h-3.5" />{blog.views} views</span>
+                <span>{new Date(blog.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+             </div>
           </div>
         </div>
 
-        <hr className="border-gray-800 mb-8" />
+        {/* Cover Image */}
+        {blog.coverImage && (
+          <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/5 shadow-2xl mb-16">
+            <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </div>
+        )}
 
         {/* Content */}
-        <article className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-gray-300 prose-a:text-blue-400 prose-code:text-pink-300 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800 prose-blockquote:border-purple-500 prose-blockquote:text-gray-400">
-          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+        <article className="max-w-3xl mx-auto">
+          <div className="prose prose-invert prose-lg max-w-none 
+            prose-headings:text-white prose-headings:font-black tracking-tight
+            prose-p:text-gray-400 prose-p:leading-[1.8]
+            prose-a:text-purple-400 prose-a:no-underline hover:prose-a:underline
+            prose-code:text-pink-300 prose-code:bg-gray-800/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md
+            prose-pre:bg-gray-900/80 prose-pre:border prose-pre:border-white/5 prose-pre:rounded-2xl prose-pre:p-6
+            prose-blockquote:border-purple-500 prose-blockquote:bg-purple-500/5 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:text-gray-300 prose-blockquote:font-medium
+            prose-img:rounded-3xl prose-img:border prose-img:border-white/5 prose-img:shadow-xl"
+          >
+            <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+          </div>
         </article>
       </div>
     </main>

@@ -16,6 +16,7 @@ interface Project {
   images: string[];
   featured: boolean;
   views: number;
+  status: string;
   createdAt: string;
 }
 
@@ -133,7 +134,12 @@ export default function AdminProjects() {
                   <tr key={project._id} className="hover:bg-gray-800/50 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="text-white font-medium">{project.title}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-white font-medium">{project.title}</p>
+                          {project.status === "building" && (
+                            <span className="text-[10px] px-2 py-0.5 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-full font-bold uppercase tracking-wider">Building</span>
+                          )}
+                        </div>
                         <p className="text-gray-500 text-xs mt-0.5">/{project.slug}</p>
                       </div>
                     </td>

@@ -1,147 +1,60 @@
-"use client";
+import { connectDB } from "@/lib/db";
+import SiteSettings from "@/models/SiteSettings";
+import { Container } from "@/components/Container";
+import { NeonHeading } from "@/components/NeonHeading";
+import { SkillsSection } from "@/components/public/SkillsSection";
+import { ISiteSettings } from "@/types";
+import { Metadata } from "next";
 
-import { skills } from "@/Data";
-import { motion } from "framer-motion";
+export const revalidate = 3600;
 
-export default function SkillsPage() {
-  const categories = ["Frontend", "Backend", "Database", "Other"] as const;
+export const metadata: Metadata = {
+  title: "Skills & Expertise | Aditya Kumar",
+  description: "Detailed overview of my technical stack, including backend engineering, system architecture, and emerging expertise.",
+  keywords: ["Skills", "Tech Stack", "Backend", "System Design", "Node.js", "MongoDB", "BullMQ"],
+};
+
+export default async function SkillsPage() {
+  await connectDB();
+  const settingsRaw = await SiteSettings.findOne().lean();
+  const settings = JSON.parse(JSON.stringify(settingsRaw)) as ISiteSettings;
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header */}
-        <header className="mb-12 text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-300 to-purple-500">
-            Skills & Competencies
-          </h1>
-          <p className="mt-3 text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
-            A showcase of my technical expertise and professional strengths
-            across frontend, backend, and database technologies.
-          </p>
-        </header>
+    <main className="pt-32 pb-20 relative overflow-hidden min-h-screen">
+      {/* Background accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
 
-        {/* Skill Categories */}
-        <div className="grid md:grid-cols-2 gap-10">
-          {categories.map((cat, i) => (
-            <motion.div
-              key={cat}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="bg-glass border border-white/10 rounded-2xl p-6 shadow-lg hover:shadow-cyan-500/30 transition"
-            >
-              <h2 className="text-xl font-semibold text-white mb-4">{cat}</h2>
-              <div className="space-y-4">
-                {skills
-                  .filter((s) => s.category === cat)
-                  .map((s, j) => (
-                    <motion.div
-                      key={s.name}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `100%` }}
-                      transition={{ duration: 1.2, delay: j * 0.08 }}
-                      viewport={{ once: true }}
-                    >
-                      <div className="flex justify-between text-xs md:text-sm text-gray-300 mb-1">
-                        <span>{s.name}</span>
-                        <span>{s.level}%</span>
-                      </div>
-                      <div className="w-full bg-white/10 rounded-full h-2 md:h-3 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-indigo-600 shadow"
-                          style={{ width: `${s.level}%` }}
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-            </motion.div>
-          ))}
+      <Container>
+        <div className="text-center mb-20 space-y-4">
+          <span className="text-purple-500 font-bold text-xs uppercase tracking-[0.4em]">Efficiency & Logic</span>
+          <NeonHeading>My <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Technical</span> Universe</NeonHeading>
+          <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">
+            A comprehensive breakdown of the tools and technologies I use to architect high-performance digital systems.
+          </p>
         </div>
 
-        {/* Professional Skills */}
-        <section className="mt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-glass border border-white/10 rounded-2xl p-6 shadow-lg"
-          >
-            <h2 className="text-xl font-semibold text-white mb-6 text-center">
-              Professional Skills
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-              <CircularSkill label="Teamwork" percent={90} icon="✅" />
-              <CircularSkill label="Creativity" percent={80} icon="🎨" />
-              <CircularSkill label="Problem Solving" percent={85} icon="🧠" />
-              <CircularSkill label="Project Mgmt." percent={65} icon="📊" />
-              <CircularSkill label="Communication" percent={75} icon="💬" />
-              <CircularSkill label="Learning" percent={85} icon="🚀" />
-            </div>
-          </motion.div>
+        <SkillsSection settings={settings} />
+
+        {/* Specialized Focus Section */}
+        <section className="mt-32 grid md:grid-cols-3 gap-8">
+           <div className="p-8 bg-gray-900/40 border border-white/5 rounded-3xl backdrop-blur-sm">
+             <div className="text-purple-400 font-black text-4xl mb-4">01.</div>
+             <h3 className="text-white font-bold text-xl mb-4">Distributed Systems</h3>
+             <p className="text-gray-500 text-sm leading-relaxed">Handling tasks across multiple nodes with BullMQ and Redis for maximum throughput and reliability.</p>
+           </div>
+           <div className="p-8 bg-gray-900/40 border border-white/5 rounded-3xl backdrop-blur-sm">
+             <div className="text-blue-400 font-black text-4xl mb-4">02.</div>
+             <h3 className="text-white font-bold text-xl mb-4">Data Scraping</h3>
+             <p className="text-gray-500 text-sm leading-relaxed">Extracting insights from complex social platforms while navigating rate limits and headless browser challenges.</p>
+           </div>
+           <div className="p-8 bg-gray-900/40 border border-white/5 rounded-3xl backdrop-blur-sm">
+             <div className="text-pink-400 font-black text-4xl mb-4">03.</div>
+             <h3 className="text-white font-bold text-xl mb-4">API Architecture</h3>
+             <p className="text-gray-500 text-sm leading-relaxed">Designing RESTful and GraphQL endpoints that are secure, documented, and easy to consume.</p>
+           </div>
         </section>
-      </div>
-    </div>
-  );
-}
-
-function CircularSkill({
-  label,
-  percent,
-  icon,
-}: {
-  label: string;
-  percent: number;
-  icon: string;
-}) {
-  const radius = 40;
-  const stroke = 6;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percent / 100) * circumference;
-
-  return (
-    <motion.div
-      whileHover={{ scale: 1.08 }}
-      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center shadow-md hover:shadow-cyan-500/20 transition"
-    >
-      <div className="relative flex items-center justify-center">
-        <svg width={100} height={100} className="rotate-[-90deg]">
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            stroke="gray"
-            strokeWidth={stroke}
-            fill="transparent"
-            className="opacity-20"
-          />
-          <motion.circle
-            cx="50"
-            cy="50"
-            r={radius}
-            stroke="url(#grad)"
-            strokeWidth={stroke}
-            fill="transparent"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference}
-            animate={{ strokeDashoffset: offset }}
-            transition={{ duration: 1.2 }}
-          />
-          <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#22d3ee" />
-              <stop offset="100%" stopColor="#6366f1" />
-            </linearGradient>
-          </defs> 
-        </svg>
-        <span className="absolute text-white text-sm font-bold">
-          {percent}%
-        </span>
-      </div>
-      <span className="mt-2 text-white font-medium text-sm flex items-center gap-1 text-center">
-        {icon} {label}
-      </span>
-    </motion.div>
+      </Container>
+    </main>
   );
 }

@@ -19,13 +19,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return { title: "Project Not Found" };
 
   return {
-    title: project.seoTitle || project.title,
+    title: project.seoTitle || `${project.title} | Case Study`,
     description: project.seoDescription || project.description,
+    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering"],
     openGraph: {
       title: project.seoTitle || project.title,
       description: project.seoDescription || project.description,
       images: project.images?.[0] ? [{ url: project.images[0] }] : [],
+      type: "article",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: project.seoTitle || project.title,
+      description: project.seoDescription || project.description,
+      images: project.images?.[0] ? [project.images[0]] : [],
+    }
   };
 }
 
@@ -42,49 +50,60 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (!project) notFound();
 
   return (
-    <main className="min-h-screen pt-24 pb-16">
+    <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
+      {/* Background accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] -z-10" />
+
       <ViewTracker type="project" slug={slug} />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <Link href="/projects" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors group">
+      
+      <div className="max-w-5xl mx-auto px-6">
+        <Link href="/projects" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-12 transition-colors group text-sm font-medium">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Projects
         </Link>
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{project.title}</h1>
-              <p className="text-gray-400 text-lg leading-relaxed">{project.description}</p>
+        {/* Header Section */}
+        <div className="space-y-8 mb-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-4 max-w-3xl">
+              {project.status === "in-progress" && (
+                <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full">
+                  Currently Building
+                </span>
+              )}
+              <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight">{project.title}</h1>
+              <p className="text-gray-400 text-xl leading-relaxed">{project.description}</p>
             </div>
-            <div className="flex items-center gap-1.5 text-gray-500 text-sm">
-              <Eye className="w-4 h-4" />
-              {project.views} views
+            <div className="flex items-center gap-4 bg-gray-900/50 border border-gray-800 rounded-2xl px-5 py-3 backdrop-blur-sm">
+               <div className="flex items-center gap-2 text-gray-400">
+                 <Eye className="w-4 h-4 text-purple-400" />
+                 <span className="text-sm font-bold text-white">{project.views}</span>
+                 <span className="text-xs text-gray-500">Views</span>
+               </div>
             </div>
+          </div>
+
+          <div className="flex flex-wrap gap-4 pt-4">
+            {project.githubUrl && (
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-gray-900 border border-white/5 text-white rounded-xl hover:bg-gray-800 transition-all font-bold text-sm shadow-xl">
+                <Github className="w-5 h-5" /> Source Code
+              </a>
+            )}
+            {project.liveUrl && (
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-xl hover:opacity-90 transition-all font-bold text-sm shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                <ExternalLink className="w-5 h-5" /> Visit Live Site
+              </a>
+            )}
           </div>
         </div>
 
-        {/* Links */}
-        <div className="flex gap-3 mb-8">
-          {project.githubUrl && (
-            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 border border-gray-800 text-white rounded-lg hover:border-gray-700 transition-all text-sm font-medium">
-              <Github className="w-4 h-4" /> GitHub
-            </a>
-          )}
-          {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg transition-all text-sm font-medium">
-              <ExternalLink className="w-4 h-4" /> Live Demo
-            </a>
-          )}
-        </div>
-
-        {/* Tech Stack */}
+        {/* Featured Tech */}
         {project.techStack?.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-white font-semibold mb-3">Tech Stack</h2>
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-16">
+            <div className="flex flex-wrap gap-3">
               {project.techStack.map((tech: string) => (
-                <span key={tech} className="text-sm px-3 py-1.5 bg-purple-500/10 text-purple-300 border border-purple-500/20 rounded-lg">
+                <span key={tech} className="px-4 py-2 bg-gray-900/80 border border-gray-800 text-gray-300 text-xs font-bold rounded-lg uppercase tracking-wider backdrop-blur-sm">
                   {tech}
                 </span>
               ))}
@@ -92,23 +111,31 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Images */}
-        {project.images?.length > 0 && (
-          <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {project.images.map((img: string, i: number) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={i} src={img} alt={`${project.title} screenshot ${i + 1}`} className="rounded-xl w-full aspect-video object-cover border border-gray-800" />
-            ))}
-          </div>
-        )}
+        {/* Content & Visuals */}
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+          {project.images?.length > 0 && (
+            <div className="space-y-6">
+              {project.images.map((img: string, i: number) => (
+                <div key={i} className="group relative rounded-3xl overflow-hidden border border-white/5 shadow-2xl aspect-video">
+                  <img src={img} alt={`${project.title} showcase ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Content */}
-        {project.content && (
-          <div className="bg-gray-900/60 border border-gray-800 rounded-2xl p-6">
-            <h2 className="text-white font-semibold mb-4">About This Project</h2>
-            <div className="text-gray-300 leading-relaxed whitespace-pre-line">{project.content}</div>
-          </div>
-        )}
+          {project.content && (
+            <section className="bg-gray-900/40 border border-gray-800/50 rounded-[32px] p-8 md:p-12 backdrop-blur-md">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <span className="w-8 h-1 bg-purple-500 rounded-full" />
+                The Story
+              </h2>
+              <div className="prose prose-invert max-w-none prose-p:text-gray-400 prose-p:leading-relaxed prose-headings:text-white prose-strong:text-white whitespace-pre-line">
+                {project.content}
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </main>
   );

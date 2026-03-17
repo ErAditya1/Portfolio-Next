@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+interface Skill {
+  _id?: string;
+  name: string;
+  level: number;
+  category: string;
+}
+
 interface Settings {
   ownerName: string;
   ownerTitle: string;
@@ -17,7 +24,10 @@ interface Settings {
   twitterUrl: string;
   siteTitle: string;
   siteDescription: string;
-  skills: string[];
+  skills: Skill[];
+  currentlyLearning: string[];
+  recentlyLearned: string[];
+  emergingExpertise: string[];
 }
 
 const defaultSettings: Settings = {
@@ -35,13 +45,23 @@ const defaultSettings: Settings = {
   siteTitle: "",
   siteDescription: "",
   skills: [],
+  currentlyLearning: [],
+  recentlyLearned: [],
+  emergingExpertise: [],
 };
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
+  
+  // Skill Input State
+  const [newSkill, setNewSkill] = useState<Skill>({ name: "", level: 80, category: "Backend" });
+  
+  // Array Input States
+  const [learningInp, setLearningInp] = useState("");
+  const [recentlyInp, setRecentlyInp] = useState("");
+  const [emergingInp, setEmergingInp] = useState("");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -64,15 +84,26 @@ export default function AdminSettings() {
   };
 
   const addSkill = () => {
-    const trimmed = skillInput.trim();
-    if (trimmed && !settings.skills.includes(trimmed)) {
-      setSettings((s) => ({ ...s, skills: [...s.skills, trimmed] }));
-      setSkillInput("");
+    if (newSkill.name.trim()) {
+      setSettings((s) => ({ ...s, skills: [...s.skills, { ...newSkill, name: newSkill.name.trim() }] }));
+      setNewSkill({ name: "", level: 80, category: "Backend" });
     }
   };
 
-  const removeSkill = (skill: string) => {
-    setSettings((s) => ({ ...s, skills: s.skills.filter((sk) => sk !== skill) }));
+  const removeSkill = (index: number) => {
+    setSettings((s) => ({ ...s, skills: s.skills.filter((_, i) => i !== index) }));
+  };
+
+  const addArrayItem = (key: keyof Settings, val: string, setInp: (v: string) => void) => {
+    const trimmed = val.trim();
+    if (trimmed) {
+      setSettings((s) => ({ ...s, [key]: [...(s[key] as string[]), trimmed] }));
+      setInp("");
+    }
+  };
+
+  const removeArrayItem = (key: keyof Settings, val: string) => {
+    setSettings((s) => ({ ...s, [key]: (s[key] as string[]).filter(v => v !== val) }));
   };
 
   if (loading) return (
@@ -165,29 +196,84 @@ export default function AdminSettings() {
             ))}
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-3">
-            <h2 className="text-white font-semibold">Skills</h2>
-            <div className="flex gap-2">
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
+            <h2 className="text-white font-semibold">Skills Matrix</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
-                value={skillInput}
-                onChange={(e) => setSkillInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addSkill())}
-                placeholder="e.g. TypeScript"
-                className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
+                value={newSkill.name}
+                onChange={(e) => setNewSkill(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Skill Name (e.g. NestJS)"
+                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-purple-500 outline-none"
               />
-              <button type="button" onClick={addSkill} className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-lg text-sm">
-                Add
+              <select 
+                value={newSkill.category}
+                onChange={(e) => setNewSkill(prev => ({ ...prev, category: e.target.value }))}
+                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-purple-500 outline-none"
+              >
+                <option value="Frontend">Frontend</option>
+                <option value="Backend">Backend</option>
+                <option value="Database">Database</option>
+                <option value="DevOps">DevOps</option>
+                <option value="Tools">Tools</option>
+              </select>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-500">Level: {newSkill.level}%</span>
+                <input 
+                  type="range" 
+                  min="0" max="100" 
+                  value={newSkill.level}
+                  onChange={(e) => setNewSkill(prev => ({ ...prev, level: parseInt(e.target.value) }))}
+                  className="flex-1 accent-purple-500"
+                />
+              </div>
+              <button type="button" onClick={addSkill} className="bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-bold py-2">
+                Add Skill
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {settings.skills.map((s) => (
-                <span key={s} onClick={() => removeSkill(s)} className="cursor-pointer text-xs px-3 py-1 bg-purple-500/10 text-purple-300 border border-purple-500/20 rounded-full hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/20 transition-colors">
-                  {s} ×
-                </span>
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
+              {settings.skills.map((s, idx) => (
+                <div key={idx} className="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg border border-white/5">
+                  <div className="flex flex-col">
+                    <span className="text-sm text-white font-bold">{s.name}</span>
+                    <span className="text-[10px] text-gray-500 uppercase">{s.category} • {s.level}%</span>
+                  </div>
+                  <button type="button" onClick={() => removeSkill(idx)} className="text-gray-500 hover:text-red-400">×</button>
+                </div>
               ))}
             </div>
           </div>
+
+          {/* Dynamic Learning Sections */}
+          {[
+            { label: "Currently Working On", key: "currentlyLearning", val: learningInp, set: setLearningInp },
+            { label: "Recently Learned", key: "recentlyLearned", val: recentlyInp, set: setRecentlyInp },
+            { label: "Emerging Expertise", key: "emergingExpertise", val: emergingInp, set: setEmergingInp },
+          ].map(({ label, key, val, set }) => (
+            <div key={key} className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-3">
+              <h2 className="text-white font-semibold text-sm">{label}</h2>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={val}
+                  onChange={(e) => set(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addArrayItem(key as keyof Settings, val, set))}
+                  placeholder={`Add to ${label.toLowerCase()}...`}
+                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
+                />
+                <button type="button" onClick={() => addArrayItem(key as keyof Settings, val, set)} className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-lg text-sm">
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {(settings[key as keyof Settings] as string[]).map((item) => (
+                  <span key={item} onClick={() => removeArrayItem(key as keyof Settings, item)} className="cursor-pointer text-[10px] px-2 py-1 bg-blue-500/10 text-blue-300 border border-blue-500/20 rounded-full hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/20 transition-colors">
+                    {item} ×
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Save Button */}
