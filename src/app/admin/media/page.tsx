@@ -22,6 +22,7 @@ export default function AdminMedia() {
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadTitle, setUploadTitle] = useState("");
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
@@ -58,6 +59,7 @@ export default function AdminMedia() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ 
                 file: reader.result, 
+                title: uploadTitle,
                 folder: file.type.includes('pdf') ? "portfolio/documents" : "portfolio/media" 
               }),
             });
@@ -75,6 +77,7 @@ export default function AdminMedia() {
     }
 
     setUploading(false);
+    setUploadTitle("");
     toast.success("Upload complete!");
   };
 
@@ -114,11 +117,20 @@ export default function AdminMedia() {
           <h1 className="text-3xl font-bold text-white">Media Library</h1>
           <p className="text-gray-400 mt-1">Manage images and documents centrally</p>
         </div>
-        <label className={`flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium px-5 py-2.5 rounded-lg transition-all cursor-pointer ${uploading ? "opacity-60 cursor-not-allowed" : ""}`}>
-          <Upload className="w-4 h-4" />
-          {uploading ? "Uploading..." : "Upload Media"}
-          <input type="file" accept="image/*,.pdf" multiple onChange={handleUpload} className="hidden" disabled={uploading} />
-        </label>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <input
+            type="text"
+            placeholder="Title (optional)..."
+            value={uploadTitle}
+            onChange={(e) => setUploadTitle(e.target.value)}
+            className="bg-gray-900 border border-gray-800 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500 w-full sm:w-48"
+          />
+          <label className={`flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${uploading ? "opacity-60 cursor-not-allowed" : ""}`}>
+            <Upload className="w-4 h-4" />
+            {uploading ? "Uploading..." : "Upload Media"}
+            <input type="file" accept="image/*,.pdf" multiple onChange={handleUpload} className="hidden" disabled={uploading} />
+          </label>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">

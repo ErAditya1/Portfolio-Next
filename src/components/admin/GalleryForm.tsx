@@ -139,7 +139,24 @@ export function GalleryForm({ initialData, editId }: GalleryFormProps) {
           </div>
 
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
-            <h2 className="text-white font-semibold">Image Upload</h2>
+            <h2 className="text-white font-semibold">Image Support</h2>
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block">Image URL (Manual entry or upload below)</label>
+              <input
+                type="url"
+                value={form.imageUrl}
+                onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
+                placeholder="https://example.com/image.jpg"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-purple-500"
+              />
+            </div>
+            
+            <div className="relative flex items-center gap-4 py-2">
+              <div className="flex-1 h-px bg-gray-800" />
+              <span className="text-[10px] text-gray-600 font-bold uppercase tracking-wider">OR</span>
+              <div className="flex-1 h-px bg-gray-800" />
+            </div>
+
             {!form.imageUrl ? (
               <label className={`flex flex-col items-center justify-center border-2 border-dashed border-gray-800 rounded-xl p-12 hover:border-purple-500/50 transition-colors cursor-pointer ${uploading ? "opacity-60 cursor-not-allowed" : ""}`}>
                 <Upload className="w-10 h-10 text-gray-600 mb-4" />

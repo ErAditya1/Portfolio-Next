@@ -13,9 +13,12 @@ export async function POST(req: NextRequest) {
     }
 
     const uploadData = await uploadImage(body.file, body.folder || "portfolio");
-
+    
     // Save to database
-    const media = await Media.create(uploadData);
+    const media = await Media.create({
+      ...uploadData,
+      title: body.title || uploadData.title,
+    });
 
     return NextResponse.json(media);
   } catch (error) {
