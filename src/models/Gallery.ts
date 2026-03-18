@@ -7,6 +7,7 @@ export interface IGallery extends Document {
   category: string;
   order: number;
   featured: boolean;
+  externalUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +20,7 @@ const GallerySchema = new Schema<IGallery>(
     category: { type: String, default: "General", trim: true },
     order: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
+    externalUrl: { type: String, trim: true },
   },
   { timestamps: true }
 );

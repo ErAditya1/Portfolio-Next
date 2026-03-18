@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IMedia extends Document {
   url: string;
   publicId: string;
+  title: string;
   filename: string;
   format: string;
   resourceType: string;
@@ -16,6 +17,7 @@ const MediaSchema = new Schema<IMedia>(
   {
     url: { type: String, required: true },
     publicId: { type: String, required: true, unique: true },
+    title: { type: String, trim: true },
     filename: { type: String, required: true },
     format: { type: String },
     resourceType: { type: String, default: "image" },

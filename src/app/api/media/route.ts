@@ -14,7 +14,10 @@ export async function GET(req: NextRequest) {
     const query: Record<string, any> = {};
     if (type) query.resourceType = type;
     if (search) {
-      query.filename = { $regex: search, $options: "i" };
+      query.$or = [
+        { filename: { $regex: search, $options: "i" } },
+        { title: { $regex: search, $options: "i" } },
+      ];
     }
 
     const items = await Media.find(query).sort({ createdAt: -1 });

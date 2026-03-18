@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { Plus, Pencil, Trash2, Star, Search, Image as ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, Star, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
 
 interface GalleryItem {
   _id: string;
@@ -12,6 +12,7 @@ interface GalleryItem {
   category: string;
   featured: boolean;
   order: number;
+  externalUrl?: string;
 }
 
 export default function AdminGallery() {
@@ -113,6 +114,11 @@ export default function AdminGallery() {
                     <Link href={`/admin/gallery/edit/${item._id}`} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-white">
                       <Pencil className="w-3.5 h-3.5" />
                     </Link>
+                    {item.externalUrl && (
+                      <a href={item.externalUrl} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-white">
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                     <button onClick={() => handleDelete(item._id)} disabled={deleting === item._id} className="p-1.5 bg-red-500/20 hover:bg-red-500/40 rounded-lg text-red-400">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

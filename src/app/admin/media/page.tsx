@@ -8,6 +8,7 @@ interface MediaItem {
   _id: string;
   url: string;
   publicId: string;
+  title: string;
   filename: string;
   format: string;
   resourceType: string;
@@ -184,10 +185,10 @@ export default function AdminMedia() {
                 </div>
               </div>
               <div className="p-2.5 bg-gray-900/80 border-t border-gray-800">
-                <p className="text-white text-[10px] font-bold truncate">{item.filename}</p>
+                <p className="text-white text-[10px] font-bold truncate" title={item.filename}>{item.title || item.filename}</p>
                 <div className="flex justify-between items-center mt-1">
+                   <span className="text-[9px] text-gray-500 truncate max-w-[60%]">{item.filename}</span>
                    <span className="text-[9px] text-gray-500">{formatSize(item.bytes)}</span>
-                   {item.width && <span className="text-[9px] text-gray-500">{item.width}x{item.height}</span>}
                 </div>
               </div>
             </div>

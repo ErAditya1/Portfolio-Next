@@ -20,6 +20,7 @@ export async function uploadImage(
   height?: number;
   bytes: number;
   filename: string;
+  title: string;
 }> {
   const result = await cloudinary.uploader.upload(file, {
     folder,
@@ -35,6 +36,7 @@ export async function uploadImage(
     height: result.height,
     bytes: result.bytes,
     filename: result.original_filename || "unknown",
+    title: result.original_filename || "Untitled",
   };
 }
 

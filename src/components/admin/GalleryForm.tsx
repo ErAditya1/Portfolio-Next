@@ -13,6 +13,7 @@ interface GalleryFormData {
   category: string;
   order: number;
   featured: boolean;
+  externalUrl: string;
 }
 
 const emptyForm: GalleryFormData = {
@@ -22,6 +23,7 @@ const emptyForm: GalleryFormData = {
   category: "General",
   order: 0,
   featured: false,
+  externalUrl: "",
 };
 
 interface GalleryFormProps {
@@ -122,6 +124,16 @@ export function GalleryForm({ initialData, editId }: GalleryFormProps) {
                 rows={3}
                 placeholder="Brief description of this image..."
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-purple-500 resize-none"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block">External URL</label>
+              <input
+                type="url"
+                value={form.externalUrl}
+                onChange={(e) => setForm((f) => ({ ...f, externalUrl: e.target.value }))}
+                placeholder="https://example.com"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>

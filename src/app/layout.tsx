@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let description = "Portfolio of Aditya Kumar — specializing in MERN stack, Next.js, and scalable backend architecture.";
   
   try {
-    const res = await fetch(`${baseUrl}/api/settings`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/api/settings`, { next: { revalidate: 3600 } });
     if (res.ok) {
       const settings = await res.json();
       title = settings.siteTitle || title;
