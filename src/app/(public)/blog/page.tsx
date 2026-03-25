@@ -47,7 +47,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             My{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+            <span className="text-gradient">
               Blog
             </span>
           </h1>

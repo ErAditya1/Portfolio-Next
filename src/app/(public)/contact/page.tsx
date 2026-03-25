@@ -71,7 +71,7 @@ export default function ContactPage() {
             >
               Get in Touch
             </motion.span>
-            <NeonHeading>Let&apos;s Build Something <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-500">Legendary</span></NeonHeading>
+            <NeonHeading>Let&apos;s Build Something <span className="text-gradient">Legendary</span></NeonHeading>
             <p className="text-muted-foreground max-w-xl mx-auto text-lg leading-relaxed">
               Whether you have a specific project in mind or just want to explore possibilities, my inbox is always open.
             </p>

@@ -47,6 +47,7 @@ export interface ISiteSettings {
   githubUrl?: string;
   linkedinUrl?: string;
   twitterUrl?: string;
+  socialLinks: { platform: string; url: string; icon: string }[];
   siteTitle: string;
   siteDescription: string;
   siteFavicon?: string;

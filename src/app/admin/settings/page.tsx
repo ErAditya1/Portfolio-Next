@@ -10,6 +10,12 @@ interface Skill {
   category: string;
 }
 
+interface SocialLink {
+  platform: string;
+  url: string;
+  icon?: string;
+}
+
 interface Settings {
   ownerName: string;
   ownerTitle: string;
@@ -22,6 +28,7 @@ interface Settings {
   githubUrl: string;
   linkedinUrl: string;
   twitterUrl: string;
+  socialLinks: SocialLink[];
   siteTitle: string;
   siteDescription: string;
   skills: Skill[];
@@ -42,6 +49,7 @@ const defaultSettings: Settings = {
   githubUrl: "",
   linkedinUrl: "",
   twitterUrl: "",
+  socialLinks: [],
   siteTitle: "",
   siteDescription: "",
   skills: [],
@@ -177,23 +185,67 @@ export default function AdminSettings() {
           </div>
 
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
-            <h2 className="text-white font-semibold">Social Links</h2>
-            {[
-              { label: "GitHub", key: "githubUrl" },
-              { label: "LinkedIn", key: "linkedinUrl" },
-              { label: "Twitter / X", key: "twitterUrl" },
-            ].map(({ label, key }) => (
-              <div key={key}>
-                <label className="text-sm text-gray-400 mb-1.5 block">{label}</label>
-                <input
-                  type="url"
-                  value={settings[key as keyof Settings] as string}
-                  onChange={(e) => setSettings((s) => ({ ...s, [key]: e.target.value }))}
-                  placeholder="https://..."
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
-                />
-              </div>
-            ))}
+            <h2 className="text-white font-semibold">Social Links (Dynamic)</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="socialPlatform"
+                placeholder="Platform (e.g. Instagram)"
+                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-purple-500 outline-none"
+              />
+              <input
+                type="url"
+                id="socialUrl"
+                placeholder="URL (https://...)"
+                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-purple-500 outline-none"
+              />
+              <button 
+                type="button" 
+                onClick={() => {
+                  const p = (document.getElementById("socialPlatform") as HTMLInputElement).value;
+                  const u = (document.getElementById("socialUrl") as HTMLInputElement).value;
+                  if (p && u) {
+                    setSettings(s => ({ ...s, socialLinks: [...s.socialLinks, { platform: p, url: u }] }));
+                    (document.getElementById("socialPlatform") as HTMLInputElement).value = "";
+                    (document.getElementById("socialUrl") as HTMLInputElement).value = "";
+                  }
+                }} 
+                className="sm:col-span-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-bold py-2"
+              >
+                Add Social Link
+              </button>
+            </div>
+            <div className="space-y-2">
+              {settings.socialLinks.map((link, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-xl border border-white/5">
+                  <div className="flex flex-col">
+                    <span className="text-sm text-white font-bold">{link.platform}</span>
+                    <span className="text-[10px] text-gray-400 truncate max-w-[200px]">{link.url}</span>
+                  </div>
+                  <button type="button" onClick={() => setSettings(s => ({ ...s, socialLinks: s.socialLinks.filter((_, i) => i !== idx) }))} className="text-gray-500 hover:text-red-400">×</button>
+                </div>
+              ))}
+            </div>
+            
+            <div className="pt-4 border-t border-gray-800 space-y-4">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Legacy Fields (Optional)</h3>
+              {[
+                { label: "GitHub", key: "githubUrl" },
+                { label: "LinkedIn", key: "linkedinUrl" },
+                { label: "Twitter / X", key: "twitterUrl" },
+              ].map(({ label, key }) => (
+                <div key={key}>
+                  <label className="text-sm text-gray-400 mb-1.5 block">{label}</label>
+                  <input
+                    type="url"
+                    value={settings[key as keyof Settings] as string}
+                    onChange={(e) => setSettings((s) => ({ ...s, [key]: e.target.value }))}
+                    placeholder="https://..."
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">

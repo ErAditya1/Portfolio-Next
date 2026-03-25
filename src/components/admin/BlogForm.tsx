@@ -12,6 +12,7 @@ interface BlogFormData {
   excerpt: string;
   content: string;
   coverImage: string;
+  images: string[];
   tags: string[];
   published: boolean;
   seoTitle: string;
@@ -24,6 +25,7 @@ const emptyForm: BlogFormData = {
   excerpt: "",
   content: "",
   coverImage: "",
+  images: [],
   tags: [],
   published: false,
   seoTitle: "",
@@ -38,6 +40,7 @@ interface BlogFormProps {
 export function BlogForm({ initialData, editId }: BlogFormProps) {
   const [form, setForm] = useState<BlogFormData>({ ...emptyForm, ...initialData });
   const [tagInput, setTagInput] = useState("");
+  const [imageInput, setImageInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
@@ -76,6 +79,41 @@ export function BlogForm({ initialData, editId }: BlogFormProps) {
       if (data.url) {
         setForm((f) => ({ ...f, coverImage: data.url }));
         toast.success("Cover uploaded!");
+      } else {
+        toast.error("Upload failed");
+      }
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const addImage = () => {
+    const trimmed = imageInput.trim();
+    if (trimmed && !form.images.includes(trimmed)) {
+      setForm((f) => ({ ...f, images: [...f.images, trimmed] }));
+      setImageInput("");
+    }
+  };
+
+  const removeImage = (img: string) => {
+    setForm((f) => ({ ...f, images: f.images.filter((i) => i !== img) }));
+  };
+
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ file: reader.result, folder: "portfolio/blogs" }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        setForm((f) => ({ ...f, images: [...f.images, data.url] }));
+        toast.success("Image added to gallery!");
       } else {
         toast.error("Upload failed");
       }
@@ -168,6 +206,44 @@ export function BlogForm({ initialData, editId }: BlogFormProps) {
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 resize-none font-mono text-sm"
               />
             </div>
+          </div>
+
+          {/* Gallery */}
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
+            <h2 className="text-white font-semibold">Blog Gallery</h2>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={imageInput}
+                onChange={(e) => setImageInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addImage())}
+                placeholder="Paste image URL..."
+                className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm"
+              />
+              <button type="button" onClick={addImage} className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-lg text-sm">
+                Add URL
+              </button>
+            </div>
+            <div className="flex items-center gap-3">
+              <label className={`flex items-center gap-2 cursor-pointer bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-lg text-sm transition-colors ${uploading ? "opacity-60 cursor-not-allowed" : ""}`}>
+                <Upload className="w-4 h-4" />
+                {uploading ? "Uploading..." : "Upload Image"}
+                <input type="file" accept="image/*" onChange={handleGalleryUpload} className="hidden" disabled={uploading} />
+              </label>
+            </div>
+            {form.images.length > 0 && (
+              <div className="grid grid-cols-3 gap-3">
+                {form.images.map((img) => (
+                  <div key={img} className="relative group rounded-lg overflow-hidden aspect-video bg-gray-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <button type="button" onClick={() => removeImage(img)} className="absolute top-1 right-1 w-6 h-6 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <X className="w-3 h-3 text-white" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* SEO */}

@@ -10,13 +10,13 @@ import { Container } from "@/components/Container";
 import Link from "next/link";
 import { ArrowRight, Cpu, ShieldCheck } from "lucide-react";
 import { HeroSection } from "@/components/public/HeroSection";
-import { AboutSection } from "@/components/public/AboutSection";
-import { SkillsSection } from "@/components/public/SkillsSection";
-import { ServicesSection } from "@/components/public/ServicesSection";
 import { GalleryGrid } from "@/components/public/GalleryGrid";
 
 import { ISiteSettings, IProject, IBlog, IGallery } from "@/types";
 import { Metadata } from "next";
+import { ServicesSection } from "@/components/public/ServicesSection";
+import { SkillsSection } from "@/components/public/SkillsSection";
+import AboutSection from "@/components/public/AboutSection";
 
 export const revalidate = 3600; // ISR  
 
@@ -56,7 +56,7 @@ export default async function HomePage() {
               <span className="px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest rounded-full">
                 Active status
               </span>
-              <h2 className="text-4xl md:text-5xl font-black text-foreground">Currently <span className="text-purple-600 dark:text-purple-400">Working</span> On</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-foreground">Currently <span className="text-gradient">Working</span> On</h2>
               <p className="text-muted-foreground max-w-lg">
                 I focus on building production-level systems that scale. Here are the core architectures I&apos;m currently refining and building in the wild.
               </p>

@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 import Link from "next/link";
-import { ArrowLeft, Clock, Eye } from "lucide-react";
+import { ArrowLeft, Clock, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
+import { ImageCarousel } from "@/components/public/ImageCarousel";
 
 export const revalidate = 3600;
 
@@ -51,6 +52,14 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const blog = await Blog.findOne({ slug, published: true }).lean();
   if (!blog) notFound();
 
+  // Fetch suggested blogs (next and previous)
+  const [nextBlog, prevBlog] = await Promise.all([
+    Blog.findOne({ published: true, createdAt: { $gt: blog.createdAt } }).sort({ createdAt: 1 }).select("slug title").lean(),
+    Blog.findOne({ published: true, createdAt: { $lt: blog.createdAt } }).sort({ createdAt: -1 }).select("slug title").lean(),
+  ]);
+
+  const allImages = blog.images?.length > 0 ? blog.images : (blog.coverImage ? [blog.coverImage] : []);
+
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       {/* Background accents */}
@@ -96,17 +105,15 @@ export default async function BlogDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Cover Image */}
-        {blog.coverImage && (
-          <div className="relative aspect-video rounded-3xl overflow-hidden border border-border shadow-md mb-16">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent pointer-events-none" />
+        {/* Hero Image / Carousel */}
+        {allImages.length > 0 && (
+          <div className="mb-16">
+            <ImageCarousel images={allImages} title={blog.title} />
           </div>
         )}
 
         {/* Content */}
-        <article className="max-w-3xl mx-auto">
+        <article className="max-w-3xl mx-auto mb-20">
           <div className="prose prose-slate dark:prose-invert prose-lg max-w-none 
             prose-headings:text-foreground prose-headings:font-black tracking-tight
             prose-p:text-muted-foreground prose-p:leading-[1.8]
@@ -119,7 +126,32 @@ export default async function BlogDetailPage({ params }: PageProps) {
             <div dangerouslySetInnerHTML={{ __html: blog.content }} />
           </div>
         </article>
+
+        {/* Suggested Blogs */}
+        <div className="pt-12 border-t border-border">
+          <h3 className="text-xl font-bold text-foreground mb-8">Suggested Posts</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {prevBlog ? (
+              <Link href={`/blog/${prevBlog.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2">
+                <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                  <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Previous Post
+                </span>
+                <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{prevBlog.title}</span>
+              </Link>
+            ) : <div />}
+            
+            {nextBlog ? (
+              <Link href={`/blog/${nextBlog.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2 text-right">
+                <span className="text-xs font-medium text-muted-foreground flex items-center gap-1 justify-end">
+                  Next Post <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{nextBlog.title}</span>
+              </Link>
+            ) : <div />}
+          </div>
+        </div>
       </div>
     </main>
   );
 }
+

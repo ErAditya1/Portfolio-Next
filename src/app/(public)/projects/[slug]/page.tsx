@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import Link from "next/link";
-import { ArrowLeft, Github, ExternalLink, Eye } from "lucide-react";
+import { ArrowLeft, Github, ExternalLink, Eye, ChevronRight, ChevronLeft } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
+import { ImageCarousel } from "@/components/public/ImageCarousel";
 
 export const revalidate = 3600;
 
@@ -48,6 +49,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = await Project.findOne({ slug }).lean();
   if (!project) notFound();
+
+  // Fetch suggested projects (next and previous)
+  const [nextProject, prevProject] = await Promise.all([
+    Project.findOne({ createdAt: { $gt: project.createdAt } }).sort({ createdAt: 1 }).select("slug title").lean(),
+    Project.findOne({ createdAt: { $lt: project.createdAt } }).sort({ createdAt: -1 }).select("slug title").lean(),
+  ]);
 
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
@@ -112,16 +119,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         )}
 
         {/* Content & Visuals */}
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+        <div className="grid grid-cols-1 gap-12">
           {project.images?.length > 0 && (
             <div className="space-y-6">
-              {project.images.map((img: string, i: number) => (
-                <div key={i} className="group relative rounded-3xl overflow-hidden border border-border shadow-md aspect-video bg-card">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={`${project.title} showcase ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent pointer-events-none" />
-                </div>
-              ))}
+              <ImageCarousel images={project.images} title={project.title} />
             </div>
           )}
 
@@ -136,8 +137,33 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </div>
             </section>
           )}
+
+          {/* Suggested Projects */}
+          <div className="mt-12 pt-12 border-t border-border">
+            <h3 className="text-xl font-bold text-foreground mb-8">Suggested Projects</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {prevProject ? (
+                <Link href={`/projects/${prevProject.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2">
+                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Previous Project
+                  </span>
+                  <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{prevProject.title}</span>
+                </Link>
+              ) : <div />}
+              
+              {nextProject ? (
+                <Link href={`/projects/${nextProject.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2 text-right">
+                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1 justify-end">
+                    Next Project <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{nextProject.title}</span>
+                </Link>
+              ) : <div />}
+            </div>
+          </div>
         </div>
       </div>
     </main>
   );
 }
+

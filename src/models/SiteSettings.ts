@@ -12,6 +12,7 @@ export interface ISiteSettings extends Document {
   githubUrl?: string;
   linkedinUrl?: string;
   twitterUrl?: string;
+  socialLinks: { platform: string; url: string; icon: string }[];
   siteTitle: string;
   siteDescription: string;
   siteFavicon?: string;
@@ -36,6 +37,13 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     githubUrl: { type: String },
     linkedinUrl: { type: String },
     twitterUrl: { type: String },
+    socialLinks: [
+      {
+        platform: { type: String },
+        url: { type: String },
+        icon: { type: String },
+      },
+    ],
     siteTitle: { type: String, default: "Aditya Kumar | Portfolio" },
     siteDescription: { type: String, default: "Full-Stack Web Developer specializing in MERN and Modern UI frameworks." },
     siteFavicon: { type: String },

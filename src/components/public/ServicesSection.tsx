@@ -28,7 +28,7 @@ export function ServicesSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8 }}
-              className="p-8 bg-card border border-border rounded-3xl hover:border-primary/30 transition-all group shadow-sm"
+              className="p-8 glass rounded-3xl hover:border-primary/50 transition-all group shadow-sm"
             >
               <div className={`w-14 h-14 rounded-2xl bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${s.color}`}>
                 <s.icon className="w-7 h-7" />

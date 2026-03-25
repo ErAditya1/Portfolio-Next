@@ -124,3 +124,23 @@
     @apply bg-background text-foreground;
   }
 }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.glass {
+  @apply bg-white/10 dark:bg-gray-900/40 backdrop-blur-md border border-white/20 dark:border-gray-800/20 shadow-xl;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-emerald-500 via-sky-500 to-indigo-500 dark:from-emerald-400 dark:via-sky-400 dark:to-indigo-400 bg-clip-text text-transparent;
+}

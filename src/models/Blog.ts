@@ -9,6 +9,7 @@ export interface IBlog extends Document {
   tags: string[];
   views: number;
   readTime: number;
+  images: string[];
   published: boolean;
   seoTitle?: string;
   seoDescription?: string;
@@ -23,6 +24,7 @@ const BlogSchema = new Schema<IBlog>(
     excerpt: { type: String, required: true },
     content: { type: String, required: true },
     coverImage: { type: String, default: "" },
+    images: [{ type: String }],
     tags: [{ type: String, trim: true, lowercase: true }],
     views: { type: Number, default: 0 },
     readTime: { type: Number, default: 5 }, // estimated minutes

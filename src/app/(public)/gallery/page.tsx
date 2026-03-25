@@ -29,7 +29,7 @@ export default async function GalleryPage() {
       <Container>
         <div className="text-center mb-16 space-y-4">
           <span className="text-primary font-bold text-xs uppercase tracking-[0.4em]">Visual Storytelling</span>
-          <NeonHeading>My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-500">Creative</span> Workspace</NeonHeading>
+          <NeonHeading>My <span className="text-gradient">Creative</span> Workspace</NeonHeading>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             A curated look at the blueprints, interfaces, and technical milestones that define my engineering journey.
           </p>

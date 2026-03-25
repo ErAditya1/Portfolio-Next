@@ -1,12 +1,12 @@
 import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { Container } from "@/components/Container";
-import { AboutSection } from "@/components/public/AboutSection";
 import { SkillsSection } from "@/components/public/SkillsSection";
 import Image from "next/image";
 import { ISiteSettings } from "@/types";
 import { Metadata } from "next";
 import Link from "next/link";
+import AboutSection from "@/components/public/AboutSection";
 
 export const revalidate = 3600;
 
@@ -31,59 +31,7 @@ export default async function AboutPage() {
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
 
       <Container>
-        {/* Hero Section */}
-        <div className="grid lg:grid-cols-12 gap-16 items-center mb-32">
-          <div className="lg:col-span-5 relative group order-2 lg:order-1">
-            <div className="absolute -inset-4 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-[3rem] blur-2xl opacity-10 group-hover:opacity-20 transition-all duration-700" />
-            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
-              {avatar && (
-                <Image 
-                  src={avatar} 
-                  alt={name} 
-                  fill 
-                  className="object-cover transition-transform duration-700 group-hover:scale-105" 
-                  priority
-                />
-              )}
-            </div>
-            {/* Experience badge */}
-            <div className="absolute bottom-6 -right-6 bg-card border border-border backdrop-blur-md p-6 rounded-2xl shadow-lg hidden md:block">
-               <div className="text-3xl font-black text-foreground leading-tight">15+</div>
-               <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Projects Built</div>
-            </div>
-          </div>
-          
-          <div className="lg:col-span-7 space-y-8 order-1 lg:order-2">
-            <div className="space-y-4">
-              <span className="text-primary font-bold text-xs uppercase tracking-[0.3em]">Story of a Builder</span>
-              <h1 className="text-5xl md:text-7xl font-black text-foreground tracking-tighter leading-[0.9]">
-                Architecting <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-500">Scalable</span> Realities
-              </h1>
-            </div>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium">
-              {settings?.ownerBio || "I am a dedicated developer focused on building professional grade digital solutions."}
-            </p>
-            
-            <div className="prose prose-slate dark:prose-invert prose-p:text-muted-foreground prose-p:text-lg prose-p:leading-relaxed">
-              <p>
-                Driven by curiosity and a passion for engineering excellence, I specialize in architecting systems that are not just functional, but also scalable and secure. My journey in technology is defined by constant learning and a commitment to creating value through code.
-              </p>
-              <p>
-                From building complex distributed scrapers to designing elegant frontend interfaces, I enjoy bridging the gap between hardware constraints and user expectations.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-4 pt-4">
-              <a href="/cv.pdf" className="px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:scale-105 transition-transform shadow-md shadow-primary/20 flex items-center gap-2">
-                Download CV
-              </a>
-              <a href="/contact" className="px-8 py-4 bg-card border border-border text-foreground font-bold rounded-2xl hover:bg-accent transition-all shadow-sm">
-                Let&apos;s Connect
-              </a>
-            </div>
-          </div>
-        </div>
+       
 
         <AboutSection settings={settings} />
         <SkillsSection settings={settings} />
