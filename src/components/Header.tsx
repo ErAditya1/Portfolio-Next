@@ -33,6 +33,7 @@ export function Header() {
     { href: "/projects", label: "Projects" },
     { href: "/blog", label: "Blog" },
     { href: "/gallery", label: "Gallery" },
+    { href: "/whatsapp-assistant", label: "AI Assistant" },
     { href: "/contact", label: "Contact" },
   ];
 

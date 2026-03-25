@@ -13,10 +13,12 @@ import {
   Upload,
   LogOut,
   ChevronRight,
+  Bot
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/whatsapp", label: "WhatsApp Assistant", icon: Bot },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/blogs", label: "Blogs", icon: BookOpen },
   { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },

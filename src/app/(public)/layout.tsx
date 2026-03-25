@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/public/Footer";
+import { ChatWidget } from "@/components/public/ChatWidget";
 import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { ISiteSettings } from "@/types";
@@ -14,6 +15,7 @@ export default async function PublicLayout({ children }: { children: React.React
             <Header />
             {children}
             <Footer settings={settings} />
+            <ChatWidget />
         </>
     );
 }
