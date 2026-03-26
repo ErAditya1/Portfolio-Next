@@ -128,24 +128,24 @@ export default async function BlogDetailPage({ params }: PageProps) {
         </article>
 
         {/* Suggested Blogs */}
-        <div className="pt-12 border-t border-border">
-          <h3 className="text-xl font-bold text-foreground mb-8">Suggested Posts</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="pt-8 border-t border-border">
+          <h3 className="text-lg font-bold text-foreground mb-4">Suggested Posts</h3>
+          <div className="grid grid-cols-2 gap-3">
             {prevBlog ? (
-              <Link href={`/blog/${prevBlog.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2">
-                <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                  <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Previous Post
+              <Link href={`/blog/${prevBlog.slug}`} className="group p-3 bg-card border border-border rounded-xl hover:border-primary/50 transition-all flex flex-col gap-1">
+                <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                  <ChevronLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" /> Previous
                 </span>
-                <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{prevBlog.title}</span>
+                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{prevBlog.title}</span>
               </Link>
             ) : <div />}
             
             {nextBlog ? (
-              <Link href={`/blog/${nextBlog.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2 text-right">
-                <span className="text-xs font-medium text-muted-foreground flex items-center gap-1 justify-end">
-                  Next Post <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <Link href={`/blog/${nextBlog.slug}`} className="group p-3 bg-card border border-border rounded-xl hover:border-primary/50 transition-all flex flex-col gap-1 text-right">
+                <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1 justify-end">
+                  Next <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{nextBlog.title}</span>
+                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{nextBlog.title}</span>
               </Link>
             ) : <div />}
           </div>

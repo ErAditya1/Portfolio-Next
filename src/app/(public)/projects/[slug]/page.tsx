@@ -139,24 +139,24 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           )}
 
           {/* Suggested Projects */}
-          <div className="mt-12 pt-12 border-t border-border">
-            <h3 className="text-xl font-bold text-foreground mb-8">Suggested Projects</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-8 pt-8 border-t border-border">
+            <h3 className="text-lg font-bold text-foreground mb-4">Suggested Projects</h3>
+            <div className="grid grid-cols-2 gap-3">
               {prevProject ? (
-                <Link href={`/projects/${prevProject.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2">
-                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                    <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Previous Project
+                <Link href={`/projects/${prevProject.slug}`} className="group p-3 bg-card border border-border rounded-xl hover:border-primary/50 transition-all flex flex-col gap-1">
+                  <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                    <ChevronLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" /> Previous
                   </span>
-                  <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{prevProject.title}</span>
+                  <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{prevProject.title}</span>
                 </Link>
               ) : <div />}
               
               {nextProject ? (
-                <Link href={`/projects/${nextProject.slug}`} className="group p-6 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all flex flex-col gap-2 text-right">
-                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1 justify-end">
-                    Next Project <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Link href={`/projects/${nextProject.slug}`} className="group p-3 bg-card border border-border rounded-xl hover:border-primary/50 transition-all flex flex-col gap-1 text-right">
+                  <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1 justify-end">
+                    Next <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{nextProject.title}</span>
+                  <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{nextProject.title}</span>
                 </Link>
               ) : <div />}
             </div>
