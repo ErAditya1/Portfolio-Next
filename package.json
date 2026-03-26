@@ -9,8 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.60",
-    "@ai-sdk/react": "^0.0.50",
+    "@ai-sdk/openai": "^3.0.48",
+    "@ai-sdk/react": "^3.0.140",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
@@ -23,7 +23,7 @@
     "@tiptap/react": "^3.20.2",
     "@tiptap/starter-kit": "^3.20.2",
     "@types/bcryptjs": "^2.4.6",
-    "ai": "^3.4.10",
+    "ai": "^6.0.138",
     "async_hooks": "^1.0.0",
     "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
