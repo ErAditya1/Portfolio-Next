@@ -46,13 +46,7 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
                 const Icon = social.platform.toLowerCase().includes("github") ? Github : 
                              social.platform.toLowerCase().includes("linkedin") ? Linkedin : 
                              social.platform.toLowerCase().includes("twitter") || social.platform.toLowerCase().includes("x") ? Twitter : 
-                             social.platform.toLowerCase().includes("mail") ? Mail :
-                             social.platform.toLowerCase().includes("instagram") ? Instagram :
-                             Github
-
-                             ;
-
-
+                             social.platform.toLowerCase().includes("mail") ? Mail : Github;
 
                 return (
                   <a
