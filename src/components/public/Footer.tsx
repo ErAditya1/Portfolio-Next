@@ -46,6 +46,8 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
                              social.platform.toLowerCase().includes("linkedin") ? Linkedin : 
                              social.platform.toLowerCase().includes("twitter") || social.platform.toLowerCase().includes("x") ? Twitter : 
                              social.platform.toLowerCase().includes("mail") ? Mail : Github;
+                             
+
 
                 return (
                   <a

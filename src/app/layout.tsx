@@ -44,6 +44,15 @@ export async function generateMetadata(): Promise<Metadata> {
       "Backend Engineer",
       "Next.js Portfolio",
       "MERN Stack",
+      "System Architect",
+      "Scalable Web Applications",
+      "API Development",
+      "Database Optimization",
+      "Freelance Developer India",
+      "Technical Portfolio",
+      "React Expert",
+      "Node.js Backend",
+      "Software Engineering Portfolio",
     ],
     authors: [{ name: "Aditya Kumar" }],
     metadataBase: new URL(baseUrl),
@@ -79,6 +88,9 @@ export async function generateMetadata(): Promise<Metadata> {
         "max-image-preview": "large",
         "max-snippet": -1,
       },
+      // Added for more robust AI bot instructions
+      nocache: false,
+      notranslate: false,
     },
   };
 }

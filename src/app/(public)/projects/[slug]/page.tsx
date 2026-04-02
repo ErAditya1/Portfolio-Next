@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink, Eye, ChevronRight, ChevronLeft } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
 import { ImageCarousel } from "@/components/public/ImageCarousel";
+import { JsonLd } from "@/components/public/JsonLd";
 
 export const revalidate = 3600;
 
@@ -56,8 +57,27 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     Project.findOne({ createdAt: { $lt: project.createdAt } }).sort({ createdAt: -1 }).select("slug title").lean(),
   ]);
 
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const projectSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": project.title,
+    "description": project.description,
+    "url": `${baseUrl}/projects/${project.slug}`,
+    "image": project.images?.[0],
+    "programmingLanguage": project.techStack,
+    "codeRepository": project.githubUrl,
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Kumar"
+    },
+    "dateCreated": project.createdAt,
+    "dateModified": project.updatedAt
+  };
+
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
+      <JsonLd data={projectSchema} />
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] -z-10" />

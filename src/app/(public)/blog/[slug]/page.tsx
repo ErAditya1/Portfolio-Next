@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
 import { ImageCarousel } from "@/components/public/ImageCarousel";
+import { JsonLd } from "@/components/public/JsonLd";
 
 export const revalidate = 3600;
 
@@ -60,8 +61,37 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   const allImages = blog.images?.length > 0 ? blog.images : (blog.coverImage ? [blog.coverImage] : []);
 
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": blog.title,
+    "description": blog.excerpt,
+    "image": blog.coverImage,
+    "datePublished": blog.createdAt,
+    "dateModified": blog.updatedAt,
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Kumar",
+      "url": baseUrl
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Aditya Kumar Portfolio",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/images/aditya_profile.png`
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${baseUrl}/blog/${blog.slug}`
+    }
+  };
+
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
+      <JsonLd data={blogSchema} />
       {/* Background accents */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px] -z-10" />
