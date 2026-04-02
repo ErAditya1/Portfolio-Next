@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/Container";
 import Link from "next/link";
-import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart, Sparkles } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart, Sparkles, Instagram } from "lucide-react";
 import { ISiteSettings } from "@/types";
 
 export function Footer({ settings }: { settings?: ISiteSettings }) {
@@ -23,6 +23,7 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
         { platform: "Linkedin", url: settings?.linkedinUrl || "https://linkedin.com" },
         { platform: "Twitter", url: settings?.twitterUrl || "https://twitter.com" },
         { platform: "Mail", url: `mailto:${settings?.ownerEmail || "hello@example.com"}` },
+        
       ];
 
   return (
@@ -45,8 +46,12 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
                 const Icon = social.platform.toLowerCase().includes("github") ? Github : 
                              social.platform.toLowerCase().includes("linkedin") ? Linkedin : 
                              social.platform.toLowerCase().includes("twitter") || social.platform.toLowerCase().includes("x") ? Twitter : 
-                             social.platform.toLowerCase().includes("mail") ? Mail : Github;
-                             
+                             social.platform.toLowerCase().includes("mail") ? Mail :
+                             social.platform.toLowerCase().includes("instagram") ? Instagram :
+                             Github
+
+                             ;
+
 
 
                 return (
