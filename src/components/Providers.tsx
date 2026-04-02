@@ -13,10 +13,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
           position="top-right"
           toastOptions={{
             duration: 4000,
+            className: "bg-background text-foreground border border-border shadow-2xl",
             style: {
-              background: "#1a1a2e",
-              color: "#e2e8f0",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "var(--card)",
+              color: "var(--foreground)",
+              border: "1px solid var(--border)",
+              borderRadius: "12px",
+              padding: "16px",
+              fontSize: "14px",
+              fontWeight: "500",
             },
           }}
         />
