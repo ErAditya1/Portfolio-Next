@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ExternalLink, Github, Eye, Star, Layers, Activity } from "lucide-react";
 import { IProject } from "@/types";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function ProjectCard({ project }: { project: IProject }) {
   const p = project;
@@ -18,8 +19,13 @@ export function ProjectCard({ project }: { project: IProject }) {
       {/* Preview Image */}
       <div className="relative aspect-video bg-accent/20 overflow-hidden">
         {p.images?.[0] ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <Image 
+            src={p.images[0]} 
+            alt={p.title} 
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110" 
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/5 to-accent/20">
             <Layers className="w-12 h-12 text-muted-foreground/30" />

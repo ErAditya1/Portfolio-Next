@@ -1,0 +1,47 @@
+# Aditya Kumar - Full-Stack Web Developer & System Engineer
+
+> High-performance web applications, scalable backend architecture, and secure digital experiences.
+
+## Developer Identity
+- **Name**: Aditya Kumar
+- **Role**: Full-Stack Web Developer / System Engineer
+- **Location**: Barabanki / Lucknow, India
+- **Email**: mradityaji2@gmail.com
+- **Website**: https://eraditya.dev
+- **LinkedIn**: https://linkedin.com/in/eraditya1
+- **GitHub**: https://github.com/ErAditya1
+
+## Technical Stack
+- **Frontend**: Next.js, React, TypeScript, TailwindCSS, Framer Motion, ShadcnUI, AceternityUI.
+- **Backend**: Node.js, Express.js, Socket.io, Django (Python).
+- **Database**: MongoDB, MySQL, Firebase, Redis.
+- **Tools**: Git/GitHub, Docker, WebSockets, Redux/Context API, Cloudinary, Razorpay Integration.
+
+## Key Projects
+
+
+### Super Tasky (Productivity)
+- **Problem**: Inefficient team collaboration and deadline tracking.
+- **Solution**: A real-time task management platform with project tracking and reminders.
+- **Architecture**: Next.js + Socket.io for real-time sync, MongoDB for flexible data storage.
+
+### BrightVeil (LMS)
+- **Problem**: Fragmented learning experiences and slow media delivery.
+- **Solution**: A scalable LMS with video courses, instructor dashboards, and learner analytics.
+- **Architecture**: Next.js, optimized media delivery via Cloudinary, secure payments with Razorpay.
+
+### MintSlot (Resource Booking)
+- **Problem**: Manual slot management for industrial resources (mentha distillation).
+- **Solution**: Real-time resource booking platform with availability management.
+- **Architecture**: Next.js + Firebase for real-time state management.
+
+## Capabilities
+- **Full-Stack Development**: End-to-end web applications using modern frameworks.
+- **System Design**: Designing scalable and maintainable backend architectures.
+- **Real-time Systems**: Implementing WebSockets for instant data synchronization.
+- **UI/UX Excellence**: Creating premium, cinematic user interfaces with smooth animations.
+
+## Social & Contact
+- [GitHub](https://github.com/ErAditya1)
+- [LinkedIn](https://linkedin.com/in/eraditya1)
+- [Portfolio](https://eraditya.dev)

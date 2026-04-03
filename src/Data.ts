@@ -91,56 +91,56 @@ export const PROJECTS = [
     id: 'supertasky',
     title: 'Super Tasky',
     tag: 'Productivity',
-    desc: 'Task management web app with project tracking, deadlines, reminders, and team collaboration features.',
+    desc: 'Problem: Inefficient team collaboration and deadline tracking. Solution: A real-time task management platform with project tracking and reminders. System Design: Built using Next.js and Socket.io for instant data synchronization and MongoDB for scalable persistence.',
     live: 'https://supertasky.vercel.app/',
     repo: 'https://github.com/ErAditya1/Super-Tasky',
     img: '/images/projects/super_tasky.png',
     year: 2025,
-    tech: ['Next.js', 'Tailwind', 'MongoDB', 'Express.js']
+    tech: ['Next.js', 'Tailwind', 'MongoDB', 'Express.js', 'Socket.io']
   },
   {
     id: 'brightveil',
     title: 'BrightVeil',
     tag: 'LMS',
-    desc: 'Feature-rich learning platform with video courses, payment integration, instructor dashboards, and learner analytics.',
+    desc: 'Problem: Fragmented learning experiences and slow media delivery. Solution: A feature-rich LMS with video courses, instructor dashboards, and learner analytics. System Design: Next.js architecture with optimized media delivery via Cloudinary and secure Razorpay payment integration.',
     live: 'https://brightveil.vercel.app/',
     repo: 'https://github.com/ErAditya1/BrightVeil-Next',
     img: '/images/projects/Bright_Veil.png',
     year: 2024,
-    tech: ['Next.js', 'React', 'Tailwind', 'Node.js', 'MongoDB']
+    tech: ['Next.js', 'React', 'Tailwind', 'Node.js', 'MongoDB', 'Cloudinary']
   },
   {
     id: 'whiteswan',
     title: 'White Swan Event',
     tag: 'Event',
-    desc: 'Event booking & management platform with booking workflows, event dashboards, and organizer tools.',
+    desc: 'Problem: Complex manual workflows for event booking and organizer management. Solution: An event management platform with automated booking workflows and real-time dashboards. System Design: Responsive React frontend with a robust Node.js backend for high-concurrency booking handling.',
     live: 'https://whiteswanevent.vercel.app/',
     repo: 'https://github.com/ErAditya1/white-swan-event',
     img: '/images/projects/white_swan_event.png',
     year: 2025,
-    tech: ['React', 'Tailwind', 'Node.js']
+    tech: ['React', 'Tailwind', 'Node.js', 'MongoDB']
   },
   {
     id: 'adarsh',
     title: 'Adarsh Inter College',
     tag: 'College',
-    desc: 'College management portal with modules for admissions, attendance tracking, exam results, and teacher dashboards.',
+    desc: 'Problem: Manual tracking of admissions, attendance, and exam results in traditional education settings. Solution: A comprehensive college management portal. System Design: Django-based architecture focused on security, data integrity, and administrative efficiency.',
     live: 'https://clg-ms-django.onrender.com',
     repo: 'https://github.com/ErAditya1/adarsh-inter-college',
     img: '/images/projects/Adarsh_inter_college.png',
     year: 2025,
-    tech: ['Django', 'Python', 'Bootstrap']
+    tech: ['Django', 'Python', 'PostgreSQL', 'Bootstrap']
   },
   {
     id: 'mintslot',
     title: 'MintSlot',
     tag: 'Booking',
-    desc: 'Resource booking platform for mentha distillation tanks with real-time availability and slot management.',
+    desc: 'Problem: Resource conflicts and lack of transparency in industrial distillation tank booking. Solution: A real-time resource booking platform with automated slot management. System Design: Next.js + Firebase for instantaneous availability syncing across all users.',
     live: 'https://mintslot.vercel.app/',
     repo: 'https://github.com/ErAditya1/MintSlot-Next/',
     img: '/images/projects/mint_slot.png',
     year: 2025,
-    tech: ['Next.js', 'Tailwind', 'Firebase']
+    tech: ['Next.js', 'Tailwind', 'Firebase', 'Context API']
   },
   {
     id: 'musicplayer',
@@ -672,13 +672,13 @@ services:
 
 **TL;DR:** Learn practical techniques used on Bright Veil to make a learning platform that loads quickly, behaves well on slow networks, and is accessible to all users — using SSR, lazy-loading, semantic HTML, keyboard-first interactions, and progressive enhancement.
 
----
-
 ## Design goals
 - Fast perceived performance (first contentful paint, interactivity).
 - Accessible to keyboard and screen-reader users.
 - Scalable media delivery for lessons and video.
 - Reliable on flaky networks (offline-friendly where possible).
+
+> **Note:** This philosophy was applied during the development of [Bright Veil](/projects/brightveil), our flagship LMS platform.
 
 ---
 
@@ -689,6 +689,7 @@ services:
 
 2. **Server-side rendering for personalized pages**  
    Use SSR for dashboards that include user-specific data (or hybrid with client fetches for private content).
+
 
 3. **Client hydration strategy**  
    Render meaningful content server-side, then hydrate interactive bits progressively. Use dynamic imports for heavy components (video player, WYSIWYG editor).

@@ -22,7 +22,7 @@ export function HeroSection({ settings }: { settings: ISiteSettings }) {
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const titles = ["Full Stack Developer", "Backend & System Engineer", "UI/UX Enthusiast", "Problem Solver", "Cloud Architect"];
+  const titles = ["Full Stack Developer", "Backend & System Engineer", "UI/UX Enthusiast", "Cloud Architect"];
 
   useEffect(() => {
     const handleTyping = () => {

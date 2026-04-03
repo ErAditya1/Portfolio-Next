@@ -20,20 +20,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = await Project.findOne({ slug }).lean();
   if (!project) return { title: "Project Not Found" };
 
+  const title = project.seoTitle || `${project.title} | Case Study - Aditya Kumar`;
+  const description = project.seoDescription || `Detailed case study of ${project.title}. ${project.description.substring(0, 160)}...`;
+
   return {
-    title: project.seoTitle || `${project.title} | Case Study`,
-    description: project.seoDescription || project.description,
-    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering"],
+    title,
+    description,
+    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering", "Next.js Portfolio"],
     openGraph: {
-      title: project.seoTitle || project.title,
-      description: project.seoDescription || project.description,
+      title,
+      description,
       images: project.images?.[0] ? [{ url: project.images[0] }] : [],
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: project.seoTitle || project.title,
-      description: project.seoDescription || project.description,
+      title,
+      description,
       images: project.images?.[0] ? [project.images[0]] : [],
     }
   };
@@ -78,6 +81,15 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       <JsonLd data={projectSchema} />
+
+      {/* AI Context Block (Hidden) */}
+      <div className="sr-only" aria-hidden="true">
+        <h2>Technical Case Study: {project.title}</h2>
+        <p><strong>Problem Statement:</strong> {project.description}</p>
+        <p><strong>System Architecture:</strong> Built using {project.techStack?.join(", ")}. Focuses on scalability and performance.</p>
+        <p><strong>Developer:</strong> Aditya Kumar - Full-Stack Web Developer & System Engineer.</p>
+        <div dangerouslySetInnerHTML={{ __html: project.content || "" }} />
+      </div>
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] -z-10" />

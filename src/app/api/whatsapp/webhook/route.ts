@@ -16,7 +16,7 @@ export async function GET(req: Request) {
 
   if (mode && token) {
     if (mode === "subscribe" && token === verify_token) {
-      console.log("WEBHOOK_VERIFIED");
+      // console.log("WEBHOOK_VERIFIED");
       return new NextResponse(challenge, { status: 200 });
     } else {
       return new NextResponse("Forbidden", { status: 403 });
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
             : msg.interactive.list_reply.title;
         }
 
-        console.log(`Received message from ${phone}: ${content}`);
+        // console.log(`Received message from ${phone}: ${content}`);
 
         // 1. Mark as read (async fire and forget)
         whatsappService.markAsRead(messageId).catch(console.error);

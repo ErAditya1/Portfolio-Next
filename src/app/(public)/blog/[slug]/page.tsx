@@ -20,13 +20,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const blog = await Blog.findOne({ slug, published: true }).lean();
   if (!blog) return { title: "Post Not Found" };
 
+  const title = blog.seoTitle || `${blog.title} | Technical Insights - Aditya Kumar`;
+  const description = blog.seoDescription || blog.excerpt;
+
   return {
-    title: blog.seoTitle || `${blog.title} | Blog`,
-    description: blog.seoDescription || blog.excerpt,
-    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles"],
+    title,
+    description,
+    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles", "System Architecture"],
     openGraph: {
-      title: blog.seoTitle || blog.title,
-      description: blog.seoDescription || blog.excerpt,
+      title,
+      description,
       images: blog.coverImage ? [{ url: blog.coverImage }] : [],
       type: "article",
       authors: ["Aditya Kumar"],
@@ -34,8 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: blog.seoTitle || blog.title,
-      description: blog.seoDescription || blog.excerpt,
+      title,
+      description,
       images: blog.coverImage ? [blog.coverImage] : [],
     },
   };
@@ -73,7 +76,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
     "author": {
       "@type": "Person",
       "name": "Aditya Kumar",
-      "url": baseUrl
+      "url": `${baseUrl}/about`
     },
     "publisher": {
       "@type": "Organization",
@@ -92,6 +95,15 @@ export default async function BlogDetailPage({ params }: PageProps) {
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       <JsonLd data={blogSchema} />
+
+      {/* AI Context Block (Hidden) */}
+      <div className="sr-only" aria-hidden="true">
+        <h2>Technical Article: {blog.title}</h2>
+        <p><strong>Excerpt:</strong> {blog.excerpt}</p>
+        <p><strong>Topics:</strong> {blog.tags?.join(", ")}</p>
+        <p><strong>Author:</strong> Aditya Kumar - System Engineer & Full-Stack Developer</p>
+        <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+      </div>
       {/* Background accents */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px] -z-10" />

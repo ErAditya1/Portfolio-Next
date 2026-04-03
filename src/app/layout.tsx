@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { JsonLd } from "@/components/public/JsonLd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,17 +15,17 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
   
   // Default values
-  let title = "Aditya Kumar | Full-Stack Web Developer";
-  let description = "Portfolio of Aditya Kumar — specializing in MERN stack, Next.js, and scalable backend architecture.";
+  let title = "Aditya Kumar | Full-Stack Web Developer & System Engineer";
+  let description = "Official portfolio of Aditya Kumar. Expertise in Next.js, MERN stack, and building scalable, high-performance web systems.";
   
   try {
     const res = await fetch(`${baseUrl}/api/settings`, { next: { revalidate: 3600 } });
     if (res.ok) {
       const settings = await res.json();
-      title = settings.siteTitle || title;
+      title = `${settings.siteTitle} | Full-Stack Developer` || title;
       description = settings.siteDescription || description;
     }
   } catch (e) {
@@ -34,39 +35,37 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: title,
-      template: `%s | ${title.split('|')[0].trim()}`,
+      template: `%s | Aditya Kumar`,
     },
     description: description,
     keywords: [
       "Aditya Kumar",
-      "Web Developer",
-      "Full Stack Developer",
-      "Backend Engineer",
+      "Full Stack Developer India",
+      "System Engineer",
       "Next.js Portfolio",
-      "MERN Stack",
-      "System Architect",
-      "Scalable Web Applications",
-      "API Development",
-      "Database Optimization",
-      "Freelance Developer India",
-      "Technical Portfolio",
-      "React Expert",
-      "Node.js Backend",
-      "Software Engineering Portfolio",
+      "MERN Stack Architect",
+      "Backend Engineer",
+      "Scalable Architecture",
+      "Software Engineering",
+      "Freelance Web Developer",
+      "React Specialist",
     ],
     authors: [{ name: "Aditya Kumar" }],
     metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
       title: title,
       description: description,
       url: baseUrl,
-      siteName: title,
+      siteName: "Aditya Kumar Portfolio",
       images: [
         {
           url: "/images/aditya_profile.png",
           width: 1200,
           height: 630,
-          alt: "Aditya Kumar Portfolio",
+          alt: "Aditya Kumar - Full-Stack Web Developer",
         },
       ],
       locale: "en_US",
@@ -88,9 +87,14 @@ export async function generateMetadata(): Promise<Metadata> {
         "max-image-preview": "large",
         "max-snippet": -1,
       },
-      // Added for more robust AI bot instructions
-      nocache: false,
-      notranslate: false,
+    },
+    verification: {
+      google: "QZGHW3TKf81ROqgPri-jbIyHS7Ib79bAgcFPOOQiJfs",
+    },
+    manifest: "/manifest.json",
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/images/aditya_profile.png",
     },
   };
 }
@@ -100,18 +104,41 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aditya Kumar",
+    "url": baseUrl,
+    "image": `${baseUrl}/images/aditya_profile.png`,
+    "jobTitle": "Full-Stack Web Developer & System Engineer",
+    "sameAs": [
+      "https://github.com/ErAditya1",
+      "https://linkedin.com/in/eraditya1",
+      "https://twitter.com/eraditya1"
+    ]
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Aditya Kumar Portfolio",
+    "url": baseUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${baseUrl}/projects?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="google-site-verification" content="QZGHW3TKf81ROqgPri-jbIyHS7Ib79bAgcFPOOQiJfs" />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <JsonLd data={personSchema} />
+        <JsonLd data={websiteSchema} />
         <Providers>
           <div className="antialiased min-h-screen bg-[var(--bg-gradient)] text-foreground transition-colors duration-300">
-          
             {children}
-            
-            
           </div>
         </Providers>
       </body>
