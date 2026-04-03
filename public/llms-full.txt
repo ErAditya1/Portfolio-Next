@@ -33,14 +33,25 @@ My approach to software engineering centers on **reliability**, **scalability**,
 - **Authentication**: NextAuth.js, JWT, Clerk, Firebase Auth.
 
 ### Infrastructure & Cloud
-- **Databases**: MongoDB (Aggregation Framework), MySQL, PostgreSQL, Redis.
-- **Cloud/Media**: Cloudinary, ImageKit, Vercel, AWS S3.
+- **Databases**: MongoDB, PostgreSQL, MySQL, Redis.
+- **ORM/ODM**: Prisma, Mongoose.
+- **Queues**: BullMQ, Redis for background job processing.
+- **Cloud/Media**: Cloudinary, Azure Storage, Vercel, AWS S3.
 - **CI/CD**: GitHub Actions, Docker.
 - **Operations**: Vercel/Netlify Deployment, Nginx, Linux Server Management.
 
 ---
 
 ## 3. In-Depth Project Breakdowns
+
+### Billionaire Vox (Scalable Influencer Collaboration Platform)
+- **Problem**: Modern influencer marketing requires complex coordination between organizations and creators involving escrow payments, content verification, and real-time activity tracking.
+- **Solution**: A production-grade platform with a multi-role modular system, automated campaign management, and a trust-driven escrow ecosystem.
+- **System Design**:
+    - **Modular Backend (NestJS)**: Domain-driven design for scalability and maintainable services.
+    - **Event-Driven Architecture**: Uses BullMQ and Redis for async background jobs like content parsing, notifications, and scheduled status transitions.
+    - **Escrow Logic**: Implemented safe, multi-step wallet funding and automated payout release based on submission verification.
+    - **Real-Time Layer**: WebSocket implementation for instant campaign activity and payout notifications.
 
 ### Super Tasky (Real-time Productivity)
 - **Problem**: Teams struggle with fragmented data and delayed updates during task management.

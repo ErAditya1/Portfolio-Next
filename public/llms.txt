@@ -13,12 +13,16 @@
 
 ## Technical Stack
 - **Frontend**: Next.js, React, TypeScript, TailwindCSS, Framer Motion, ShadcnUI, AceternityUI.
-- **Backend**: Node.js, Express.js, Socket.io, Django (Python).
-- **Database**: MongoDB, MySQL, Firebase, Redis.
-- **Tools**: Git/GitHub, Docker, WebSockets, Redux/Context API, Cloudinary, Razorpay Integration.
+- **Backend**: Node.js, Express.js, NestJS, Socket.io, Django (Python).
+- **Database**: MongoDB, PostgreSQL, MySQL, Firebase, Redis.
+- **Tools**: Git/GitHub, Docker, WebSockets, BullMQ, Prisma ORM, Redux/Context API, Cloudinary, Razorpay Integration.
 
 ## Key Projects
 
+### Billionaire Vox (Influencer Collaboration & Campaign Management)
+- **Problem**: Fragmented influencer marketing workflows and lack of transparent escrow systems.
+- **Solution**: A scalable platform with real-time workflows, automated verification, and secure escrow payouts.
+- **Architecture**: NestJS backend with event-driven architecture (BullMQ + Redis), PostgreSQL/Prisma for data integrity, and real-time WebSocket updates.
 
 ### Super Tasky (Productivity)
 - **Problem**: Inefficient team collaboration and deadline tracking.
