@@ -35,6 +35,7 @@ interface Settings {
   currentlyLearning: string[];
   recentlyLearned: string[];
   emergingExpertise: string[];
+  aiModel?: string;
 }
 
 const defaultSettings: Settings = {
@@ -56,6 +57,7 @@ const defaultSettings: Settings = {
   currentlyLearning: [],
   recentlyLearned: [],
   emergingExpertise: [],
+  aiModel: "qwen2.5",
 };
 
 export default function AdminSettings() {
@@ -326,6 +328,50 @@ export default function AdminSettings() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* AI Assistant & LLM Model Selection */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
+          <div>
+            <h2 className="text-white font-semibold text-base flex items-center gap-2">
+              🤖 AI Assistant LLM Model Selection
+            </h2>
+            <p className="text-gray-400 text-xs mt-1">
+              Select the active AI model powering the Portfolio AI Chatbot (llm.cheetahagi.com).
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-xs mb-1 font-medium">Select Model Preset</label>
+              <select
+                value={settings.aiModel || "qwen2.5"}
+                onChange={(e) => setSettings((s) => ({ ...s, aiModel: e.target.value }))}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500 text-sm"
+              >
+                <option value="qwen2.5">Qwen 2.5 (Recommended for speed & reasoning)</option>
+                <option value="qwen">Qwen (Standard)</option>
+                <option value="llama3.2">Llama 3.2 (Meta LLM)</option>
+                <option value="llama3">Llama 3 (Standard)</option>
+                <option value="mistral">Mistral (7B)</option>
+                <option value="custom">Custom Model Name...</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-gray-400 text-xs mb-1 font-medium">Active Model Tag / Name</label>
+              <input
+                type="text"
+                value={settings.aiModel || "qwen2.5"}
+                onChange={(e) => setSettings((s) => ({ ...s, aiModel: e.target.value }))}
+                placeholder="e.g. qwen2.5, llama3.2"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm font-mono"
+              />
+            </div>
+          </div>
+          <p className="text-[11px] text-emerald-400">
+            ✓ Make sure the model (e.g. <code className="bg-gray-800 px-1 py-0.5 rounded text-white">qwen2.5</code>) is pulled into Ollama on your VPS using <code className="bg-gray-800 px-1 py-0.5 rounded text-white">sudo ./pull-llm.sh qwen2.5</code>.
+          </p>
         </div>
 
         {/* Save Button */}

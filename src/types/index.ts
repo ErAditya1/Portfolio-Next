@@ -57,6 +57,7 @@ export interface ISiteSettings {
   currentlyLearning: string[];
   recentlyLearned: string[];
   emergingExpertise: string[];
+  aiModel?: string;
   updatedAt: string | Date;
 }
 

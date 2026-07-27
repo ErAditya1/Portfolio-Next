@@ -21,6 +21,7 @@ export interface ISiteSettings extends Document {
   currentlyLearning: string[];
   recentlyLearned: string[];
   emergingExpertise: string[];
+  aiModel?: string;
   updatedAt: Date;
 }
 
@@ -58,6 +59,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     currentlyLearning: [{ type: String }],
     recentlyLearned: [{ type: String }],
     emergingExpertise: [{ type: String }],
+    aiModel: { type: String, default: "qwen2.5" },
   },
   { timestamps: true }
 );

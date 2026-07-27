@@ -5,7 +5,7 @@ import { Container } from "./Container";
 import { NAME, RESUME, ROLE } from "@/Data";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   Sheet,
@@ -109,16 +109,16 @@ export function Header() {
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-background border-border p-0 w-72">
                   <div className="flex flex-col h-full p-6">
-                    <div className="flex items-center justify-between mb-10">
+                    <div className="flex items-center justify-between mb-8">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-base">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-base shrink-0">
                           AK
                         </div>
-                        <span className="font-bold text-xl uppercase tracking-tighter">Menu</span>
+                        <div>
+                          <div className="font-bold text-base text-foreground leading-tight">{NAME}</div>
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{ROLE}</div>
+                        </div>
                       </div>
-                      <button onClick={handleClose} className="p-2 text-muted-foreground hover:text-foreground">
-                        <X className="w-5 h-5" />
-                      </button>
                     </div>
                     
                     <nav className="flex flex-col gap-2">
