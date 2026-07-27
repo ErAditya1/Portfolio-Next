@@ -7,9 +7,10 @@ export interface IProject {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
+  coverImage?: string;
   images: string[];
   featured: boolean;
-  status: "completed" | "in-progress";
+  status: "completed" | "in-progress" | "building";
   views: number;
   seoTitle?: string;
   seoDescription?: string;
@@ -67,6 +68,7 @@ export interface IGallery {
   category: string;
   order: number;
   featured: boolean;
+  externalUrl?: string;
   createdAt: string | Date;
   updatedAt: string | Date;
 }

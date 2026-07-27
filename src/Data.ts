@@ -87,11 +87,93 @@ export interface Project {
   tech: string[]
 }
 export const PROJECTS = [
+  // --- MAJOR PROJECTS ---
+  {
+    id: 'brightveil',
+    title: 'BrightVeil LMS Platform',
+    tag: 'Major Project',
+    desc: 'Problem: Fragmented learning experiences and slow media delivery. Solution: A feature-rich enterprise LMS with video courses, instructor dashboards, live classes, student progress analytics, and automated certification. System Design: Next.js architecture with Cloudinary video optimization and Razorpay payment processing.',
+    live: 'https://brightveil.vercel.app/',
+    repo: 'https://github.com/ErAditya1/BrightVeil-Next',
+    img: '/images/projects/Bright_Veil.png',
+    year: 2025,
+    tech: ['Next.js', 'React', 'Node.js', 'Express.js', 'MongoDB', 'Cloudinary', 'Razorpay']
+  },
+  {
+    id: 'noteshub',
+    title: 'NotesHub Platform',
+    tag: 'Major Project',
+    desc: 'Problem: Scattered academic resources and lack of community pull requests for notes. Solution: An end-to-end resource management ecosystem with CRUD operations, file uploads, rating system, and community pull requests. System Design: Decoupled React frontend and Express REST API backend.',
+    live: 'https://noteshubio.vercel.app/',
+    repo: 'https://github.com/ErAditya1/noteshub-frontend',
+    img: '/images/projects/super_tasky.png',
+    year: 2025,
+    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs', 'JWT']
+  },
+
+  // --- CLIENT & FREELANCE PROJECTS ---
+  {
+    id: 'xstudio',
+    title: 'xstudio (Psy Tech)',
+    tag: 'Client / Freelance',
+    desc: 'Client project for Psy Tech. Scaffolded modern web application architecture with core layouts, client routing, state management, profile settings, and customized font design system.',
+    live: 'https://xstudio-blue.vercel.app/',
+    repo: 'https://github.com/ErAditya1/xstudio-web',
+    img: '/images/projects/mint_slot.png',
+    year: 2025,
+    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'State Management']
+  },
+  {
+    id: 'geetapalace',
+    title: 'Geeta Palace Resort',
+    tag: 'Client Project',
+    desc: 'Full application structure for Geeta Palace event venue & luxury resort with navigation, UI components, booking inquiry forms, and high-resolution media galleries.',
+    live: 'https://geeta-palace.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Geeta-Palace',
+    img: '/images/projects/white_swan_event.png',
+    year: 2025,
+    tech: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion']
+  },
+  {
+    id: 'sagar',
+    title: 'Sagar Institute (SITM)',
+    tag: 'Client Project',
+    desc: 'Root layout initialization with global metadata, SEO schema, institute branding, and application shell components for Sagar Educational Institute.',
+    live: 'https://sagar-aditya.vercel.app/',
+    repo: 'https://github.com/ErAditya1/sitm-ui',
+    img: '/images/projects/Adarsh_inter_college.png',
+    year: 2025,
+    tech: ['Next.js', 'React', 'Tailwind CSS', 'SEO Schema']
+  },
+
+  // --- HIGH IMPACT PRODUCTS ---
+  {
+    id: 'influencify',
+    title: 'Influencify Platform',
+    tag: 'Product',
+    desc: 'Influencer marketing and brand collaboration platform connecting creators with sponsor campaigns and performance analytics.',
+    live: 'https://influencify-three.vercel.app/',
+    repo: 'https://github.com/ErAditya1/influencify-web',
+    img: '/images/projects/Bright_Veil.png',
+    year: 2025,
+    tech: ['Next.js', 'React', 'Node.js', 'Express.js', 'MongoDB']
+  },
+  {
+    id: 'aicharcha',
+    title: 'AI Calling Agent (AI Charcha)',
+    tag: 'AI Product',
+    desc: 'Single and bulk AI voice calling platform with Excel contact upload support, WebSocket real-time audio streams, STT and TTS engine integrations.',
+    live: 'https://aicharcha.vercel.app/',
+    repo: 'https://github.com/ErAditya1/ai_calling',
+    img: '/images/projects/white_swan_event.png',
+    year: 2025,
+    tech: ['Next.js', 'Socket.io', 'ElevenLabs', 'Deepgram', 'Express.js']
+  },
   {
     id: 'supertasky',
     title: 'Super Tasky',
     tag: 'Productivity',
-    desc: 'Problem: Inefficient team collaboration and deadline tracking. Solution: A real-time task management platform with project tracking and reminders. System Design: Built using Next.js and Socket.io for instant data synchronization and MongoDB for scalable persistence.',
+    desc: 'Problem: Inefficient team collaboration and deadline tracking. Solution: Real-time task management platform with project tracking and reminders. System Design: Next.js + Socket.io for instant data synchronization.',
     live: 'https://supertasky.vercel.app/',
     repo: 'https://github.com/ErAditya1/Super-Tasky',
     img: '/images/projects/super_tasky.png',
@@ -99,43 +181,32 @@ export const PROJECTS = [
     tech: ['Next.js', 'Tailwind', 'MongoDB', 'Express.js', 'Socket.io']
   },
   {
-    id: 'brightveil',
-    title: 'BrightVeil',
-    tag: 'LMS',
-    desc: 'Problem: Fragmented learning experiences and slow media delivery. Solution: A feature-rich LMS with video courses, instructor dashboards, and learner analytics. System Design: Next.js architecture with optimized media delivery via Cloudinary and secure Razorpay payment integration.',
-    live: 'https://brightveil.vercel.app/',
-    repo: 'https://github.com/ErAditya1/BrightVeil-Next',
+    id: 'skillspring',
+    title: 'SkillSpring',
+    tag: 'EdTech',
+    desc: 'Interactive skill learning platform with dynamic topic icons, course paths, and student practice assessments.',
+    live: 'https://skillspring-sigma.vercel.app/',
+    repo: 'https://github.com/ErAditya1/skill-spring-frontend',
     img: '/images/projects/Bright_Veil.png',
-    year: 2024,
-    tech: ['Next.js', 'React', 'Tailwind', 'Node.js', 'MongoDB', 'Cloudinary']
+    year: 2025,
+    tech: ['React.js', 'Tailwind CSS', 'Redux Toolkit']
   },
   {
-    id: 'whiteswan',
-    title: 'White Swan Event',
-    tag: 'Event',
-    desc: 'Problem: Complex manual workflows for event booking and organizer management. Solution: An event management platform with automated booking workflows and real-time dashboards. System Design: Responsive React frontend with a robust Node.js backend for high-concurrency booking handling.',
-    live: 'https://whiteswanevent.vercel.app/',
-    repo: 'https://github.com/ErAditya1/white-swan-event',
-    img: '/images/projects/white_swan_event.png',
+    id: 'labsearch',
+    title: 'LabSearch',
+    tag: 'Healthcare',
+    desc: 'Diagnostic lab search and medical user management system for finding nearby medical tests and instant online booking.',
+    live: 'https://labsearch.vercel.app/',
+    repo: 'https://github.com/ErAditya1/LabSearch',
+    img: '/images/projects/mint_slot.png',
     year: 2025,
-    tech: ['React', 'Tailwind', 'Node.js', 'MongoDB']
-  },
-  {
-    id: 'adarsh',
-    title: 'Adarsh Inter College',
-    tag: 'College',
-    desc: 'Problem: Manual tracking of admissions, attendance, and exam results in traditional education settings. Solution: A comprehensive college management portal. System Design: Django-based architecture focused on security, data integrity, and administrative efficiency.',
-    live: 'https://clg-ms-django.onrender.com',
-    repo: 'https://github.com/ErAditya1/adarsh-inter-college',
-    img: '/images/projects/Adarsh_inter_college.png',
-    year: 2025,
-    tech: ['Django', 'Python', 'PostgreSQL', 'Bootstrap']
+    tech: ['Next.js', 'Node.js', 'MongoDB', 'Express.js']
   },
   {
     id: 'mintslot',
     title: 'MintSlot',
     tag: 'Booking',
-    desc: 'Problem: Resource conflicts and lack of transparency in industrial distillation tank booking. Solution: A real-time resource booking platform with automated slot management. System Design: Next.js + Firebase for instantaneous availability syncing across all users.',
+    desc: 'Problem: Resource conflicts in industrial distillation tank booking. Solution: Real-time resource booking platform with automated slot management. System Design: Next.js + Firebase for instantaneous availability syncing.',
     live: 'https://mintslot.vercel.app/',
     repo: 'https://github.com/ErAditya1/MintSlot-Next/',
     img: '/images/projects/mint_slot.png',
@@ -143,37 +214,94 @@ export const PROJECTS = [
     tech: ['Next.js', 'Tailwind', 'Firebase', 'Context API']
   },
   {
-    id: 'musicplayer',
-    title: 'Music Player',
-    tag: 'Minor',
-    desc: 'Simple online music player with play, pause, and track navigation features.',
-    live: 'https://eraditya1.github.io/music-player/',
-    repo: 'https://github.com/ErAditya1/music-player.git',
-    img: '/images/projects/music_player.png',
+    id: 'whiteswan',
+    title: 'White Swan Event',
+    tag: 'Event',
+    desc: 'Problem: Complex manual workflows for event booking. Solution: An event management platform with automated booking workflows and real-time organizer dashboards.',
+    live: 'https://whiteswanevent.vercel.app/',
+    repo: 'https://github.com/ErAditya1/white-swan-event',
+    img: '/images/projects/white_swan_event.png',
     year: 2025,
-    tech: ['HTML', 'Tailwind', 'Java Script']
+    tech: ['React', 'Tailwind', 'Node.js', 'MongoDB']
   },
   {
-    id: 'spotifyclone',
-    title: 'Spotify Clone',
-    tag: 'Minor',
-    desc: 'Frontend clone of Spotify with playlists, song cards, and responsive UI design.',
-    live: 'https://eraditya1.github.io/spotify-clone/',
-    repo: 'https://github.com/ErAditya1/spotify-clone.git',
-    img: '/images/projects/spotify_clone.png',
+    id: 'tubemax',
+    title: 'TubeMax AI',
+    tag: 'AI Tool',
+    desc: 'AI-powered YouTube video summarizer, transcript generator, and content creator assistant.',
+    live: 'https://tubemax-ai.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Tubemax-ai',
+    img: '/images/projects/super_tasky.png',
     year: 2025,
-    tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
+    tech: ['Next.js', 'OpenAI API', 'Tailwind CSS']
+  },
+  {
+    id: 'workshop-hub',
+    title: 'Workshop Hub',
+    tag: 'EdTech',
+    desc: 'Complete UI design and registration workflow for technical workshop events and hackathons.',
+    live: 'https://workshop-hub-adi.vercel.app/',
+    repo: 'https://github.com/ErAditya1/WorkshopHub',
+    img: '/images/projects/mint_slot.png',
+    year: 2025,
+    tech: ['Next.js', 'Tailwind CSS', 'Framer Motion']
+  },
+
+  // --- ACADEMIC & CLONE PROJECTS ---
+  {
+    id: 'adarsh',
+    title: 'Adarsh Inter College MS',
+    tag: 'Academic / College',
+    desc: 'Comprehensive college management portal built with Django & PostgreSQL for academic administration, attendance, and exam management.',
+    live: 'https://clg-ms-django.onrender.com',
+    repo: 'https://github.com/ErAditya1/adarsh-inter-college',
+    img: '/images/projects/Adarsh_inter_college.png',
+    year: 2025,
+    tech: ['Django', 'Python', 'PostgreSQL', 'Bootstrap']
+  },
+  {
+    id: 'brajdarshan',
+    title: 'BrajDarshan',
+    tag: 'Culture / Blog',
+    desc: 'Spiritual tourism blog and pilgrimage guide featuring author population, map guides, and cultural articles.',
+    live: 'https://brajdarshan-five.vercel.app/',
+    repo: 'https://github.com/ErAditya1/brajdarshan',
+    img: '/images/projects/Bright_Veil.png',
+    year: 2025,
+    tech: ['Next.js', 'React', 'MongoDB']
   },
   {
     id: 'recgonda',
-    title: 'REC Gonda Clone',
-    tag: 'Minor',
+    title: 'REC Gonda Official Clone',
+    tag: 'Clone Project',
     desc: 'Static frontend clone of the REC Gonda official website with responsive design.',
     live: 'https://recgonda.vercel.app/',
     repo: 'https://github.com/ErAditya1/REC-frontend.git',
     img: '/images/projects/rec_gonda.png',
     year: 2025,
-    tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
+    tech: ['HTML', 'CSS', 'JavaScript', 'Bootstrap']
+  },
+  {
+    id: 'lazyman',
+    title: 'LazyMan Productivity',
+    tag: 'Productivity',
+    desc: 'All-in-one developer workspace dashboard with quick notes, timer, and task manager.',
+    live: 'https://lazyman.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Lazy-Man-Next',
+    img: '/images/projects/super_tasky.png',
+    year: 2025,
+    tech: ['Next.js', 'Tailwind CSS', 'TypeScript']
+  },
+  {
+    id: 'flutecoding',
+    title: 'Flute Coding',
+    tag: 'Learning',
+    desc: 'Coding tutorial and snippet showcase web app for beginner developers.',
+    live: 'https://flutecoding.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Flute-Coding',
+    img: '/images/projects/mint_slot.png',
+    year: 2025,
+    tech: ['HTML', 'CSS', 'JavaScript']
   },
   {
     id: 'pizzahub',
@@ -184,7 +312,7 @@ export const PROJECTS = [
     repo: 'https://github.com/ErAditya1/PizzaHub.git',
     img: '/images/projects/pizza_hub.png',
     year: 2025,
-    tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
+    tech: ['HTML', 'CSS', 'JavaScript', 'Bootstrap']
   },
   {
     id: 'foodcart',
@@ -195,7 +323,29 @@ export const PROJECTS = [
     repo: 'https://github.com/ErAditya1/FoodCart.git',
     img: '/images/projects/food_cart.png',
     year: 2025,
-    tech: ['HTML', 'CSS', 'Java Script', 'Bootstrap']
+    tech: ['HTML', 'CSS', 'JavaScript', 'Bootstrap']
+  },
+  {
+    id: 'flipkartclone',
+    title: 'Flipkart Clone',
+    tag: 'Minor',
+    desc: 'E-commerce frontend clone of Flipkart with product filters and checkout UI.',
+    live: 'https://flipkart-clone-aditya.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Flipkart-Clone',
+    img: '/images/projects/spotify_clone.png',
+    year: 2025,
+    tech: ['HTML', 'CSS', 'JavaScript']
+  },
+  {
+    id: 'youtubeclone',
+    title: 'YouTube Clone',
+    tag: 'Minor',
+    desc: 'Frontend clone of YouTube with video cards, sidebar navigation, and search bar.',
+    live: 'https://youtube-clone-aditya.vercel.app/',
+    repo: 'https://github.com/ErAditya1/Youtube-Clone',
+    img: '/images/projects/spotify_clone.png',
+    year: 2025,
+    tech: ['HTML', 'CSS', 'JavaScript']
   },
   {
     id: 'flipkartclone',

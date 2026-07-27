@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/public/Footer";
+import { FloatingFeatures } from "@/components/public/FloatingFeatures";
 import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { ISiteSettings } from "@/types";
@@ -48,6 +49,7 @@ export default async function PublicLayout({ children }: { children: React.React
             <JsonLd data={websiteSchema} />
             <Header />
             {children}
+            <FloatingFeatures />
             <Footer settings={settings} />
         </>
     );

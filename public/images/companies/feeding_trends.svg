@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="40" fill="#ffffff"/>
+  <path d="M100,30 C60,50 40,90 50,135 C80,145 130,125 150,75 C150,45 130,30 100,30 Z" fill="#D61F26"/>
+  <path d="M100,30 C105,70 120,105 150,135" stroke="#ffffff" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <text x="100" y="175" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="19" fill="#B91C1C" text-anchor="middle">Feeding Trends</text>
+</svg>

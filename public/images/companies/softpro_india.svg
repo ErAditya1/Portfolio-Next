@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <circle cx="250" cy="250" r="240" fill="#ffffff" stroke="#e2e8f0" stroke-width="4"/>
+  <!-- Black orbit ring -->
+  <ellipse cx="250" cy="240" rx="205" ry="85" fill="none" stroke="#0f172a" stroke-width="18" transform="rotate(-18 250 240)"/>
+  <!-- S (Orange) -->
+  <text x="135" y="270" font-family="'Arial Black', sans-serif" font-weight="900" font-size="150" fill="#f97316" font-style="italic">S</text>
+  <!-- P (Black) -->
+  <text x="215" y="275" font-family="'Arial Black', sans-serif" font-weight="900" font-size="145" fill="#0f172a">P</text>
+  <!-- i (Orange) -->
+  <text x="315" y="270" font-family="'Arial Black', sans-serif" font-weight="900" font-size="150" fill="#f97316" font-style="italic">i</text>
+  <!-- Dot on i -->
+  <circle cx="365" cy="140" r="16" fill="#0f172a"/>
+  <!-- SOFTPRO INDIA text below -->
+  <text x="250" y="330" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#0f172a" letter-spacing="4" text-anchor="middle">SOFTPRO INDIA</text>
+</svg>

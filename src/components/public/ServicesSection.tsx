@@ -3,14 +3,13 @@
 import { motion } from "framer-motion";
 import { Container } from "@/components/Container";
 import { NeonHeading } from "@/components/NeonHeading";
-import { Layout, Server, Shield, Smartphone, PenTool, Globe } from "lucide-react";
+import { Layout, Server, Smartphone, Globe } from "lucide-react";
 
 const services = [
   { title: "Web Architecture", icon: Layout, desc: "Building scalable and performant full-stack web applications with modern frameworks.", color: "text-blue-400" },
+  { title: "Frontend Development", icon: Globe, desc: "Building modern, responsive user interfaces with Next.js, React, and Tailwind CSS.", color: "text-indigo-400" },
   { title: "Backend Engineering", icon: Server, desc: "Designing robust APIs and microservices with secure database integrations.", color: "text-purple-400" },
-  { title: "Mobile Dev", icon: Smartphone, desc: "Crafting seamless mobile experiences using React Native and Flutter.", color: "text-pink-400" },
-  { title: "Cybersecurity", icon: Shield, desc: "Implementing advanced security protocols and conducting practical vulnerability research.", color: "text-emerald-400" },
-  { title: "UI/UX Design", icon: PenTool, desc: "Fusing aesthetics with functionality to create intuitive user journeys.", color: "text-yellow-400" },
+  { title: "Mobile Dev", icon: Smartphone, desc: "Crafting seamless mobile experiences using React Native and cross-platform tools.", color: "text-pink-400" },
   { title: "DevOps & Cloud", icon: Globe, desc: "Automating deployments and managing cloud infrastructure for high-availability systems.", color: "text-cyan-400" },
 ];
 

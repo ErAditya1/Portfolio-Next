@@ -8,9 +8,10 @@ export interface IProject extends Document {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
+  coverImage?: string;
   images: string[];
   featured: boolean;
-  status: "completed" | "building";
+  status: "completed" | "building" | "in-progress";
   views: number;
   seoTitle?: string;
   seoDescription?: string;
@@ -27,9 +28,10 @@ const ProjectSchema = new Schema<IProject>(
     techStack: [{ type: String, trim: true }],
     githubUrl: { type: String, trim: true },
     liveUrl: { type: String, trim: true },
+    coverImage: { type: String, default: "" },
     images: [{ type: String }],
     featured: { type: Boolean, default: false },
-    status: { type: String, enum: ["completed", "building"], default: "completed" },
+    status: { type: String, enum: ["completed", "building", "in-progress"], default: "completed" },
     views: { type: Number, default: 0 },
     seoTitle: { type: String, trim: true },
     seoDescription: { type: String, trim: true },
@@ -37,7 +39,6 @@ const ProjectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
-// Indexes for common queries and search
 ProjectSchema.index({ slug: 1 });
 ProjectSchema.index({ featured: -1 });
 ProjectSchema.index({ status: 1 });
