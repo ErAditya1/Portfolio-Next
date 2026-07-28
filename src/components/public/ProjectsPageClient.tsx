@@ -28,10 +28,12 @@ export interface ProjectCardData {
   slug: string;
   description: string;
   coverImage: string;
+  logoUrl?: string;
   techStack: string[];
   liveUrl?: string;
   githubUrl?: string;
   featured?: boolean;
+  isMinor?: boolean;
   category?: string;
 }
 
@@ -46,13 +48,14 @@ export function ProjectsPageClient({ initialProjects }: ProjectsPageClientProps)
 
   const categories = [
     { name: "All Projects", icon: Layers },
-    { name: "Web Applications", icon: Globe },
-    { name: "Mobile Apps", icon: Smartphone },
+    { name: "Major Projects", icon: Sparkles },
+    { name: "Minor Projects", icon: Code2 },
+    { name: "Client Projects", icon: Briefcase },
     { name: "AI & ML", icon: Cpu },
+    { name: "Web Applications", icon: Globe },
     { name: "SaaS", icon: Sparkles },
-    { name: "Open Source", icon: Code2 },
-    { name: "UI/UX", icon: Layers },
   ];
+
 
   // Default Featured Projects matching reference image
   const featuredProjects: ProjectCardData[] = [
@@ -173,14 +176,26 @@ export function ProjectsPageClient({ initialProjects }: ProjectsPageClientProps)
 
   // Filter projects by active category & search query
   const filteredProjects = dbOrAll.filter((p) => {
-    const matchesCategory = activeCategory === "All Projects" || 
-      (p.category && p.category.toLowerCase().includes(activeCategory.toLowerCase()));
+    let matchesCategory = false;
+    if (activeCategory === "All Projects") {
+      matchesCategory = true;
+    } else if (activeCategory === "Major Projects") {
+      matchesCategory = !p.isMinor && p.category !== "minor";
+    } else if (activeCategory === "Minor Projects") {
+      matchesCategory = Boolean(p.isMinor || p.category === "minor");
+    } else if (activeCategory === "Client Projects") {
+      matchesCategory = p.category === "client";
+    } else {
+      matchesCategory = Boolean(p.category && p.category.toLowerCase().includes(activeCategory.toLowerCase()));
+    }
+
     const matchesSearch = searchQuery === "" || 
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
       p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.techStack.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
+
 
   return (
     <main className="pt-24 pb-20 overflow-hidden bg-background">
@@ -393,14 +408,25 @@ export function ProjectsPageClient({ initialProjects }: ProjectsPageClientProps)
                 key={proj._id}
                 className="group rounded-3xl bg-card border border-border overflow-hidden hover:border-indigo-500/40 transition-all flex flex-col justify-between shadow-sm"
               >
-                {/* Image */}
+                {/* Image & Logo */}
                 <div className="relative aspect-video overflow-hidden bg-accent">
                   <img
-                    src={proj.coverImage}
+                    src={proj.coverImage || "/images/projects/Bright_Veil.png"}
                     alt={proj.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+                  {proj.logoUrl && (
+                    <div className="absolute top-3 left-3 w-9 h-9 rounded-xl overflow-hidden border-2 border-white/20 bg-background/80 backdrop-blur-md shadow-md">
+                      <img src={proj.logoUrl} alt={proj.title} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  {proj.isMinor && (
+                    <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-800/80 backdrop-blur-md text-slate-300 border border-slate-700 text-[9px] font-bold">
+                      Minor
+                    </span>
+                  )}
                 </div>
+
 
                 {/* Body */}
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">

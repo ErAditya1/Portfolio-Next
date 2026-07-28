@@ -11,6 +11,9 @@ export interface IProject extends Document {
   coverImage?: string;
   images: string[];
   featured: boolean;
+  isMinor: boolean;
+  category: "flagship" | "major" | "minor" | "client";
+  logoUrl?: string;
   status: "completed" | "building" | "in-progress";
   views: number;
   seoTitle?: string;
@@ -29,13 +32,17 @@ const ProjectSchema = new Schema<IProject>(
     githubUrl: { type: String, trim: true },
     liveUrl: { type: String, trim: true },
     coverImage: { type: String, default: "" },
+    logoUrl: { type: String, default: "" },
     images: [{ type: String }],
     featured: { type: Boolean, default: false },
+    isMinor: { type: Boolean, default: false },
+    category: { type: String, enum: ["flagship", "major", "minor", "client"], default: "major" },
     status: { type: String, enum: ["completed", "building", "in-progress"], default: "completed" },
     views: { type: Number, default: 0 },
     seoTitle: { type: String, trim: true },
     seoDescription: { type: String, trim: true },
   },
+
   { timestamps: true }
 );
 

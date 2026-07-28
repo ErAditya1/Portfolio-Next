@@ -34,7 +34,7 @@ export const skills = [
   { name: 'Firebase / Appwrite / Clerk', level: 70, category: 'Other' },
   { name: 'Cloudinary / ImageKit', level: 68, category: 'Other' },
   { name: 'Razorpay (Payments)', level: 65, category: 'Other' },
-  
+
 ];
 
 
@@ -83,10 +83,59 @@ export interface Project {
   live: string
   repo: string
   img: string
+  logoUrl?: string
+  isMinor?: boolean
+  category?: 'flagship' | 'major' | 'minor' | 'client'
   year: number
   tech: string[]
 }
 export const PROJECTS = [
+  // --- FLAGSHIP AI & VOICE SAAS PRODUCTS ---
+  {
+    id: 'callio-ai',
+    title: 'Callio AI — Outbound Calling & Voice AI Platform',
+    tag: 'Flagship AI Product',
+    desc: 'Problem: High tele-calling costs and low agent throughput. Solution: Enterprise automated outbound dialing platform connecting Tata Smartflo cloud telephony with ElevenLabs conversational voice AI for <300ms real-time calls. System Design: Decoupled NestJS + Next.js 14 architecture with full-duplex WebSocket audio streams, barge-in speech interruption detection, BullMQ queue scheduler, and automated GPT-4 post-call CRM sync.',
+    live: 'https://callio.cheetahagi.com/',
+    repo: 'https://github.com/ErAditya1/',
+    img: '/images/projects/white_swan_event.png',
+    year: 2026,
+    tech: ['NestJS', 'Next.js 14', 'TypeScript', 'PostgreSQL', 'Prisma', 'Redis', 'BullMQ', 'Socket.io', 'Tata Smartflo', 'ElevenLabs', 'Razorpay']
+  },
+  {
+    id: 'amplibuzz',
+    title: 'Amplibuzz (Amplibuz) — Influencer Marketing Platform',
+    tag: 'Flagship SaaS',
+    desc: 'Problem: Friction in influencer marketing regarding post verification and delayed payouts. Solution: High-performance platform connecting brands with social media contributors using a locked escrow wallet system, headless Puppeteer post verification scrapers, and instant reward payouts. System Design: NestJS backend with Prisma ORM, BullMQ background verification workers, and Razorpay escrow settlement.',
+    live: 'https://amplibuzz.com/',
+    repo: 'https://github.com/ErAditya1/',
+    img: '/images/projects/Bright_Veil.png',
+    year: 2026,
+    tech: ['NestJS', 'Next.js 14', 'TypeScript', 'PostgreSQL', 'Prisma', 'Redis', 'BullMQ', 'Puppeteer', 'Razorpay', 'TailwindCSS']
+  },
+  {
+    id: 'observiq-trubetix',
+    title: 'Observiq (Trubetix) — Social Intelligence & AI Security',
+    tag: 'Enterprise Product',
+    desc: 'Problem: Fragmented tools for social monitoring, PR tracking, and content plagiarism security. Solution: Horizontally scalable social auditing platform aggregating metrics across 10+ social networks, featuring PR Pulse Google News/Trends analytics, TF-IDF & pHash perceptual image duplicate detection, and automated multi-format PDF/HTML report generation.',
+    live: 'https://observiq.cheetahagi.com/',
+    repo: 'https://github.com/ErAditya1',
+    img: '/images/projects/super_tasky.png',
+    year: 2026,
+    tech: ['FastAPI', 'Python', 'Next.js 14', 'PostgreSQL', 'Redis', 'Playwright', 'scikit-learn', 'ReportLab', 'Docker']
+  },
+  {
+    id: 'borngoat',
+    title: 'Born Goat — Digital Agency Showcase Platform',
+    tag: 'Client Platform',
+    desc: 'Interactive agency showcase platform featuring dynamic brand logo cropping tools, responsive design tokens, and smooth micro-animations for high-end client presentations.',
+    live: 'https://borngoat.com/',
+    repo: 'https://github.com/ErAditya1/',
+    img: '/images/projects/mint_slot.png',
+    year: 2026,
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Python']
+  },
+
   // --- MAJOR PROJECTS ---
   {
     id: 'brightveil',
@@ -105,7 +154,7 @@ export const PROJECTS = [
     tag: 'Major Project',
     desc: 'Problem: Scattered academic resources and lack of community pull requests for notes. Solution: An end-to-end resource management ecosystem with CRUD operations, file uploads, rating system, and community pull requests. System Design: Decoupled React frontend and Express REST API backend.',
     live: 'https://noteshubio.vercel.app/',
-    repo: 'https://github.com/ErAditya1/noteshub-frontend',
+    repo: 'https://github.com/ErAditya1/',
     img: '/images/projects/super_tasky.png',
     year: 2025,
     tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs', 'JWT']
@@ -147,17 +196,7 @@ export const PROJECTS = [
   },
 
   // --- HIGH IMPACT PRODUCTS ---
-  {
-    id: 'influencify',
-    title: 'Influencify Platform',
-    tag: 'Product',
-    desc: 'Influencer marketing and brand collaboration platform connecting creators with sponsor campaigns and performance analytics.',
-    live: 'https://influencify-three.vercel.app/',
-    repo: 'https://github.com/ErAditya1/influencify-web',
-    img: '/images/projects/Bright_Veil.png',
-    year: 2025,
-    tech: ['Next.js', 'React', 'Node.js', 'Express.js', 'MongoDB']
-  },
+
   {
     id: 'aicharcha',
     title: 'AI Calling Agent (AI Charcha)',
