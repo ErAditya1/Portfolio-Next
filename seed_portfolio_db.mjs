@@ -1,6 +1,12 @@
+import 'dotenv/config';
 import mongoose from 'mongoose';
 
-const MONGODB_URI = "mongodb+srv://mradityachaudhary5:2ZhhlLi5MI8FDRxU@cluster0.zy5olhq.mongodb.net/portfolio?appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error("❌ MONGODB_URI is not set in process.env or .env file.");
+  process.exit(1);
+}
+
 
 // Define schemas inline for standalone seed script execution
 const BlogSchema = new mongoose.Schema(
