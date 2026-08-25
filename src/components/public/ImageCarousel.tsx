@@ -11,10 +11,11 @@ interface ImageCarouselProps {
 }
 
 export function ImageCarousel({ images, title }: ImageCarouselProps) {
+  const validImages = (images || []).filter(Boolean);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  if (!images || images.length === 0) return null;
+  if (validImages.length === 0) return null;
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -72,7 +73,7 @@ export function ImageCarousel({ images, title }: ImageCarouselProps) {
           className="absolute inset-0"
         >
           <Image
-            src={images[currentIndex]}
+            src={validImages[currentIndex]}
             alt={`${title} - image ${currentIndex + 1}`}
             fill
             className="object-cover"
@@ -81,7 +82,7 @@ export function ImageCarousel({ images, title }: ImageCarouselProps) {
         </motion.div>
       </AnimatePresence>
 
-      {images.length > 1 && (
+      {validImages.length > 1 && (
         <>
           <button
             className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-black/70"
@@ -97,7 +98,7 @@ export function ImageCarousel({ images, title }: ImageCarouselProps) {
           </button>
 
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {images.map((_, i) => (
+            {validImages.map((_, i) => (
               <button
                 key={i}
                 onClick={() => {

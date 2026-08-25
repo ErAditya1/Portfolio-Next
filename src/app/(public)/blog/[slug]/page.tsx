@@ -14,26 +14,56 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function getBlogBySlug(rawSlug: string) {
+  try {
+    await connectDB();
+    const slug = decodeURIComponent(rawSlug).trim();
+    const blog = await Blog.findOne({ 
+      $and: [
+        { published: true },
+        {
+          $or: [
+            { slug: slug },
+            { slug: slug.toLowerCase() },
+            { slug: rawSlug }
+          ]
+        }
+      ]
+    }).lean();
+    if (blog) {
+      return JSON.parse(JSON.stringify(blog));
+    }
+  } catch (e) {
+    console.error("DB error fetching blog detail:", e);
+  }
+
+  return null;
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  await connectDB();
   const { slug } = await params;
-  const blog = await Blog.findOne({ slug, published: true }).lean();
+  const blog = await getBlogBySlug(slug);
   if (!blog) return { title: "Post Not Found" };
 
-  const title = blog.seoTitle || `${blog.title} | Technical Insights - Aditya Kumar`;
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
+  const title = blog.seoTitle || `${blog.title} | Technical Insights — Aditya Kumar`;
   const description = blog.seoDescription || blog.excerpt;
 
   return {
     title,
     description,
-    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles", "System Architecture"],
+    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles", "System Architecture", "Next.js 15"],
+    alternates: {
+      canonical: `${baseUrl}/blog/${blog.slug}`,
+    },
     openGraph: {
       title,
       description,
+      url: `${baseUrl}/blog/${blog.slug}`,
       images: blog.coverImage ? [{ url: blog.coverImage }] : [],
       type: "article",
       authors: ["Aditya Kumar"],
-      publishedTime: blog.createdAt.toString(),
+      publishedTime: blog.createdAt?.toString(),
     },
     twitter: {
       card: "summary_large_image",
@@ -45,50 +75,63 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  await connectDB();
-  const blogs = await Blog.find({ published: true }, "slug").lean();
-  return blogs.map((b) => ({ slug: b.slug }));
+  try {
+    await connectDB();
+    const blogs = await Blog.find({ published: true }, "slug").lean();
+    return blogs.map((b) => ({ slug: b.slug }));
+  } catch (e) {
+    console.error("Error generating static params for blogs:", e);
+    return [];
+  }
 }
 
 export default async function BlogDetailPage({ params }: PageProps) {
-  await connectDB();
   const { slug } = await params;
-  const blog = await Blog.findOne({ slug, published: true }).lean();
+  const blog = await getBlogBySlug(slug);
   if (!blog) notFound();
 
   // Fetch suggested blogs (next and previous)
-  const [nextBlog, prevBlog] = await Promise.all([
-    Blog.findOne({ published: true, createdAt: { $gt: blog.createdAt } }).sort({ createdAt: 1 }).select("slug title").lean(),
-    Blog.findOne({ published: true, createdAt: { $lt: blog.createdAt } }).sort({ createdAt: -1 }).select("slug title").lean(),
-  ]);
+  let nextBlog = null;
+  let prevBlog = null;
+
+  try {
+    await connectDB();
+    const [nextB, prevB] = await Promise.all([
+      Blog.findOne({ published: true, createdAt: { $gt: blog.createdAt } }).sort({ createdAt: 1 }).select("slug title").lean(),
+      Blog.findOne({ published: true, createdAt: { $lt: blog.createdAt } }).sort({ createdAt: -1 }).select("slug title").lean(),
+    ]);
+    nextBlog = nextB ? JSON.parse(JSON.stringify(nextB)) : null;
+    prevBlog = prevB ? JSON.parse(JSON.stringify(prevB)) : null;
+  } catch (e) {
+    console.error("DB error fetching suggested blogs:", e);
+  }
 
   const allImages = blog.images?.length > 0 ? blog.images : (blog.coverImage ? [blog.coverImage] : []);
 
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
   const blogSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": ["BlogPosting", "TechArticle"],
     "headline": blog.title,
     "description": blog.excerpt,
-    "image": blog.coverImage,
+    "image": blog.coverImage || `${baseUrl}/images/aditya_profile.png`,
     "datePublished": blog.createdAt,
-    "dateModified": blog.updatedAt,
-    "author": {
-      "@type": "Person",
-      "name": "Aditya Kumar",
-      "url": `${baseUrl}/about`
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Aditya Kumar Portfolio",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${baseUrl}/images/aditya_profile.png`
-      }
-    },
+    "dateModified": blog.updatedAt || blog.createdAt,
+    "inLanguage": "en-US",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${baseUrl}/blog/${blog.slug}`
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Kumar",
+      "url": `${baseUrl}/about`,
+      "jobTitle": "Full Stack Developer & AI Systems Engineer"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Aditya Kumar",
+      "url": baseUrl
     }
   };
 

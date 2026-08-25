@@ -53,7 +53,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-bv",
       title: "Bright Veil Dashboard",
       category: "Projects",
-      imageUrl: "/images/projects/Bright_Veil.png",
+      imageUrl: "",
       description: "Full-stack LMS portal dashboard with student progress analytics.",
       badgeIcon: "📁",
       badgeLabel: "Bright Veil Dashboard",
@@ -62,7 +62,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-bg",
       title: "Born Goat App",
       category: "UI/UX Design",
-      imageUrl: "/images/projects/super_tasky.png",
+      imageUrl: "",
       description: "Mobile app interface layout and brand experience design.",
       badgeIcon: "📱",
       badgeLabel: "Born Goat App",
@@ -71,7 +71,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-ai",
       title: "AI Calling Platform",
       category: "Projects",
-      imageUrl: "/images/projects/white_swan_event.png",
+      imageUrl: "",
       description: "AI-powered voice agent system code structure and STT listener.",
       badgeIcon: "</>",
       badgeLabel: "AI Calling Platform",
@@ -80,7 +80,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-clg",
       title: "College Management System",
       category: "Projects",
-      imageUrl: "/images/projects/Adarsh_inter_college.png",
+      imageUrl: "",
       description: "College portal management dashboard for marksheet and attendance.",
       badgeIcon: "⚙️",
       badgeLabel: "College Management System",
@@ -89,7 +89,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-cert",
       title: "Certifications",
       category: "Certificates",
-      imageUrl: "/images/projects/mint_slot.png",
+      imageUrl: "",
       description: "Official web development diploma certificate and technical awards.",
       badgeIcon: "🏆",
       badgeLabel: "Certifications",
@@ -98,7 +98,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-bsides",
       title: "Hackathon Event",
       category: "Events",
-      imageUrl: "/images/projects/super_tasky.png",
+      imageUrl: "",
       description: "Speaker session and hackathon presentation at technical event.",
       badgeIcon: "📅",
       badgeLabel: "Hackathon Event",
@@ -107,7 +107,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-bts",
       title: "Behind The Scenes",
       category: "Behind The Scenes",
-      imageUrl: "/images/projects/Bright_Veil.png",
+      imageUrl: "",
       description: "Workspace notes and continuous learning journey log.",
       badgeIcon: "📷",
       badgeLabel: "Behind The Scenes",
@@ -116,7 +116,7 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
       id: "g-life",
       title: "Life Beyond Code",
       category: "Life",
-      imageUrl: "/images/aditya_profile.png",
+      imageUrl: "",
       description: "Mountain views, travel memories, and life outside engineering.",
       badgeIcon: "👤",
       badgeLabel: "Life Beyond Code",
@@ -209,12 +209,22 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
             {/* Right Hero Workspace Graphic */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative w-full max-w-md aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl p-2 bg-gradient-to-br from-indigo-500/10 to-purple-500/10">
-                <div className="w-full h-full rounded-2xl overflow-hidden relative">
-                  <img
-                    src="/images/projects/Bright_Veil.png"
-                    alt="Workspace"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-full h-full rounded-2xl overflow-hidden relative flex items-center justify-center bg-gradient-to-br from-indigo-950/70 via-purple-950/50 to-black/80">
+                  {galleryItems?.[0]?.imageUrl ? (
+                    <img
+                      src={galleryItems[0].imageUrl}
+                      alt="Gallery Showcase Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center p-6 space-y-3">
+                      <div className="w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center mx-auto shadow-inner">
+                        <Camera className="w-7 h-7" />
+                      </div>
+                      <h4 className="text-sm font-bold text-foreground">Visual Journey & Moments</h4>
+                      <p className="text-xs text-muted-foreground max-w-xs">Milestones, architecture diagrams, and development life</p>
+                    </div>
+                  )}
 
                   {/* Bottom Right Badge Overlay */}
                   <div className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl bg-card/90 backdrop-blur-md border border-border text-[10px] font-bold text-foreground flex items-center gap-2 shadow-lg">
@@ -274,15 +284,23 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
               onClick={() => setSelectedIndex(idx)}
               className="group relative aspect-[4/5] rounded-3xl overflow-hidden bg-card border border-border shadow-sm hover:border-indigo-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-end"
             >
-              {/* Image Background */}
-              <img
-                src={item.imageUrl}
-                alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+              {/* Image Background or Gradient Card */}
+              {item.imageUrl ? (
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-950/80 via-purple-950/60 to-slate-950 p-6 text-center">
+                  <span className="text-4xl mb-3">{item.badgeIcon || "📷"}</span>
+                  <span className="text-sm font-bold text-foreground mb-1">{item.title}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-indigo-400 font-semibold">{item.category}</span>
+                </div>
+              )}
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
               {/* Bottom Card Title & Badge Overlay */}
               <div className="relative p-5 z-10 space-y-2">
@@ -338,13 +356,21 @@ export function GalleryPageClient({ initialItems }: GalleryPageClientProps) {
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.9, opacity: 0 }}
-                  className="relative w-full flex-1 max-h-[70vh]"
+                  className="relative w-full flex-1 max-h-[70vh] flex items-center justify-center"
                 >
-                  <img
-                    src={selectedImage.imageUrl}
-                    alt={selectedImage.title}
-                    className="w-full h-full object-contain rounded-2xl"
-                  />
+                  {selectedImage.imageUrl ? (
+                    <img
+                      src={selectedImage.imageUrl}
+                      alt={selectedImage.title}
+                      className="w-full h-full object-contain rounded-2xl"
+                    />
+                  ) : (
+                    <div className="w-full max-w-lg aspect-video rounded-2xl bg-gradient-to-br from-indigo-950/80 to-purple-950/80 border border-border flex flex-col items-center justify-center p-8 text-center">
+                      <span className="text-6xl mb-4">{selectedImage.badgeIcon || "📷"}</span>
+                      <h4 className="text-xl font-bold text-foreground">{selectedImage.title}</h4>
+                      <p className="text-xs text-indigo-400 font-semibold mt-1">{selectedImage.category}</p>
+                    </div>
+                  )}
                 </motion.div>
 
                 <div className="mt-4 text-center bg-card/90 border border-border px-6 py-4 rounded-2xl backdrop-blur-md max-w-xl w-full shadow-2xl">

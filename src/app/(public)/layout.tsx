@@ -7,9 +7,15 @@ import { ISiteSettings } from "@/types";
 import { JsonLd } from "@/components/public/JsonLd";
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-    await connectDB();
-    const settingsRaw = await SiteSettings.findOne().lean();
-    const settings = settingsRaw ? JSON.parse(JSON.stringify(settingsRaw)) as ISiteSettings : undefined;
+    let settings: ISiteSettings | undefined;
+
+    try {
+        await connectDB();
+        const settingsRaw = await SiteSettings.findOne().lean();
+        settings = settingsRaw ? (JSON.parse(JSON.stringify(settingsRaw)) as ISiteSettings) : undefined;
+    } catch (error) {
+        console.error("DB error in PublicLayout, using default metadata:", error);
+    }
 
     const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
 

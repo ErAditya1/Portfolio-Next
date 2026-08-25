@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
+import Experience from "@/models/Experience";
 import SiteSettings from "@/models/SiteSettings";
 import AIChatSession from "@/models/AIChatSession";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 // GET /api/chat?deviceId=xxx -> Fetch chat history for this device
 export async function GET(req: Request) {
@@ -24,7 +25,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ messages: session.messages });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("GET Chat Error:", error);
     return NextResponse.json({ messages: [] });
   }
@@ -41,13 +42,13 @@ export async function DELETE(req: Request) {
       await AIChatSession.deleteOne({ deviceId });
     }
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("DELETE Chat Error:", error);
     return NextResponse.json({ success: false });
   }
 }
 
-// POST /api/chat -> Stream LLM response & save to MongoDB
+// POST /api/chat -> Stream Google Gemini LLM response & save to MongoDB
 export async function POST(req: Request) {
   try {
     const { deviceId, message, messages: incomingMessages } = await req.json();
@@ -96,90 +97,240 @@ export async function POST(req: Request) {
     session.lastActiveAt = new Date();
     await session.save();
 
-    // Fetch live portfolio data & active AI model from MongoDB
+    // Fetch dynamic context from MongoDB
     let projectContext = "";
-    let settingsContext = "";
-    let activeModel = "qwen2.5";
+    let experienceContext = "";
+    let ownerInfo = {
+      name: "Aditya Kumar",
+      title: "Full Stack Developer & AI Systems Engineer",
+      email: "mradityaji2@gmail.com",
+      phone: "+91 9473774390",
+      location: "Barabanki / Lucknow, Uttar Pradesh, India",
+      github: "https://github.com/ErAditya1",
+      linkedin: "https://linkedin.com/in/eraditya1",
+    };
+
+    let geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "";
+    let activeModel = "gemini-2.0-flash";
 
     try {
-      const projects = await Project.find({ status: "completed" }).select("title description liveUrl techStack");
-      const settings = await SiteSettings.findOne();
+      const [projects, experiences, settings] = await Promise.all([
+        Project.find({ status: "completed" }).select("title description techStack liveUrl githubUrl category"),
+        Experience.find().sort({ order: 1 }).select("company role period description points skills type isCurrent"),
+        SiteSettings.findOne(),
+      ]);
 
-      if (settings?.aiModel) {
-        activeModel = settings.aiModel;
-      } else if (process.env.LLM_MODEL) {
-        activeModel = process.env.LLM_MODEL;
+      if (settings) {
+        if (settings.geminiApiKey) geminiApiKey = settings.geminiApiKey;
+        else if (settings.aiApiKey) geminiApiKey = settings.aiApiKey;
+
+        if (settings.aiModel && settings.aiModel.includes("gemini")) {
+          activeModel = settings.aiModel;
+        } else if (process.env.GEMINI_MODEL) {
+          activeModel = process.env.GEMINI_MODEL;
+        }
+
+        if (settings.ownerName) ownerInfo.name = settings.ownerName;
+        if (settings.ownerTitle) ownerInfo.title = settings.ownerTitle;
+        if (settings.ownerEmail) ownerInfo.email = settings.ownerEmail;
+        if (settings.ownerPhone) ownerInfo.phone = settings.ownerPhone;
+        if (settings.ownerLocation) ownerInfo.location = settings.ownerLocation;
+        if (settings.githubUrl) ownerInfo.github = settings.githubUrl;
+        if (settings.linkedinUrl) ownerInfo.linkedin = settings.linkedinUrl;
       }
 
       if (projects && projects.length > 0) {
         projectContext = projects
           .map(
             (p) =>
-              `- ${p.title}: ${p.description} (Tech: ${(p.techStack || []).join(", ")}) ${
-                p.liveUrl ? `[Live: ${p.liveUrl}]` : ""
-              }`
+              `• ${p.title} [${p.category || "Full-Stack"}]: ${p.description}\n  - Tech Stack: ${(p.techStack || []).join(", ")}\n  - Live URL: ${p.liveUrl || "N/A"} | GitHub: ${p.githubUrl || "N/A"}`
           )
-          .join("\n");
+          .join("\n\n");
       }
-      if (settings) {
-        settingsContext = `Email: ${settings.ownerEmail || "mradityaji2@gmail.com"}, Phone: ${
-          settings.ownerPhone || "+919473774390"
-        }`;
+
+      if (experiences && experiences.length > 0) {
+        experienceContext = experiences
+          .map(
+            (e) =>
+              `• ${e.role} at ${e.company} (${e.period})${e.isCurrent ? " [CURRENT ROLE]" : ""}\n  - Details: ${e.description}\n  - Key Skills: ${(e.skills || []).join(", ")}`
+          )
+          .join("\n\n");
       }
     } catch (dbErr) {
-      console.warn("DB context fetch error:", dbErr);
+      console.warn("DB Context Fetch Warning:", dbErr);
     }
 
-    const systemPrompt = `You are the official AI Assistant for Aditya Kumar's portfolio website.
-Your role is to represent Aditya, answer questions from visitors, recruiters, and clients, and showcase his technical skills, services, and projects.
+    // Prepare Comprehensive System Prompt for Aditya Kumar
+    const systemPrompt = `You are the official AI Assistant for Aditya Kumar's personal developer portfolio website.
+Your objective is to represent Aditya, answer questions from recruiters, clients, and visitors, and provide accurate, high-impact insights into his skills, production projects, engineering experience, and availability.
 
-About Aditya Kumar:
-- Title: Full Stack Web Developer & Software Engineer
-- Core Expertise: Next.js, React.js, TypeScript, JavaScript, Node.js, Express.js, Python, C, Tailwind CSS, Material UI, Shadcn UI, MongoDB, PostgreSQL, MySQL, RESTful APIs, Docker, Git.
-- Services Offered: Custom Web Applications, Portfolio Websites, Full-Stack Web Development, API Design & Integration, Database Architecture, Maintenance & VPS Setup.
-- Services Pricing: Custom portfolio websites start at $499. Application development quotes depend on the project scope.
-- Contact: Visitors can message Aditya on WhatsApp at +919473774390 or email at mradityaji2@gmail.com.
+=== 👤 ABOUT ADITYA KUMAR ===
+• Name: ${ownerInfo.name}
+• Professional Title: ${ownerInfo.title}
+• Location: ${ownerInfo.location}
+• Direct Email: ${ownerInfo.email}
+• WhatsApp / Phone: ${ownerInfo.phone}
+• GitHub: ${ownerInfo.github}
+• LinkedIn: ${ownerInfo.linkedin}
 
-Live Portfolio Information:
-${projectContext ? `**Featured Projects:**\n${projectContext}` : "- Various full-stack Next.js, Node.js, and React web applications."}
-${settingsContext ? `**Contact Information:**\n${settingsContext}` : "- Email: mradityaji2@gmail.com | Phone/WhatsApp: +919473774390"}
+=== 🚀 CORE TECHNICAL EXPERTISE ===
+• Frontend: Next.js 15 (App Router), React 19, TypeScript, JavaScript (ES6+), Tailwind CSS v4, Framer Motion, Shadcn UI, Zustand, Redux Toolkit, TanStack React Query.
+• Backend & APIs: Node.js, Express.js, NestJS, Python, FastAPI, Django, RESTful APIs, WebSockets (Socket.io), BullMQ queue scheduling.
+• AI, Voice & Automations: Conversational Voice AI (ElevenLabs), Speech-To-Text (Deepgram), Meta WhatsApp Cloud API, OpenAI GPT-4, Google Gemini integration, Prompt Engineering.
+• Databases & Storage: MongoDB (Atlas / Mongoose), PostgreSQL (Prisma ORM), MySQL, Redis, Cloudinary CDN.
+• DevOps & Infrastructure: Docker, Docker Compose, Linux VPS management, Vercel, Git/GitHub CI/CD, Nginx.
 
-Guidelines:
-- Be friendly, professional, clear, and helpful.
-- Keep answers concise (2-4 sentences max per reply).
-- Guide clients towards viewing projects or contacting Aditya for custom project inquiries.`;
+=== 💼 WORK EXPERIENCE & TRACK RECORD ===
+${experienceContext || "• Full Stack Developer at Feeding Trends (Current): Building AI Voice calling platform (Callio AI), Influencer marketing SaaS (Amplibuzz), and security intelligence tools (Observiq/Trubetix)."}
 
-    const apiMessages = [
-      { role: "system", content: systemPrompt },
-      ...session.messages.slice(-10).map((m: any) => ({
-        role: m.role,
-        content: m.content,
-      })),
-    ];
+=== 🌟 PRODUCTION PROJECTS SHOWCASE ===
+${projectContext || "• Callio AI (AI Outbound Calling Platform)\n• WAutomator (WhatsApp Cloud API Automation SaaS)\n• Amplibuzz (Influencer Escrow Platform)\n• BrightVeil (Enterprise LMS)\n• Super Tasky (Real-time Task Manager)\n• Observiq (Social Intelligence & AI Security)"}
 
-    let baseUrl = process.env.LLM_API_URL || "https://llm.cheetahagi.com/v1";
-    baseUrl = baseUrl.replace(/\/$/, "");
-    const llmUrl = baseUrl.endsWith("/v1") ? `${baseUrl}/chat/completions` : `${baseUrl}/v1/chat/completions`;
+=== 🛠️ SERVICES & HIRING DETAILS ===
+1. Full-Stack Web App Development (Modern Next.js / MERN / Python platforms)
+2. AI Voice Telephony & Agent Pipelines (<300ms audio streaming, ElevenLabs, Deepgram)
+3. WhatsApp Cloud API Marketing & Automation Engines
+4. Scalable Microservices, Background Queues & RESTful APIs
+5. Performance Optimization & Modern Responsive UI/UX
+• Pricing: Custom portfolios and landing pages start around $499. Full-stack SaaS and custom enterprise systems are quoted based on milestones and scope.
+• Availability: Open for Full-Time Roles, Contract Engagements, and Freelance Consulting.
 
-    const llmResponse = await fetch(llmUrl, {
+=== 🎯 CONVERSATIONAL GUIDELINES ===
+- Adopt a warm, professional, confident, and knowledgeable tone.
+- Speak in natural first/third person representing Aditya ("Aditya is...", "He built...", "You can contact him directly...").
+- Keep replies concise, clean, and well-formatted with markdown bullet points where helpful.
+- Whenever someone asks to contact or hire him, provide his direct WhatsApp (${ownerInfo.phone}) or Email (${ownerInfo.email}) and invite them to schedule a call.
+- If asked technical questions about code or architecture, explain his practical approach clearly and accurately based on modern software engineering standards.`;
+
+    // If Gemini API Key is not configured, return a polite, structured fallback
+    if (!geminiApiKey) {
+      const fallbackMsg = `Hello! 👋 I am Aditya's Portfolio Assistant. 
+
+Aditya is a **Full Stack Developer & AI Systems Engineer** specialized in:
+• **Full Stack & Modern Web:** Next.js 15, React 19, TypeScript, Node.js, NestJS, Python & Tailwind CSS.
+• **AI Voice & Telephony:** Real-time conversational calling systems (ElevenLabs + WebSockets).
+• **Enterprise Automation:** WhatsApp Cloud API SaaS, BullMQ queues, and scalable microservices.
+
+*(Note: To enable live generative streaming, please configure your Gemini API Key in the Admin Dashboard or \`.env\` file).*
+
+Feel free to connect directly with Aditya:
+📱 **WhatsApp:** [${ownerInfo.phone}](https://wa.me/${ownerInfo.phone.replace(/[^0-9]/g, "")})
+✉️ **Email:** [${ownerInfo.email}](mailto:${ownerInfo.email})`;
+
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(fallbackMsg));
+          controller.close();
+        },
+      });
+
+      return new Response(stream, {
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-cache, no-transform",
+        },
+      });
+    }
+
+    // Format conversation history for Gemini API
+    const contents: { role: "user" | "model"; parts: { text: string }[] }[] = [];
+
+    // Map recent messages
+    const recentMessages = session.messages.slice(-8);
+    for (const msg of recentMessages) {
+      if (msg.role === "user") {
+        contents.push({ role: "user", parts: [{ text: msg.content }] });
+      } else if (msg.role === "assistant") {
+        contents.push({ role: "model", parts: [{ text: msg.content }] });
+      }
+    }
+
+    // Ensure the last message in contents is the current user request
+    if (contents.length === 0 || contents[contents.length - 1].role !== "user") {
+      contents.push({ role: "user", parts: [{ text: userContent }] });
+    }
+
+    // Normalize Gemini model name
+    let cleanModelName = activeModel.trim();
+    if (!cleanModelName.startsWith("gemini")) {
+      cleanModelName = "gemini-2.0-flash";
+    }
+
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModelName}:streamGenerateContent?alt=sse&key=${geminiApiKey}`;
+
+    const geminiPayload = {
+      system_instruction: {
+        parts: [{ text: systemPrompt }],
+      },
+      contents,
+      generationConfig: {
+        temperature: 0.7,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      },
+    };
+
+    const geminiResponse = await fetch(geminiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: activeModel,
-        messages: apiMessages,
-        stream: true,
-      }),
+      body: JSON.stringify(geminiPayload),
     });
 
-    if (!llmResponse.ok || !llmResponse.body) {
-      const errText = await llmResponse.text();
-      console.error("LLM Stream Error:", errText);
-      throw new Error(`LLM Stream Error ${llmResponse.status}: ${errText}`);
+    if (!geminiResponse.ok || !geminiResponse.body) {
+      const errText = await geminiResponse.text();
+      console.error("Gemini API Stream Error:", errText);
+
+      // Attempt fallback to non-streaming or standard response
+      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModelName}:generateContent?key=${geminiApiKey}`;
+      const nonStreamRes = await fetch(fallbackUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(geminiPayload),
+      });
+
+      if (nonStreamRes.ok) {
+        const nonStreamData = await nonStreamRes.json();
+        const replyText =
+          nonStreamData?.candidates?.[0]?.content?.parts?.[0]?.text ||
+          "I'm here to help! Please feel free to ask about Aditya's projects, experience, or hiring details.";
+
+        // Save generated message to session
+        const currentSession = await AIChatSession.findOne({ deviceId });
+        if (currentSession) {
+          currentSession.messages.push({
+            id: `bot-${Date.now()}`,
+            role: "assistant",
+            content: replyText,
+            timestamp: new Date(),
+          });
+          currentSession.lastActiveAt = new Date();
+          await currentSession.save();
+        }
+
+        const encoder = new TextEncoder();
+        return new Response(
+          new ReadableStream({
+            start(controller) {
+              controller.enqueue(encoder.encode(replyText));
+              controller.close();
+            },
+          }),
+          {
+            headers: {
+              "Content-Type": "text/plain; charset=utf-8",
+              "Cache-Control": "no-cache, no-transform",
+            },
+          }
+        );
+      }
+
+      throw new Error(`Gemini Error (${geminiResponse.status}): ${errText}`);
     }
 
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
-    const reader = llmResponse.body.getReader();
+    const reader = geminiResponse.body.getReader();
 
     let fullContent = "";
 
@@ -198,17 +349,21 @@ Guidelines:
 
             for (const line of lines) {
               const trimmed = line.trim();
-              if (!trimmed || trimmed === "data: [DONE]") continue;
+              if (!trimmed) continue;
 
               if (trimmed.startsWith("data: ")) {
+                const jsonStr = trimmed.slice(6).trim();
+                if (jsonStr === "[DONE]") continue;
+
                 try {
-                  const parsed = JSON.parse(trimmed.slice(6));
-                  const delta = parsed.choices?.[0]?.delta?.content || "";
-                  if (delta) {
-                    fullContent += delta;
-                    controller.enqueue(encoder.encode(delta));
+                  const parsed = JSON.parse(jsonStr);
+                  const chunkText =
+                    parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                  if (chunkText) {
+                    fullContent += chunkText;
+                    controller.enqueue(encoder.encode(chunkText));
                   }
-                } catch (e) {
+                } catch {
                   // Skip non-JSON SSE lines
                 }
               }
@@ -218,12 +373,13 @@ Guidelines:
           if (buffer.trim() && buffer.trim().startsWith("data: ")) {
             try {
               const parsed = JSON.parse(buffer.trim().slice(6));
-              const delta = parsed.choices?.[0]?.delta?.content || "";
-              if (delta) {
-                fullContent += delta;
-                controller.enqueue(encoder.encode(delta));
+              const chunkText =
+                parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
+              if (chunkText) {
+                fullContent += chunkText;
+                controller.enqueue(encoder.encode(chunkText));
               }
-            } catch (e) {}
+            } catch {}
           }
 
           // Save complete generated message to MongoDB session
@@ -255,10 +411,11 @@ Guidelines:
         "Cache-Control": "no-cache, no-transform",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
     console.error("POST Stream Chat API Error:", error);
     return NextResponse.json(
-      { error: "Failed to stream chat response: " + (error?.message || "Unknown error") },
+      { error: "Failed to stream chat response: " + errorMsg },
       { status: 500 }
     );
   }

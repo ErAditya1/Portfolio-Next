@@ -36,6 +36,7 @@ interface Settings {
   recentlyLearned: string[];
   emergingExpertise: string[];
   aiModel?: string;
+  geminiApiKey?: string;
 }
 
 const defaultSettings: Settings = {
@@ -57,7 +58,8 @@ const defaultSettings: Settings = {
   currentlyLearning: [],
   recentlyLearned: [],
   emergingExpertise: [],
-  aiModel: "qwen2.5",
+  aiModel: "gemini-2.0-flash",
+  geminiApiKey: "",
 };
 
 export default function AdminSettings() {
@@ -330,47 +332,59 @@ export default function AdminSettings() {
           ))}
         </div>
 
-        {/* AI Assistant & LLM Model Selection */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
+        {/* AI Assistant & Gemini LLM Settings */}
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-5">
           <div>
             <h2 className="text-white font-semibold text-base flex items-center gap-2">
-              🤖 AI Assistant LLM Model Selection
+              ✨ Google Gemini AI Chatbot Configuration
             </h2>
             <p className="text-gray-400 text-xs mt-1">
-              Select the active AI model powering the Portfolio AI Chatbot (llm.cheetahagi.com).
+              Configure Google Gemini API key and model for your portfolio AI Assistant.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-400 text-xs mb-1 font-medium">Select Model Preset</label>
+              <label className="block text-gray-400 text-xs mb-1 font-medium">Select Gemini Model</label>
               <select
-                value={settings.aiModel || "qwen2.5"}
+                value={settings.aiModel || "gemini-2.0-flash"}
                 onChange={(e) => setSettings((s) => ({ ...s, aiModel: e.target.value }))}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500 text-sm"
               >
-                <option value="qwen2.5">Qwen 2.5 (Recommended for speed & reasoning)</option>
-                <option value="qwen">Qwen (Standard)</option>
-                <option value="llama3.2">Llama 3.2 (Meta LLM)</option>
-                <option value="llama3">Llama 3 (Standard)</option>
-                <option value="mistral">Mistral (7B)</option>
-                <option value="custom">Custom Model Name...</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Recommended: Ultra-fast & high intelligence)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Fast & reliable)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep complex reasoning)</option>
+                <option value="custom">Custom Model Tag...</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-gray-400 text-xs mb-1 font-medium">Active Model Tag / Name</label>
+              <label className="block text-gray-400 text-xs mb-1 font-medium">Active Gemini Model Tag</label>
               <input
                 type="text"
-                value={settings.aiModel || "qwen2.5"}
+                value={settings.aiModel || "gemini-2.0-flash"}
                 onChange={(e) => setSettings((s) => ({ ...s, aiModel: e.target.value }))}
-                placeholder="e.g. qwen2.5, llama3.2"
+                placeholder="e.g. gemini-2.0-flash"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm font-mono"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-gray-400 text-xs mb-1 font-medium flex items-center justify-between">
+                <span>Google Gemini API Key</span>
+                <span className="text-[11px] text-purple-400">Dynamic Key (Also checks GEMINI_API_KEY in .env)</span>
+              </label>
+              <input
+                type="password"
+                value={settings.geminiApiKey || ""}
+                onChange={(e) => setSettings((s) => ({ ...s, geminiApiKey: e.target.value }))}
+                placeholder="AIzaSy..."
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm font-mono"
               />
             </div>
           </div>
           <p className="text-[11px] text-emerald-400">
-            ✓ Make sure the model (e.g. <code className="bg-gray-800 px-1 py-0.5 rounded text-white">qwen2.5</code>) is pulled into Ollama on your VPS using <code className="bg-gray-800 px-1 py-0.5 rounded text-white">sudo ./pull-llm.sh qwen2.5</code>.
+            ✓ The chatbot dynamically streams responses in real time and uses your customized portfolio prompt (covering all skills, projects, and contact info).
           </p>
         </div>
 

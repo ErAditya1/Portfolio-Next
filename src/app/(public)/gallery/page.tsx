@@ -22,7 +22,7 @@ export default async function GalleryPage() {
         id: String(g._id || g.title),
         title: String(g.title || ""),
         category: String(g.category || "Projects"),
-        imageUrl: String(g.imageUrl || "/images/projects/Bright_Veil.png"),
+        imageUrl: String(g.imageUrl || ""),
         description: g.description ? String(g.description) : undefined,
         badgeIcon: "📷",
         badgeLabel: String(g.title || "Gallery Item"),

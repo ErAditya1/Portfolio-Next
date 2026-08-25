@@ -18,14 +18,14 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
     { name: "Gallery", href: "/gallery" },
   ];
 
-  const socialLinks = (settings?.socialLinks && settings.socialLinks.length > 0) 
-    ? settings.socialLinks 
+  const socialLinks = (settings?.socialLinks && settings.socialLinks.length > 0)
+    ? settings.socialLinks
     : [
-        { platform: "Github", url: settings?.githubUrl || "https://github.com/ErAditya1" },
-        { platform: "Linkedin", url: settings?.linkedinUrl || "https://linkedin.com" },
-        { platform: "Twitter", url: settings?.twitterUrl || "https://twitter.com" },
-        { platform: "Mail", url: `mailto:${settings?.ownerEmail || "mradityaji2@gmail.com"}` },
-      ];
+      { platform: "Github", url: settings?.githubUrl || "https://github.com/ErAditya1" },
+      { platform: "Linkedin", url: settings?.linkedinUrl || "https://linkedin.com/in/eraditya1" },
+      { platform: "Twitter", url: settings?.twitterUrl || "https://x.com/Excited_Adi" },
+      { platform: "Mail", url: `mailto:${settings?.ownerEmail || "mradityaji2@gmail.com"}` },
+    ];
 
   return (
     <footer className="py-16 border-t border-border/50 bg-card/30 backdrop-blur-md relative overflow-hidden">
@@ -44,10 +44,10 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social, idx) => {
-                const Icon = social.platform.toLowerCase().includes("github") ? Github : 
-                             social.platform.toLowerCase().includes("linkedin") ? Linkedin : 
-                             social.platform.toLowerCase().includes("twitter") || social.platform.toLowerCase().includes("x") ? Twitter : 
-                             social.platform.toLowerCase().includes("mail") ? Mail : Github;
+                const Icon = social.platform.toLowerCase().includes("github") ? Github :
+                  social.platform.toLowerCase().includes("linkedin") ? Linkedin :
+                    social.platform.toLowerCase().includes("twitter") || social.platform.toLowerCase().includes("x") ? Twitter :
+                      social.platform.toLowerCase().includes("mail") ? Mail : Github;
 
                 return (
                   <a
@@ -71,8 +71,8 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
             <ul className="space-y-2.5">
               {footerLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     className="text-muted-foreground hover:text-indigo-500 transition-colors text-xs font-semibold flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-500/30 group-hover:bg-indigo-500 transition-colors" />

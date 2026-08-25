@@ -3,6 +3,7 @@ import { Space_Grotesk, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { JsonLd } from "@/components/public/JsonLd";
+import { faqSchemaData } from "@/components/public/FAQSection";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -22,40 +23,39 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
   
-  let title = "Aditya Kumar | Top MERN & Full Stack Developer in Barabanki & Lucknow";
-  let description = "Official Portfolio of Aditya Kumar — Top Full Stack MERN Stack Developer & System Engineer in Barabanki / Lucknow, Uttar Pradesh. Specializing in Next.js, React, Node.js, Python Django, and Scalable Web Applications.";
+  let title = "Aditya Kumar | Full Stack Developer & AI Systems Engineer (Lucknow / Remote)";
+  let description = "Official Portfolio of Aditya Kumar — Full Stack Developer & AI Systems Engineer in Barabanki / Lucknow, Uttar Pradesh, India. Specializing in Next.js 15, React 19, NestJS, Real-Time AI Voice Telephony (ElevenLabs), and WhatsApp Cloud API SaaS.";
 
   return {
     title: {
       default: title,
-      template: `%s | Aditya Kumar - Full Stack Developer`,
+      template: `%s | Aditya Kumar - Full Stack & AI Systems Engineer`,
     },
     description: description,
     keywords: [
       "Aditya Kumar",
-      "Aditya Kumar Barabanki",
-      "Aditya Kumar Lucknow",
       "Aditya Kumar Developer",
-      "Aditya Kumar MERN Stack Developer",
       "Aditya Kumar Full Stack Developer",
-      "Aditya Portfolio",
-      "Aditya Barabanki Developer",
-      "Top Developer in Barabanki",
-      "Best Full Stack Developer in Barabanki",
-      "Best MERN Stack Developer in Lucknow",
-      "Aditya Kumar Next.js Developer",
-      "Aditya Kumar Python Django Developer",
+      "Aditya Kumar AI Engineer",
+      "Aditya Kumar Lucknow",
+      "Aditya Kumar Barabanki",
+      "Best Full Stack Developer Lucknow",
+      "Top Next.js Developer Barabanki",
+      "Full Stack Developer Uttar Pradesh",
+      "MERN Stack Architect India",
+      "AI Voice Telephony Developer",
+      "ElevenLabs Voice AI Developer",
+      "Callio AI Developer",
+      "WAutomator WhatsApp Cloud API",
+      "Amplibuzz Escrow SaaS",
+      "Hire Next.js Developer India",
+      "Remote Full Stack Engineer US UK",
       "Er Aditya Kumar",
       "ErAditya1",
-      "Aditya Kumar Web Architecture",
-      "Aditya Kumar Software Engineer Barabanki",
-      "Aditya Kumar Portfolio Website",
-      "Aditya Barabanki Full Stack",
-      "Top Web Developer Uttar Pradesh",
-      "Full Stack Developer India",
-      "MERN Stack Architect Barabanki",
+      "npx aditya-kumar",
+      "Full Stack Developer Portfolio",
       "Freelance Web Developer Lucknow",
     ],
     authors: [{ name: "Aditya Kumar", url: baseUrl }],
@@ -66,8 +66,8 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "/",
     },
     openGraph: {
-      title: "Aditya Kumar | Top Full Stack MERN Developer in Barabanki & Lucknow",
-      description: "Explore Aditya Kumar's portfolio, featured MERN stack projects, LMS portals, open source repositories, and full stack web architecture.",
+      title: "Aditya Kumar | Full Stack Developer & AI Systems Engineer",
+      description: "Explore Aditya Kumar's featured full-stack projects, real-time AI voice agents, WhatsApp automation SaaS platforms, and open source repositories.",
       url: baseUrl,
       siteName: "Aditya Kumar Portfolio",
       images: [
@@ -75,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/images/aditya_profile.png",
           width: 1200,
           height: 630,
-          alt: "Aditya Kumar - Top Full Stack MERN Developer in Barabanki",
+          alt: "Aditya Kumar - Full Stack Developer & AI Systems Engineer",
         },
       ],
       locale: "en_US",
@@ -83,8 +83,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Aditya Kumar | Top Full Stack MERN Developer in Barabanki",
-      description: "Official Portfolio of Aditya Kumar — MERN Stack Developer & System Engineer in Barabanki & Lucknow, Uttar Pradesh.",
+      title: "Aditya Kumar | Full Stack Developer & AI Systems Engineer",
+      description: "Official Portfolio of Aditya Kumar — Full Stack Developer & AI Systems Engineer in Barabanki & Lucknow, Uttar Pradesh, India.",
       images: ["/images/aditya_profile.png"],
       creator: "@eraditya1",
     },
@@ -115,20 +115,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
 
-  // Hyper-Targeted JSON-LD Schema for Google Search & Knowledge Graph
+  // Hyper-Targeted JSON-LD Schema for Google Search, SGE & Generative AI Knowledge Graphs
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Aditya Kumar",
-    "alternateName": ["Er Aditya Kumar", "ErAditya1", "Aditya Kumar Developer Barabanki"],
+    "alternateName": ["Er Aditya Kumar", "ErAditya1", "Aditya Kumar Developer", "Aditya Kumar Barabanki"],
     "url": baseUrl,
     "image": `${baseUrl}/images/aditya_profile.png`,
-    "jobTitle": "Full Stack MERN Developer & System Engineer",
+    "jobTitle": "Full Stack Developer & AI Systems Engineer",
     "worksFor": {
       "@type": "Organization",
-      "name": "Feeding Trends"
+      "name": "Feeding Trends",
+      "url": "https://feedingtrends.com"
     },
     "address": {
       "@type": "PostalAddress",
@@ -136,38 +137,44 @@ export default function RootLayout({
       "addressRegion": "Uttar Pradesh",
       "addressCountry": "India"
     },
+    "knowsLanguage": ["English", "Hindi"],
     "alumniOf": "Government Polytechnic Aadanpur Tanda",
     "knowsAbout": [
-      "Full Stack Web Development",
-      "MERN Stack Architecture",
-      "Next.js",
-      "React.js",
+      "Full-Stack Web Development",
+      "Next.js 15 App Router",
+      "React 19",
+      "TypeScript",
+      "NestJS",
       "Node.js",
-      "Express.js",
-      "MongoDB",
       "Python",
+      "FastAPI",
       "Django",
+      "Conversational Voice AI (ElevenLabs)",
+      "Meta WhatsApp Cloud API",
       "PostgreSQL",
-      "Web Architecture Barabanki Lucknow"
+      "MongoDB Atlas",
+      "Redis Caching & BullMQ Queues",
+      "Docker & Linux VPS Architecture"
     ],
     "sameAs": [
       "https://github.com/ErAditya1",
       "https://linkedin.com/in/eraditya1",
-      "https://twitter.com/eraditya1"
+      "https://twitter.com/eraditya1",
+      "https://www.npmjs.com/package/aditya-kumar"
     ]
   };
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "Aditya Kumar - Web Development & Software Services",
+    "name": "Aditya Kumar - Web & AI Engineering Services",
     "image": `${baseUrl}/images/aditya_profile.png`,
     "url": baseUrl,
     "telephone": "+919473774390",
     "email": "mradityaji2@gmail.com",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Barabanki / Lucknow Highway",
+      "streetAddress": "Barabanki / Lucknow Tech Corridor",
       "addressLocality": "Barabanki",
       "addressRegion": "Uttar Pradesh",
       "postalCode": "225001",
@@ -178,12 +185,66 @@ export default function RootLayout({
       "latitude": 26.9272,
       "longitude": 81.1824
     },
+    "areaServed": [
+      { "@type": "City", "name": "Lucknow" },
+      { "@type": "City", "name": "Barabanki" },
+      { "@type": "State", "name": "Uttar Pradesh" },
+      { "@type": "Country", "name": "India" },
+      { "@type": "Country", "name": "United States" },
+      { "@type": "Country", "name": "United Kingdom" }
+    ],
     "priceRange": "$$",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       "opens": "09:00",
-      "closes": "21:00"
+      "closes": "22:00"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Software Engineering & Freelance Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Full-Stack Web Development & Next.js SaaS Architecture",
+            "description": "End-to-end modern web applications with Next.js 15, React 19, TypeScript, PostgreSQL, and sub-second load times."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Real-Time AI Voice Agents & Cloud Telephony (ElevenLabs & Tata Smartflo)",
+            "description": "Low-latency sub-300ms conversational voice telephony pipelines, barge-in speech interruption detection, and CRM telemetry."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Enterprise WhatsApp Cloud API Automation & Gemini AI Chatbots",
+            "description": "Multi-tenant WhatsApp marketing platforms, automated broadcast campaigns, BullMQ job queues, and intelligent customer support bots."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "High-Throughput Backend Microservices & API Engineering",
+            "description": "Fault-tolerant backend systems with NestJS, Node.js, Python (FastAPI/Django), Redis caching, and database query optimization."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Freelance Technical Consulting & Startup MVP Development",
+            "description": "Rapid MVP prototyping, system design roadmaps, and dedicated contract engineering for startups and global businesses."
+          }
+        }
+      ]
     }
   };
 
@@ -209,6 +270,7 @@ export default function RootLayout({
         <JsonLd data={personSchema} />
         <JsonLd data={localBusinessSchema} />
         <JsonLd data={websiteSchema} />
+        <JsonLd data={faqSchemaData} />
         <Providers>
           <div className="antialiased min-h-screen bg-[var(--bg-gradient)] text-foreground transition-colors duration-300">
             {children}

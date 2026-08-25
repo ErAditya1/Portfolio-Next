@@ -22,6 +22,8 @@ export interface ISiteSettings extends Document {
   recentlyLearned: string[];
   emergingExpertise: string[];
   aiModel?: string;
+  geminiApiKey?: string;
+  aiApiKey?: string;
   updatedAt: Date;
 }
 
@@ -59,7 +61,9 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     currentlyLearning: [{ type: String }],
     recentlyLearned: [{ type: String }],
     emergingExpertise: [{ type: String }],
-    aiModel: { type: String, default: "qwen2.5" },
+    aiModel: { type: String, default: "gemini-2.0-flash" },
+    geminiApiKey: { type: String, default: "" },
+    aiApiKey: { type: String, default: "" },
   },
   { timestamps: true }
 );

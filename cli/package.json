@@ -1,0 +1,24 @@
+{
+  "name": "aditya-kumar",
+  "version": "1.0.2",
+  "description": "Interactive CLI business card and direct contact interface for Aditya Kumar — Full Stack Developer & AI Systems Engineer.",
+  "main": "bin/index.js",
+  "bin": {
+    "aditya-kumar": "bin/index.js"
+  },
+  "keywords": [
+    "aditya-kumar",
+    "portfolio",
+    "cli",
+    "card",
+    "developer",
+    "resume",
+    "npx"
+  ],
+  "author": "Aditya Kumar <mradityaji2@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErAditya1/Portfolio-Next.git"
+  }
+}

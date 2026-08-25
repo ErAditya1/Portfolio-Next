@@ -19,11 +19,21 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+import { FAQSection } from "@/components/public/FAQSection";
+
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Contact & Book Meeting | Aditya Kumar",
-  description: "Get in touch with Aditya Kumar for web development projects, freelance contracts, technical consulting, or booking a discovery meeting.",
+  title: "Contact & Hire Aditya Kumar | Full Stack & AI Systems Engineer",
+  description: "Connect with Aditya Kumar for high-impact full-stack web applications, real-time AI voice telephony, WhatsApp Cloud API SaaS, or schedule a 1-on-1 discovery call.",
+  keywords: [
+    "Contact Aditya Kumar",
+    "Hire Full Stack Developer India",
+    "Aditya Kumar WhatsApp",
+    "Hire AI Voice Telephony Developer",
+    "Next.js Developer Lucknow",
+    "Barabanki Developer Contact"
+  ]
 };
 
 export default async function ContactPage() {
@@ -35,25 +45,6 @@ export default async function ContactPage() {
   } catch (e) {
     console.error("DB connection error on contact page:", e);
   }
-
-  const faqs = [
-    {
-      q: "What technologies do you specialize in?",
-      a: "I specialize in modern full-stack web development using Next.js (App Router), React, Node.js, Express, MongoDB, Django, Python, WebSockets (Socket.io), and Tailwind CSS.",
-    },
-    {
-      q: "What is your typical project delivery timeline?",
-      a: "Timeline depends on project complexity. Standard landing pages or MVP applications take 1-2 weeks, while complex full-stack portals take 3-6 weeks with regular milestone updates.",
-    },
-    {
-      q: "Are you open to remote contracts or full-time roles?",
-      a: "Yes! I am available for full-time engineering positions, remote contract work, freelance projects, and technical consulting.",
-    },
-    {
-      q: "How do we get started on a project?",
-      a: "Simply send a message using the contact form below or email mradityaji2@gmail.com. I will reply within 24 hours to schedule an initial discovery call.",
-    },
-  ];
 
   return (
     <main className="pt-24 pb-20 overflow-hidden">
@@ -80,7 +71,7 @@ export default async function ContactPage() {
             </span>
             <div>
               <div className="text-sm font-bold text-foreground">Current Availability</div>
-              <div className="text-xs text-muted-foreground">Accepting new projects & full-time engineering roles.</div>
+              <div className="text-xs text-muted-foreground">Accepting new projects, contract engineering & full-time roles.</div>
             </div>
           </div>
           <span className="px-4 py-1.5 rounded-xl bg-card border border-border text-xs font-bold text-indigo-500">
@@ -94,28 +85,8 @@ export default async function ContactPage() {
           <ContactForm />
         </div>
 
-        {/* FAQ Section */}
-        <div className="mb-24 max-w-4xl mx-auto space-y-8">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-indigo-500 block flex items-center justify-center gap-1.5">
-              <HelpCircle className="w-4 h-4" /> FAQ
-            </span>
-            <h2 className="text-3xl font-bold text-foreground">Frequently Asked Questions</h2>
-            <p className="text-xs text-muted-foreground">Quick answers to common questions.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {faqs.map((faq, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-card border border-border space-y-2 hover:border-indigo-500/30 transition-all shadow-sm">
-                <h3 className="font-bold text-base text-foreground">{faq.q}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Book Meeting Banner */}
-        <div className="rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden max-w-6xl mx-auto">
+        <div className="rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden max-w-6xl mx-auto mb-16">
           <div className="space-y-3 max-w-xl text-center md:text-left z-10">
             <span className="text-xs font-bold uppercase tracking-widest text-indigo-200 block flex items-center gap-1.5 justify-center md:justify-start">
               <Calendar className="w-4 h-4" /> Schedule Call
@@ -124,7 +95,7 @@ export default async function ContactPage() {
               Book a 1-on-1 Discovery Call
             </h2>
             <p className="text-indigo-200 text-sm">
-              Want to discuss your project requirements live? Pick a convenient time for a technical discussion.
+              Want to discuss your project requirements live? Pick a convenient time for an architectural discussion.
             </p>
           </div>
 
@@ -135,6 +106,9 @@ export default async function ContactPage() {
             Book Meeting <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
+
+        {/* Interactive SEO & GEO FAQ Section */}
+        <FAQSection />
       </Container>
     </main>
   );

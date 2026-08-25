@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
-import { PROJECTS } from "@/Data";
 import Link from "next/link";
 import { ArrowLeft, Github, ExternalLink, Eye, ChevronRight, ChevronLeft } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
@@ -15,13 +14,15 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getProjectBySlug(slug: string) {
+async function getProjectBySlug(rawSlug: string) {
   try {
     await connectDB();
+    const slug = decodeURIComponent(rawSlug).trim();
     const dbProject = await Project.findOne({ 
       $or: [
         { slug: slug },
-        { slug: slug.toLowerCase() }
+        { slug: slug.toLowerCase() },
+        { slug: rawSlug }
       ]
     }).lean();
 
@@ -32,32 +33,6 @@ async function getProjectBySlug(slug: string) {
     console.error("DB error fetching project detail:", e);
   }
 
-  // Fallback to static PROJECTS dataset in Data.ts
-  const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const staticProj = PROJECTS.find(p => {
-    const idNorm = p.id.toLowerCase().replace(/[^a-z0-9]/g, "");
-    const titleNorm = p.title.toLowerCase().replace(/[^a-z0-9]/g, "");
-    return idNorm === normalizedSlug || titleNorm === normalizedSlug || slug.includes(idNorm) || idNorm.includes(normalizedSlug);
-  });
-
-  if (staticProj) {
-    return {
-      _id: staticProj.id,
-      title: staticProj.title,
-      slug: staticProj.id,
-      description: staticProj.desc,
-      content: `## System Overview\n${staticProj.desc}\n\n### Tech Stack & Architecture\nBuilt with ${staticProj.tech.join(", ")}. Designed for maximum performance, security, and responsive user experience.`,
-      techStack: staticProj.tech,
-      githubUrl: staticProj.repo,
-      liveUrl: staticProj.live,
-      images: [staticProj.img],
-      status: "completed",
-      views: 185,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-  }
-
   return null;
 }
 
@@ -66,16 +41,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = await getProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
 
-  const title = project.seoTitle || `${project.title} | Case Study - Aditya Kumar`;
-  const description = project.seoDescription || `Detailed case study of ${project.title}. ${project.description.substring(0, 160)}...`;
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
+  const title = project.seoTitle || `${project.title} — System Architecture & Case Study | Aditya Kumar`;
+  const description = project.seoDescription || `Detailed system design, tech stack, and production case study of ${project.title} engineered by Aditya Kumar.`;
 
   return {
     title,
     description,
-    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering", "Next.js Portfolio"],
+    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering", "Next.js Portfolio", "Software Architecture"],
+    alternates: {
+      canonical: `${baseUrl}/projects/${project.slug}`,
+    },
     openGraph: {
       title,
       description,
+      url: `${baseUrl}/projects/${project.slug}`,
       images: project.images?.[0] ? [{ url: project.images[0] }] : [],
       type: "article",
     },
@@ -89,17 +69,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  let dbSlugs: { slug: string }[] = [];
   try {
     await connectDB();
     const projects = await Project.find({}, "slug").lean();
-    dbSlugs = projects.map((p) => ({ slug: p.slug }));
+    return projects.map((p) => ({ slug: p.slug }));
   } catch (e) {
     console.error("Error generating static params:", e);
+    return [];
   }
-
-  const staticSlugs = PROJECTS.map((p) => ({ slug: p.id }));
-  return [...dbSlugs, ...staticSlugs];
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
@@ -120,27 +97,31 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     nextProject = nextP ? JSON.parse(JSON.stringify(nextP)) : null;
     prevProject = prevP ? JSON.parse(JSON.stringify(prevP)) : null;
   } catch (e) {
-    // Fallback static next/prev
-    const currentIdx = PROJECTS.findIndex(p => p.id === project.slug);
-    if (currentIdx !== -1) {
-      if (currentIdx > 0) prevProject = { slug: PROJECTS[currentIdx - 1].id, title: PROJECTS[currentIdx - 1].title };
-      if (currentIdx < PROJECTS.length - 1) nextProject = { slug: PROJECTS[currentIdx + 1].id, title: PROJECTS[currentIdx + 1].title };
-    }
+    console.error("Error fetching prev/next project:", e);
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
   const projectSchema = {
     "@context": "https://schema.org",
-    "@type": "SoftwareSourceCode",
+    "@type": ["SoftwareApplication", "SoftwareSourceCode"],
     "name": project.title,
     "description": project.description,
     "url": `${baseUrl}/projects/${project.slug}`,
-    "image": project.images?.[0],
-    "programmingLanguage": project.techStack,
-    "codeRepository": project.githubUrl,
+    "image": project.images?.[0] || `${baseUrl}/images/aditya_profile.png`,
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web, Cloud, Distributed Systems",
+    "programmingLanguage": project.techStack || ["JavaScript", "TypeScript", "Next.js", "Node.js"],
+    "codeRepository": project.githubUrl || "https://github.com/ErAditya1",
     "author": {
       "@type": "Person",
-      "name": "Aditya Kumar"
+      "name": "Aditya Kumar",
+      "url": baseUrl,
+      "jobTitle": "Full Stack Developer & AI Systems Engineer"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
     },
     "dateCreated": project.createdAt,
     "dateModified": project.updatedAt

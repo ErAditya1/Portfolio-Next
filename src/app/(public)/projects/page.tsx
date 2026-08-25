@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
         title: String(p.title || ""),
         slug: String(p.slug || ""),
         description: String(p.description || ""),
-        coverImage: String(p.coverImage || (Array.isArray(p.images) && p.images[0]) || "/images/projects/Bright_Veil.png"),
+        coverImage: String(p.coverImage || (Array.isArray(p.images) && p.images[0]) || ""),
         techStack: Array.isArray(p.techStack) ? p.techStack : ["Full Stack"],
         liveUrl: String(p.liveUrl || "#"),
         githubUrl: p.githubUrl ? String(p.githubUrl) : undefined,

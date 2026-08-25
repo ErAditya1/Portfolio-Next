@@ -2,10 +2,9 @@ import { MetadataRoute } from "next";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import Blog from "@/models/Blog";
-import { PROJECTS, BLOGS } from "@/Data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.dev";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
 
   let projectUrls: MetadataRoute.Sitemap = [];
   let blogUrls: MetadataRoute.Sitemap = [];
@@ -37,25 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch (e) {
     console.error("Error generating dynamic sitemap:", e);
-  }
-
-  // Fallback static project & blog URLs if DB is empty
-  if (projectUrls.length === 0) {
-    projectUrls = PROJECTS.map((p) => ({
-      url: `${baseUrl}/projects/${p.id}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    }));
-  }
-
-  if (blogUrls.length === 0) {
-    blogUrls = BLOGS.map((b) => ({
-      url: `${baseUrl}/blog/${b.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    }));
   }
 
   const staticRoutes: MetadataRoute.Sitemap = [

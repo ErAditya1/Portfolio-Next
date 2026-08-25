@@ -189,7 +189,7 @@ export default function AdminExperiencesPage() {
                 type="text"
                 value={formData.companyLogo || ""}
                 onChange={(e) => setFormData({ ...formData, companyLogo: e.target.value })}
-                placeholder="e.g. /images/companies/softpro_india.svg"
+                placeholder="e.g. https://res.cloudinary.com/... or https://example.com/logo.png"
                 className="w-full px-4 py-2.5 rounded-xl bg-accent border border-border text-foreground font-medium"
               />
             </div>
