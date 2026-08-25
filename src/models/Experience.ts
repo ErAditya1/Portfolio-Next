@@ -12,6 +12,7 @@ export interface IExperience extends Document {
   type: "job" | "trainee" | "freelance" | "education";
   order: number;
   featured: boolean;
+  isCurrent?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +30,7 @@ const ExperienceSchema = new Schema<IExperience>(
     type: { type: String, enum: ["job", "trainee", "freelance", "education"], default: "job" },
     order: { type: Number, default: 0 },
     featured: { type: Boolean, default: true },
+    isCurrent: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
