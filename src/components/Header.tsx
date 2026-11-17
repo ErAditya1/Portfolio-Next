@@ -36,6 +36,7 @@ export function Header() {
     { href: "/experience", label: "Experience" },
     { href: "/blog", label: "Blog" },
     { href: "/gallery", label: "Gallery" },
+    { href: "/agent", label: "AI Agent" },
     { href: "/mcp", label: "MCP" },
     { href: "/contact", label: "Contact" },
   ];
@@ -72,7 +73,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative py-1 transition-all ${
+                  className={`relative whitespace-nowrap py-1 transition-all ${
                     isActive
                       ? "text-indigo-600 dark:text-indigo-400 font-bold"
                       : "text-muted-foreground hover:text-foreground font-medium"
