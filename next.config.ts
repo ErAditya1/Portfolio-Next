@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async redirects() {
+    // The agent now lives on the homepage (inline + full screen), not its own page.
+    return [{ source: "/agent", destination: "/?chat=open", permanent: false }];
+  },
   async headers() {
     return [
       {

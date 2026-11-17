@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { ISiteSettings } from "@/types";
 import { JsonLd } from "@/components/public/JsonLd";
+import { AgentProvider } from "@/components/public/agent/AgentProvider";
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
     let settings: ISiteSettings | undefined;
@@ -53,10 +54,12 @@ export default async function PublicLayout({ children }: { children: React.React
         <>
             <JsonLd data={personSchema} />
             <JsonLd data={websiteSchema} />
-            <Header />
-            {children}
-            <FloatingFeatures />
-            <Footer settings={settings} />
+            <AgentProvider>
+                <Header />
+                {children}
+                <FloatingFeatures />
+                <Footer settings={settings} />
+            </AgentProvider>
         </>
     );
 }

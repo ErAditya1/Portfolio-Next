@@ -102,16 +102,19 @@ export function usePortfolioAgent() {
     [persist]
   );
 
-  /** Send a user message. Any open approval forms are cancelled (the protocol requires answering them). */
+  /**
+   * Send a user message; resolves when the run ends. Any open approval forms
+   * are cancelled (the protocol requires answering every open interrupt).
+   */
   const send = useCallback(
-    (text: string) => {
+    async (text: string) => {
       const agent = agentRef.current;
       const content = text.trim();
       if (!agent || !content || agent.isRunning) return;
       agent.addMessage({ id: uid(), role: "user", content });
       setMessages([...agent.messages]);
       const resume: ResumeEntry[] = agent.pendingInterrupts.map((i) => ({ interruptId: i.id, status: "cancelled" }));
-      void run(resume);
+      await run(resume);
     },
     [run]
   );
