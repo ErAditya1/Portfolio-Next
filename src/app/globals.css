@@ -163,3 +163,50 @@
 .text-gradient {
   @apply bg-gradient-to-r from-emerald-500 via-sky-500 to-indigo-500 dark:from-emerald-400 dark:via-sky-400 dark:to-indigo-400 bg-clip-text text-transparent;
 }
+
+/* ── Custom scrollbars ──────────────────────────────────────────────────────
+   Thin, rounded, indigo-tinted thumb on a transparent track. WebKit/Blink get
+   the ::-webkit-scrollbar version (rounded, hover state); Firefox, which has no
+   ::-webkit-scrollbar, gets the standard properties instead. */
+:root {
+  --scroll-thumb: rgb(99 102 241 / 0.35);
+  --scroll-thumb-hover: rgb(99 102 241 / 0.65);
+}
+.dark {
+  --scroll-thumb: rgb(139 92 246 / 0.35);
+  --scroll-thumb-hover: rgb(139 92 246 / 0.7);
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) transparent;
+  }
+}
+
+/* Slimmer bar for chat panes and horizontal card rails. */
+.scrollbar-slim::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  border-width: 1px;
+}

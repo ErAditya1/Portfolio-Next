@@ -66,6 +66,18 @@ export const agentTools = {
     }),
     execute: async (args) => shown(await data.searchBlogs({ ...args, limit: args.limit ?? 5 })),
   }),
+  get_blog: tool({
+    description: "Read the full markdown of one published blog post, by slug (from search_blogs). Use it to summarise or answer questions about a post.",
+    inputSchema: z.object({ slug: z.string().min(1).max(120) }),
+    execute: async ({ slug }) => {
+      const b = await data.getBlog(slug);
+      if (!b) return { error: `No published post "${slug}"` };
+      return {
+        displayedToVisitor: "A link card to this post is shown to the visitor. Summarise or answer from the content; don't paste it whole.",
+        data: b,
+      };
+    },
+  }),
   [CONTACT_TOOL]: tool({
     description:
       "Send Aditya a contact/hiring enquiry on the visitor's behalf. The visitor will see a form pre-filled with these values and must approve it before anything is sent. Only call this when the visitor wants to contact or hire Aditya. Fill in what you know; ask for name and email if missing.",

@@ -132,6 +132,19 @@ export function usePortfolioAgent() {
     [run]
   );
 
+  /** Drop the last answer and ask the same question again. */
+  const regenerate = useCallback(async () => {
+    const agent = agentRef.current;
+    if (!agent || agent.isRunning) return;
+    const lastUser = agent.messages.map((m) => m.role).lastIndexOf("user");
+    if (lastUser < 0) return;
+    agent.setMessages(agent.messages.slice(0, lastUser + 1));
+    agent.pendingInterrupts = [];
+    setMessages([...agent.messages]);
+    setInterrupts([]);
+    await run();
+  }, [run]);
+
   const stop = useCallback(() => agentRef.current?.abortRun(), []);
 
   const reset = useCallback(() => {
@@ -149,5 +162,5 @@ export function usePortfolioAgent() {
     } catch {}
   }, []);
 
-  return { ready, messages, interrupts, running, error, send, respond, stop, reset };
+  return { ready, messages, interrupts, running, error, send, respond, regenerate, stop, reset };
 }
