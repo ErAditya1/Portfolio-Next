@@ -13,18 +13,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MorphicNavbar } from "@/components/kokonutui/morphic-navbar";
+import { motion } from "framer-motion";
 import { useAgent } from "@/components/public/agent/AgentProvider";
 import { ThemeToggle } from "./ThemeToggle";
 
-/** Primary sections, shown in the Kokonut UI morphic navbar. */
-const PRIMARY = {
-  "/": { name: "Home" },
-  "/projects": { name: "Projects" },
-  "/about": { name: "About" },
-  "/experience": { name: "Experience" },
-  "/blog": { name: "Blog" },
-};
+/** Primary sections, always visible on desktop. */
+const PRIMARY = [
+  { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
+  { href: "/about", label: "About" },
+  { href: "/experience", label: "Experience" },
+  { href: "/blog", label: "Blog" },
+];
 
 /** Secondary pages, tucked into "More" on desktop. */
 const MORE = [
@@ -41,7 +41,7 @@ function AskAIButton({ compact = false, onClick }: { compact?: boolean; onClick:
       type="button"
       onClick={onClick}
       aria-label="Ask my AI agent"
-      className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_100%] font-bold text-white shadow-lg shadow-indigo-500/25 transition-[background-position,transform] duration-500 hover:bg-[position:100%_0] active:scale-95 ${
+      className={`group inline-flex items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 font-bold text-indigo-600 transition hover:border-indigo-500/50 hover:bg-indigo-500/15 active:scale-95 dark:text-indigo-300 ${
         compact ? "h-10 w-10 justify-center" : "px-4 py-2 text-sm"
       }`}
     >
@@ -65,6 +65,30 @@ export function Header() {
   }, []);
 
   const moreActive = MORE.some((m) => isActive(pathname, m.href));
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const pill = (key: string, active: boolean) => (
+    <>
+      {active && (
+        <motion.span
+          layoutId="nav-active"
+          className="absolute inset-0 -z-10 rounded-full bg-indigo-600 shadow-md shadow-indigo-500/30"
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      )}
+      {!active && hovered === key && (
+        <motion.span
+          layoutId="nav-hover"
+          className="absolute inset-0 -z-10 rounded-full bg-foreground/[0.06]"
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      )}
+    </>
+  );
+  const itemClass = (active: boolean) =>
+    `relative z-0 inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+      active ? "font-semibold text-white" : "font-medium text-muted-foreground hover:text-foreground"
+    }`;
 
   return (
     <header
@@ -85,15 +109,30 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Desktop nav: Kokonut morphic navbar + More menu */}
-          <nav aria-label="Main" className="hidden lg:flex items-center gap-2">
-            <MorphicNavbar items={PRIMARY} />
+          {/* Desktop nav: one glass pill with a sliding active indicator */}
+          <nav
+            aria-label="Main"
+            onMouseLeave={() => setHovered(null)}
+            className="hidden lg:flex items-center gap-0.5 rounded-full border border-border bg-background/60 p-1 shadow-sm backdrop-blur-md"
+          >
+            {PRIMARY.map((link) => {
+              const active = isActive(pathname, link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  onMouseEnter={() => setHovered(link.href)}
+                  className={itemClass(active)}
+                >
+                  {pill(link.href, active)}
+                  {link.label}
+                </Link>
+              );
+            })}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                className={`inline-flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                  moreActive ? "text-indigo-600 dark:text-indigo-400 font-bold" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
+              <DropdownMenuTrigger onMouseEnter={() => setHovered("more")} className={itemClass(moreActive)}>
+                {pill("more", moreActive)}
                 More <ChevronDown className="h-3.5 w-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-60 rounded-2xl p-1.5">
@@ -121,7 +160,7 @@ export function Header() {
               <AskAIButton onClick={() => openAgent()} />
               <Link
                 href="/contact"
-                className="rounded-xl border border-border px-4 py-2 text-sm font-bold text-foreground transition hover:border-indigo-500/40 hover:bg-indigo-500/5"
+                className="rounded-xl bg-indigo-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700"
               >
                 Hire Me
               </Link>
@@ -165,7 +204,7 @@ export function Header() {
                     </button>
 
                     <nav aria-label="Mobile" className="flex flex-col gap-1">
-                      {[...Object.entries(PRIMARY).map(([href, v]) => ({ href, label: v.name })), ...MORE].map((link) => (
+                      {[...PRIMARY, ...MORE].map((link) => (
                         <Link
                           key={link.href}
                           href={link.href}
