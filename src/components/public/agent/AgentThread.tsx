@@ -459,6 +459,7 @@ export function AgentComposer({ className = "" }: { className?: string }) {
       <AI_Prompt
         className="w-full max-w-none"
         headerText=""
+        compact={true}
         models={[{ name: "gpt-oss-120b", description: "OpenAI open-weight model, served by Groq" }]}
         defaultModel="gpt-oss-120b"
         placeholder={interrupts.length ? "Or type a new message (cancels the open form)…" : "Ask about projects, skills, hiring…"}
@@ -470,7 +471,7 @@ export function AgentComposer({ className = "" }: { className?: string }) {
           return send(text);
         }}
       />
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">AI can make mistakes. Nothing is sent to Aditya without your approval.</p>
+      <p className="mt-1.5 text-center text-[10px] text-muted-foreground/80 sm:text-[11px]">AI can make mistakes. Nothing is sent to Aditya without your approval.</p>
     </div>
   );
 }

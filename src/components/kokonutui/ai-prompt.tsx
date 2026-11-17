@@ -98,6 +98,8 @@ interface AIPromptProps {
   /** Called with the files picked, dropped or pasted into the prompt. */
   onAttach?: (files: FileList | File[]) => void;
   className?: string;
+  /** When true (or auto-detected when no attachments or extra model controls are needed), uses a sleek compact single-tier layout. */
+  compact?: boolean;
 }
 
 const DEFAULT_COMMANDS: PromptCommand[] = [
@@ -760,6 +762,7 @@ export default function AI_Prompt({
   onAttach,
   commands = DEFAULT_COMMANDS,
   className,
+  compact,
 }: AIPromptProps) {
   const [value, setValue] = useState("");
   const [command, setCommand] = useState<PromptCommand | null>(null);
@@ -773,8 +776,10 @@ export default function AI_Prompt({
   const nextIdRef = useRef(0);
   // The last message sent, for ↑ in an empty prompt (as in a terminal).
   const lastSentRef = useRef("");
+  const isCompact = compact ?? (!onAttach && (!models || models.length <= 1));
+  const minHeight = isCompact ? 42 : 56;
   const { textareaRef, adjustHeight } = useAutoResizeTextarea({
-    minHeight: 56,
+    minHeight,
     maxHeight: 280,
   });
   // A default that is not in `models` would show a model the menu can't pick.
@@ -1065,7 +1070,12 @@ export default function AI_Prompt({
             // shadow-none and md:text-[15px] beat the shadow-xs and
             // md:text-sm of the current shadcn Textarea. Touch screens get 16px so
             // iOS does not zoom into the field on focus.
-            className="min-h-[56px] w-full resize-none rounded-none border-none bg-transparent px-4 pt-3.5 pb-1 text-[15px] text-black leading-relaxed caret-indigo-500 shadow-none placeholder:text-black/35 focus-visible:ring-0 focus-visible:ring-offset-0 md:text-[15px] dark:bg-transparent dark:text-white dark:caret-indigo-400 dark:placeholder:text-white/35 [@media(pointer:coarse)]:text-base"
+            className={cn(
+              "w-full resize-none rounded-none border-none bg-transparent text-black leading-relaxed caret-indigo-500 shadow-none placeholder:text-black/35 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent dark:text-white dark:caret-indigo-400 dark:placeholder:text-white/35 [@media(pointer:coarse)]:text-base",
+              isCompact
+                ? "min-h-[42px] py-2.5 pl-3.5 pr-11 text-sm md:text-sm"
+                : "min-h-[56px] px-4 pt-3.5 pb-1 text-[15px] md:text-[15px]"
+            )}
             id={textareaId}
             onBlur={() => setMenuDismissed(true)}
             onChange={(e) => {
@@ -1089,53 +1099,64 @@ export default function AI_Prompt({
             value={value}
           />
 
-          <div className="flex items-center gap-1 px-2.5 pt-1 pb-2.5">
-            {onAttach && (
-            <label
-              className={cn(
-                "flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full ring-1 ring-black/10 dark:ring-white/15",
-                "text-black/60 hover:bg-black/5 hover:text-black dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white",
-                "has-focus-visible:ring-2 has-focus-visible:ring-blue-500/60",
-                "transition-[background-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          {isCompact ? (
+            <div className="absolute bottom-1.5 right-1.5 flex items-center">
+              <SendButton
+                canSend={canSend}
+                onSend={submit}
+                onStop={stop}
+                responding={responding}
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 px-2.5 pt-1 pb-2.5">
+              {onAttach && (
+                <label
+                  className={cn(
+                    "flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full ring-1 ring-black/10 dark:ring-white/15",
+                    "text-black/60 hover:bg-black/5 hover:text-black dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white",
+                    "has-focus-visible:ring-2 has-focus-visible:ring-blue-500/60",
+                    "transition-[background-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  )}
+                  title="Attach files, or drop or paste them"
+                >
+                  <input
+                    aria-label="Attach files"
+                    className="sr-only"
+                    multiple
+                    onChange={(e) => {
+                      if (e.target.files?.length) {
+                        addFiles(e.target.files);
+                      }
+                      // Cleared so picking the same file again still fires.
+                      e.target.value = "";
+                    }}
+                    type="file"
+                  />
+                  <Plus aria-hidden="true" className="size-4" />
+                </label>
               )}
-              title="Attach files, or drop or paste them"
-            >
-              <input
-                aria-label="Attach files"
-                className="sr-only"
-                multiple
-                onChange={(e) => {
-                  if (e.target.files?.length) {
-                    addFiles(e.target.files);
-                  }
-                  // Cleared so picking the same file again still fires.
-                  e.target.value = "";
-                }}
-                type="file"
+              <ModelMenu
+                models={models}
+                onSelect={pickModel}
+                selected={selectedModel}
               />
-              <Plus aria-hidden="true" className="size-4" />
-            </label>
-            )}
-            <ModelMenu
-              models={models}
-              onSelect={pickModel}
-              selected={selectedModel}
-            />
-            {efforts.length > 0 && effort && (
-              <EffortMenu
-                efforts={efforts}
-                onChange={setEffort}
-                value={effort}
+              {efforts.length > 0 && effort && (
+                <EffortMenu
+                  efforts={efforts}
+                  onChange={setEffort}
+                  value={effort}
+                />
+              )}
+              <div className="flex-1" />
+              <SendButton
+                canSend={canSend}
+                onSend={submit}
+                onStop={stop}
+                responding={responding}
               />
-            )}
-            <div className="flex-1" />
-            <SendButton
-              canSend={canSend}
-              onSend={submit}
-              onStop={stop}
-              responding={responding}
-            />
-          </div>
+            </div>
+          )}
 
           {/* Shown while files are dragged over the prompt. */}
           {onAttach && (
