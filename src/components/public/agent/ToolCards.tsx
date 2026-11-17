@@ -66,7 +66,7 @@ type Experience = {
   isCurrent?: boolean;
   skills?: string[];
 };
-type Blog = { title: string; slug: string; excerpt: string; tags?: string[]; readTime?: number; createdAt?: string };
+type Blog = { title: string; slug: string; excerpt: string; coverImage?: string; tags?: string[]; readTime?: number; createdAt?: string };
 type Profile = {
   ownerName?: string;
   ownerTitle?: string;
@@ -554,9 +554,21 @@ function BlogsGrid({ items, onAsk }: { items: Blog[]; onAsk?: Ask }) {
     <div className="grid w-full gap-3 sm:grid-cols-2">
       {items.map((b, i) => (
         <div key={b.slug} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:shadow-lg hover:shadow-indigo-500/5">
-          <div className={`flex h-16 items-end bg-gradient-to-br ${BLOG_GRADIENTS[i % BLOG_GRADIENTS.length]} p-3`}>
-            <BookOpen className="h-5 w-5 text-foreground/60" />
-          </div>
+          <Link href={`/blog/${b.slug}`} className="relative block h-32 w-full overflow-hidden bg-muted">
+            {b.coverImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={b.coverImage}
+                alt={b.title}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+            ) : (
+              <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${BLOG_GRADIENTS[i % BLOG_GRADIENTS.length]}`}>
+                <BookOpen className="h-7 w-7 text-foreground/40" />
+              </div>
+            )}
+          </Link>
           <div className="flex flex-1 flex-col gap-1.5 p-3">
             <Link href={`/blog/${b.slug}`} className="line-clamp-2 text-sm font-bold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
               {b.title}
@@ -587,9 +599,16 @@ function BlogsGrid({ items, onAsk }: { items: Blog[]; onAsk?: Ask }) {
 function BlogLink({ b }: { b: Blog }) {
   return (
     <Link href={`/blog/${b.slug}`} className="group flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-3 transition hover:border-indigo-500/40">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10">
-        <BookOpen className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-      </span>
+      {b.coverImage ? (
+        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-muted">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={b.coverImage} alt={b.title} className="h-full w-full object-cover" />
+        </div>
+      ) : (
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10">
+          <BookOpen className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+        </span>
+      )}
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-bold text-foreground">{b.title}</span>
         <span className="block text-[11px] text-muted-foreground">{b.readTime ? `${b.readTime} min read · ` : ""}Open the full post</span>

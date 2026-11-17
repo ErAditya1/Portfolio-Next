@@ -88,7 +88,7 @@ export async function searchBlogs(opts: { query?: string; tag?: string; limit?: 
     filter.$or = [{ title: rx }, { excerpt: rx }, { tags: rx }];
   }
   const blogs = await Blog.find(filter)
-    .select("title slug excerpt tags readTime createdAt")
+    .select("title slug excerpt tags readTime coverImage createdAt")
     .sort({ createdAt: -1 })
     .limit(opts.limit ?? 10)
     .lean();
@@ -100,7 +100,7 @@ export async function searchBlogs(opts: { query?: string; tag?: string; limit?: 
 export async function getBlog(slug: string) {
   await connectDB();
   const b = await Blog.findOne({ slug: slug.toLowerCase(), published: true })
-    .select("title slug excerpt content tags readTime createdAt updatedAt")
+    .select("title slug excerpt content tags readTime coverImage createdAt updatedAt")
     .lean();
   if (!b) return null;
   return clean({ ...b, url: `${SITE_URL}/blog/${slug.toLowerCase()}` });
