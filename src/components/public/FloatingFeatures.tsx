@@ -1,25 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Bot, MessageCircle } from "lucide-react";
+import { useAgent } from "@/components/public/agent/AgentProvider";
 
 export function FloatingFeatures() {
   const [mounted, setMounted] = useState(false);
+  const { openAgent, fullscreen } = useAgent();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted || fullscreen) return null;
 
   return (
     <div className="fixed bottom-8 right-6 z-50 flex flex-col gap-3">
-      {/* 1. 🤖 AI Assistant */}
-      <Link
-        href="/whatsapp-assistant"
+      {/* 1. 🤖 AI Agent (opens the full-screen chat) */}
+      <button
+        type="button"
+        onClick={() => openAgent()}
         className="relative group p-3.5 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-300 shadow-xl shadow-indigo-600/30 flex items-center justify-center hover:scale-110 active:scale-95 border border-white/20"
-        title="AI Assistant"
+        title="Ask my AI agent"
+        aria-label="Ask my AI agent"
       >
         <Bot className="w-6 h-6" />
         <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -27,9 +30,9 @@ export function FloatingFeatures() {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-400"></span>
         </span>
         <span className="absolute right-full mr-3 hidden group-hover:flex px-2.5 py-1.5 bg-gray-900 text-white text-xs font-bold rounded-xl shadow-xl whitespace-nowrap">
-          AI Assistant
+          Ask my AI agent
         </span>
-      </Link>
+      </button>
 
       {/* 2. 💬 WhatsApp Chat */}
       <a

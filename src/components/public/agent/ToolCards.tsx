@@ -344,6 +344,7 @@ export function ToolCallView({
   interrupt,
   busy,
   onRespond,
+  hideRunning = false,
 }: {
   name: string;
   argsJson: string;
@@ -351,6 +352,8 @@ export function ToolCallView({
   interrupt?: Interrupt;
   busy: boolean;
   onRespond?: (interruptId: string, status: "resolved" | "cancelled", payload?: unknown) => void;
+  /** Skip the loading pill (when a tool-activity list already shows progress). */
+  hideRunning?: boolean;
 }) {
   if (name === "request_contact") {
     return (
@@ -364,7 +367,7 @@ export function ToolCallView({
     );
   }
 
-  if (resultJson === undefined) return busy ? <ToolRunning name={name} /> : null;
+  if (resultJson === undefined) return busy && !hideRunning ? <ToolRunning name={name} /> : null;
 
   switch (name) {
     case "list_projects": {

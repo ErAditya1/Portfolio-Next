@@ -13,6 +13,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { HeroSection } from "@/components/public/HeroSection";
+import { AskAISection } from "@/components/public/agent/AskAISection";
 import { ProjectSlider, ProjectItem } from "@/components/public/ProjectSlider";
 import { ServicesSection } from "@/components/public/ServicesSection";
 import { TechStackSection } from "@/components/public/TechStackSection";
@@ -207,6 +208,9 @@ export default async function HomePage() {
     <main className="space-y-16 pb-20">
       {/* 1. HERO SECTION */}
       <HeroSection settings={settings} />
+
+      {/* 1b. ASK MY AI AGENT (AG-UI, inline + full screen) */}
+      <AskAISection />
 
       {/* 2. FEATURED PROJECTS SLIDER (DYNAMIC MONGO DB) */}
       <section id="featured-projects" className="py-12 md:py-20 relative overflow-hidden">
