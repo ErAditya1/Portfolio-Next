@@ -106,6 +106,18 @@ export async function getBlog(slug: string) {
   return clean({ ...b, url: `${SITE_URL}/blog/${slug.toLowerCase()}` });
 }
 
+/** Save a contact enquiry. Callers must have the visitor's explicit approval. */
+export async function createEnquiry(input: {
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+}) {
+  await connectDB();
+  const e = await Enquiry.create({ ...input, subject: input.subject || "Via AI agent" });
+  return { id: String(e._id), status: "sent" as const };
+}
+
 // ─── Admin (token-protected callers only) ───────────────────────────────────
 
 export async function listEnquiries(opts: { status?: "unread" | "read" | "replied"; limit?: number }) {
