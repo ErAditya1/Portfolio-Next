@@ -36,6 +36,7 @@ export function Header() {
     { href: "/experience", label: "Experience" },
     { href: "/blog", label: "Blog" },
     { href: "/gallery", label: "Gallery" },
+    { href: "/mcp", label: "MCP" },
     { href: "/contact", label: "Contact" },
   ];
 
