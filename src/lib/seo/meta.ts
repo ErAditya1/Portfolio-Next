@@ -14,6 +14,10 @@ export function pageMeta(opts: {
   images?: { url: string; width?: number; height?: number; alt?: string }[];
 }): Metadata {
   const fullTitle = opts.absolute ? opts.title : `${opts.title} · ${OWNER_NAME}`;
+  // A page-level openGraph object replaces the inherited one, so the generated card must be re-declared.
+  const images = opts.images ?? [
+    { url: "/opengraph-image", width: 1200, height: 630, alt: "Aditya Kumar — Full Stack Developer, Lucknow, India" },
+  ];
   return {
     title: opts.absolute ? { absolute: opts.title } : opts.title,
     description: opts.description,
@@ -25,13 +29,13 @@ export function pageMeta(opts: {
       siteName: OWNER_NAME,
       locale: "en_IN",
       type: opts.type || "website",
-      ...(opts.images && { images: opts.images }),
+      images,
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description: opts.description,
-      ...(opts.images && { images: opts.images.map((i) => i.url) }),
+      images: images.map((i) => i.url),
     },
   };
 }

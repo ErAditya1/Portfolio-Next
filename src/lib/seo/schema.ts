@@ -67,9 +67,25 @@ export function personNode(s: ISiteSettings | undefined, exps: ProfileExperience
         ...(/feeding trends/i.test(job.company) && { url: "https://feedingtrends.com" }),
       },
     }),
-    ...(education.length && {
-      alumniOf: education.map((e) => ({ "@type": "EducationalOrganization", name: e.company })),
-    }),
+    // Education: admin "education" entries win; otherwise the same defaults ExperiencePageClient shows.
+    ...(education.length
+      ? { alumniOf: education.map((e) => ({ "@type": "EducationalOrganization", name: e.company })) }
+      : {
+          hasCredential: [
+            {
+              "@type": "EducationalOccupationalCredential",
+              name: "Diploma in Computer Science & Engineering",
+              credentialCategory: "diploma",
+              recognizedBy: { "@type": "Organization", name: "Board of Technical Education Uttar Pradesh (BTEUP)" },
+              dateCreated: "2025",
+            },
+          ],
+          memberOf: {
+            "@type": "EducationalOrganization",
+            name: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
+            description: "B.Tech in Computer Science & Engineering (in progress)",
+          },
+        }),
     hasOccupation: {
       "@type": "Occupation",
       name: headlineRole(s),
