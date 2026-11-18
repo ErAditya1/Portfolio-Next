@@ -46,8 +46,7 @@ description ≤ 120 chars, website = the matching `/projects/<slug>` URL, topics
 
 ## LinkedIn
 
-**Custom URL:** confirm whether `/in/adityaji1/` or `/in/eraditya1` is live, then use the same one everywhere
-(tell me which, and I'll update the site's settings).
+**Custom URL:** `linkedin.com/in/adityaji1/` (confirmed). Keep it; it already matches the site, footer and schema.
 
 **Headline options**
 1. `Full Stack Developer at Feeding Trends | Next.js, React, Node.js, NestJS | MERN Stack | AI Voice & WhatsApp Automation | Lucknow · Open to remote`

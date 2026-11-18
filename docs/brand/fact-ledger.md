@@ -20,7 +20,7 @@ Update this file first whenever something changes. Built with the `developer-per
 | Platform | URL | Resolves? | Notes |
 |---|---|---|---|
 | GitHub | https://github.com/ErAditya1 | 200 | Location, website match |
-| LinkedIn | https://www.linkedin.com/in/adityaji1/ | bot-walled | **Conflict — see below** |
+| LinkedIn | https://www.linkedin.com/in/adityaji1/ | bot-walled | Confirmed by owner (2026-11-18) |
 | X | https://x.com/excited_adi | bot-walled | From DB |
 | npm | https://www.npmjs.com/package/aditya-kumar | 200 | `npx aditya-kumar` card |
 
@@ -60,7 +60,7 @@ The polytechnic's own name was removed on purpose (commit df6495c) — don't rei
 ## Conflicts
 | Attribute | Value A | Value B | Resolution |
 |---|---|---|---|
-| LinkedIn URL | `/in/adityaji1/` (DB, Aug 2026) | `/in/eraditya1` (old hard-coded fallbacks, old llms.txt) | Using DB value everywhere. **Owner to confirm which is live.** |
+| LinkedIn URL | `/in/adityaji1/` (DB, Aug 2026) | `/in/eraditya1` (old hard-coded fallbacks, old llms.txt) | **Resolved 2026-11-18: owner confirmed `/in/adityaji1/`.** Used everywhere; `eraditya1` must not be used. |
 | Website | eraditya.vercel.app | eraditya.dev (old llms.txt) | eraditya.dev doesn't resolve → removed |
 | X handle | @excited_adi (DB) | @eraditya1 (old twitter:creator) | Using DB value |
 | Headline | Full Stack Developer | "(Junior Level)", "AI Systems Engineer", "Backend & System Engineer" | Unified to "Full Stack Developer" |

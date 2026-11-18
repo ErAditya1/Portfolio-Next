@@ -59,7 +59,7 @@ networks", homepage testimonials.
 - [ ] Merge the PR, then in **Search Console**: submit `sitemap.xml`, request indexing for `/`, `/about`,
       `/projects`, `/experience`, `/blog`, `/contact`.
 - [ ] **Bing Webmaster Tools**: import from Search Console (ChatGPT/Copilot ground on Bing).
-- [ ] Confirm the live **LinkedIn URL** (`adityaji1` vs `eraditya1`).
+- [x] LinkedIn URL confirmed: `linkedin.com/in/adityaji1/` (already used on the site and in schema).
 - [ ] Apply GitHub + LinkedIn copy from `profile-copy.md`.
 - [ ] Create/refresh Peerlist, Contra, Twine, Upwork profiles; add their URLs in Admin → Settings → social links.
 - [ ] Add education in Admin → Experiences → Education if you want it shown (schema picks it up).
