@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { connectDB } from "@/lib/db";
 import Enquiry from "@/models/Enquiry";
+import { sendEnquiryNotification } from "@/lib/mailer";
 
 const enquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -54,6 +55,17 @@ export async function POST(req: NextRequest) {
     }
 
     const enquiry = await Enquiry.create(parsed.data);
+
+    // Send stylized SMTP email notification to Aditya & acknowledgment to visitor
+    sendEnquiryNotification({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      subject: parsed.data.subject,
+      message: parsed.data.message,
+      source: "contact_portal",
+    }).catch((e) => console.error("[Contact API] Mail notification error:", e));
+
     return NextResponse.json({ message: "Message sent successfully!", id: enquiry._id }, { status: 201 });
   } catch (error) {
     console.error(error);

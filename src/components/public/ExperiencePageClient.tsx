@@ -94,7 +94,7 @@ const educationItems = [
   {
     title: "Bachelor of Technology (B.Tech) — Computer Science & Engineering",
     institution: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
-    board: "AKTU, Lucknow | 2024 – Present",
+    board: "AKTU, Lucknow | 2025 – Present",
     icon: GraduationCap,
     highlight: "Undergraduate Degree · Pursuing",
   },
@@ -157,11 +157,11 @@ export function ExperiencePageClient({ experiences, companies }: ExperiencePageC
   const displayEducation =
     customEducation.length > 0
       ? [
-          ...customEducation,
-          ...educationItems.filter(
-            (base) => !customEducation.some((c) => c.title.toLowerCase().includes(base.title.toLowerCase().slice(0, 15)))
-          ),
-        ]
+        ...customEducation,
+        ...educationItems.filter(
+          (base) => !customEducation.some((c) => c.title.toLowerCase().includes(base.title.toLowerCase().slice(0, 15)))
+        ),
+      ]
       : educationItems;
 
   return (

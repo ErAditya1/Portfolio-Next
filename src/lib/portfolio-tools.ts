@@ -13,6 +13,7 @@ import Experience from "@/models/Experience";
 import Blog from "@/models/Blog";
 import Enquiry from "@/models/Enquiry";
 import SiteSettings from "@/models/SiteSettings";
+import { sendEnquiryNotification } from "@/lib/mailer";
 
 const SITE_URL = (process.env.NEXTAUTH_URL || "https://eraditya.vercel.app").replace(/\/$/, "");
 
@@ -115,6 +116,16 @@ export async function createEnquiry(input: {
 }) {
   await connectDB();
   const e = await Enquiry.create({ ...input, subject: input.subject || "Via AI agent" });
+
+  // Send stylized SMTP email notification to Aditya & acknowledgment to visitor
+  sendEnquiryNotification({
+    name: input.name,
+    email: input.email,
+    subject: input.subject || "AI Agent Hiring / Collaboration Inquiry",
+    message: input.message,
+    source: "ai_agent",
+  }).catch((err) => console.error("[Agent Mailer] Notification error:", err));
+
   return { id: String(e._id), status: "sent" as const };
 }
 
