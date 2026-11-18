@@ -290,3 +290,32 @@
 .blog-content :where(table) { width: 100%; margin: 1.5rem 0; border-collapse: collapse; font-size: 0.95rem; }
 .blog-content :where(th, td) { padding: 0.6rem 0.8rem; border: 1px solid var(--border); text-align: left; }
 .blog-content :where(th) { background: color-mix(in srgb, var(--foreground) 5%, transparent); color: var(--foreground); }
+
+/* ── Admin rich-text editor (TipTap) ─────────────────────────────────────────
+   Reuses .blog-content so the editor looks like the published post, with the
+   colour variables pinned to the admin panel's dark surface. */
+.rte-content {
+  --foreground: #f8fafc;
+  --muted-foreground: #cbd5e1;
+  --primary: #a78bfa;
+  --border: #374151;
+  --card: #111827;
+  caret-color: #a78bfa;
+}
+.rte-content.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: #6b7280;
+}
+.rte-content.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+.rte-content.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid #a78bfa;
+  outline-offset: 2px;
+}
+.rte-content.ProseMirror :where(a) { cursor: text; }

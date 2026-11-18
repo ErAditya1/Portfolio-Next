@@ -7,6 +7,8 @@ import { ArrowLeft, Github, ExternalLink, Eye, ChevronRight, ChevronLeft } from 
 import { ViewTracker } from "@/components/public/ViewTracker";
 import { ImageCarousel } from "@/components/public/ImageCarousel";
 import { JsonLd } from "@/components/public/JsonLd";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const revalidate = 3600;
 
@@ -203,9 +205,14 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 <span className="w-8 h-1 bg-indigo-600 rounded-full" />
                 The Story & Architecture
               </h2>
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-p:text-muted-foreground prose-p:leading-relaxed prose-headings:text-foreground prose-strong:text-foreground whitespace-pre-line text-sm md:text-base">
-                {project.content}
-              </div>
+              {/* Case studies are HTML (from the admin editor) or older Markdown. */}
+              {/<[a-z][\s\S]*>/i.test(project.content) ? (
+                <div className="blog-content" dangerouslySetInnerHTML={{ __html: project.content }} />
+              ) : (
+                <div className="blog-content">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.content}</ReactMarkdown>
+                </div>
+              )}
             </section>
           )}
 

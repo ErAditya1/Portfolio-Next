@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ArrowLeft, Plus, X, Upload, Github, Globe, Star } from "lucide-react";
 import Link from "next/link";
+import { RichTextEditor } from "./RichTextEditor";
 
 interface ProjectFormData {
   title: string;
@@ -183,13 +184,15 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
               />
             </div>
             <div>
-              <label className="text-sm text-gray-400 mb-1.5 block">Full Content (Markdown)</label>
-              <textarea
+              <label className="text-sm text-gray-400 mb-1.5 block">
+                Case Study <span className="text-gray-500">· shown as “The Story &amp; Architecture” on the project page</span>
+              </label>
+              <RichTextEditor
                 value={form.content}
-                onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-                rows={8}
-                placeholder="# Project Details&#10;&#10;Detailed description in markdown..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 resize-none font-mono text-sm"
+                onChange={(html) => setForm((f) => ({ ...f, content: html }))}
+                uploadFolder="portfolio/projects"
+                placeholder="Tell the story: the problem, what you built, key decisions, challenges and results. Paste or drop screenshots anywhere."
+                minHeight={380}
               />
             </div>
           </div>
