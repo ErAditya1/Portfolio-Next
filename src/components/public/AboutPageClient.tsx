@@ -426,7 +426,7 @@ export function AboutPageClient({ settings }: AboutPageClientProps) {
           </div>
 
           {/* ================= 5. SEO & GEO FAQS ================= */}
-          <FAQSection />
+          <FAQSection preset="about" title="Quick answers about Aditya" />
 
           {/* ================= 6. CALL TO ACTION ================= */}
           <CallToActionSection />

@@ -22,7 +22,7 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
     ? settings.socialLinks
     : [
       { platform: "Github", url: settings?.githubUrl || "https://github.com/ErAditya1" },
-      { platform: "Linkedin", url: settings?.linkedinUrl || "https://linkedin.com/in/eraditya1" },
+      { platform: "Linkedin", url: settings?.linkedinUrl || "https://www.linkedin.com/in/adityaji1/" },
       { platform: "Twitter", url: settings?.twitterUrl || "https://x.com/Excited_Adi" },
       { platform: "Mail", url: `mailto:${settings?.ownerEmail || "mradityaji2@gmail.com"}` },
     ];
@@ -54,7 +54,7 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
                     key={idx}
                     href={social.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel={social.url.startsWith("mailto:") ? undefined : "me noopener noreferrer"}
                     className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-indigo-500 hover:border-indigo-500/40 transition-all group shadow-sm"
                     aria-label={social.platform}
                   >

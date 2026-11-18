@@ -2,52 +2,72 @@ import { MetadataRoute } from "next";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import Blog from "@/models/Blog";
+import SiteSettings from "@/models/SiteSettings";
+import Experience from "@/models/Experience";
+import Gallery from "@/models/Gallery";
+import { SITE_URL } from "@/lib/seo/site";
+
+export const revalidate = 3600;
+
+type Dated = { slug?: string; updatedAt?: Date | string; createdAt?: Date | string; coverImage?: string; images?: string[] };
+const latest = (items: Dated[]) =>
+  items.reduce<Date | undefined>((acc, i) => {
+    const d = new Date(i.updatedAt || i.createdAt || 0);
+    return !acc || d > acc ? d : acc;
+  }, undefined);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
-
-  let projectUrls: MetadataRoute.Sitemap = [];
-  let blogUrls: MetadataRoute.Sitemap = [];
+  let projects: Dated[] = [];
+  let blogs: Dated[] = [];
+  let settingsAt: Date | undefined;
+  let experienceAt: Date | undefined;
+  let galleryAt: Date | undefined;
 
   try {
     await connectDB();
-
-    const [projects, blogs] = await Promise.all([
-      Project.find({}, "slug updatedAt").lean(),
-      Blog.find({ published: true }, "slug updatedAt").lean(),
+    const [p, b, s, e, g] = await Promise.all([
+      Project.find({}, "slug updatedAt createdAt coverImage images").lean<Dated[]>(),
+      Blog.find({ published: true }, "slug updatedAt createdAt coverImage").lean<Dated[]>(),
+      SiteSettings.findOne({}, "updatedAt").lean<Dated>(),
+      Experience.find({}, "updatedAt createdAt").lean<Dated[]>(),
+      Gallery.find({}, "updatedAt createdAt").lean<Dated[]>(),
     ]);
-
-    if (projects && projects.length > 0) {
-      projectUrls = projects.map((p) => ({
-        url: `${baseUrl}/projects/${p.slug}`,
-        lastModified: new Date(p.updatedAt || new Date()),
-        changeFrequency: "weekly" as const,
-        priority: 0.85,
-      }));
-    }
-
-    if (blogs && blogs.length > 0) {
-      blogUrls = blogs.map((b) => ({
-        url: `${baseUrl}/blog/${b.slug}`,
-        lastModified: new Date(b.updatedAt || new Date()),
-        changeFrequency: "weekly" as const,
-        priority: 0.85,
-      }));
-    }
+    projects = p;
+    blogs = b;
+    settingsAt = s?.updatedAt ? new Date(s.updatedAt) : undefined;
+    experienceAt = latest(e);
+    galleryAt = latest(g);
   } catch (e) {
     console.error("Error generating dynamic sitemap:", e);
   }
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/projects`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: `${baseUrl}/experience`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: `${baseUrl}/gallery`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 },
-    { url: `${baseUrl}/mcp`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-  ];
+  const projectsAt = latest(projects);
+  const blogsAt = latest(blogs);
+  const newest = [settingsAt, projectsAt, blogsAt, experienceAt].filter(Boolean).sort((a, b) => +b! - +a!)[0];
 
-  return [...staticRoutes, ...projectUrls, ...blogUrls];
+  const page = (path: string, lastModified: Date | undefined, priority: number): MetadataRoute.Sitemap[number] => ({
+    url: `${SITE_URL}${path}`,
+    ...(lastModified && { lastModified }),
+    priority,
+  });
+
+  return [
+    page("/", newest, 1.0),
+    page("/about", settingsAt, 0.9),
+    page("/projects", projectsAt, 0.9),
+    page("/experience", experienceAt, 0.8),
+    page("/blog", blogsAt, 0.8),
+    page("/contact", settingsAt, 0.7),
+    page("/gallery", galleryAt, 0.5),
+    page("/mcp", undefined, 0.5),
+    page("/whatsapp-assistant", undefined, 0.4),
+    ...projects.map((p) => ({
+      ...page(`/projects/${p.slug}`, new Date(p.updatedAt || p.createdAt || Date.now()), 0.8),
+      ...((p.coverImage || p.images?.[0]) && { images: [p.coverImage || p.images![0]] }),
+    })),
+    ...blogs.map((b) => ({
+      ...page(`/blog/${b.slug}`, new Date(b.updatedAt || b.createdAt || Date.now()), 0.7),
+      ...(b.coverImage && { images: [b.coverImage] }),
+    })),
+  ];
 }

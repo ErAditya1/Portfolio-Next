@@ -1,14 +1,20 @@
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode, itemListNode, breadcrumbNode } from "@/lib/seo/schema";
+import { PERSON_ID } from "@/lib/seo/site";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 import { BlogPageClient, BlogItem } from "@/components/public/BlogPageClient";
 
 export const revalidate = 60; // Dynamic revalidation every 60s for fresh database blogs
 
-export const metadata: Metadata = {
-  title: "Blog & Insights | Aditya Kumar - Full Stack Developer",
-  description: "Technical blog and insights by Aditya Kumar. Articles on Next.js, real-time engines, backend engineering, DevOps, and clean code.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Blog — Next.js, Node.js & AI Engineering",
+  description:
+    "Articles by Aditya Kumar on Next.js, Node.js and NestJS backends, BullMQ job queues, web scraping, AI voice agents, MCP and the projects behind them.",
+  path: "/blog",
+});
 
 export default async function BlogPage() {
   let dbBlogs: BlogItem[] = [];
@@ -64,5 +70,21 @@ export default async function BlogPage() {
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count);
 
-  return <BlogPageClient initialBlogs={blogs} popularTopics={popularTopics} />;
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          webPageNode({
+            type: ["CollectionPage", "Blog"],
+            path: "/blog",
+            name: "Aditya Kumar's Blog",
+            mainEntity: itemListNode(blogs.map((b) => ({ name: b.title, path: `/blog/${b.slug}` }))),
+            extra: { author: { "@id": PERSON_ID }, publisher: { "@id": PERSON_ID } },
+          }),
+          breadcrumbNode([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }])
+        )}
+      />
+      <BlogPageClient initialBlogs={blogs} popularTopics={popularTopics} />
+    </>
+  );
 }

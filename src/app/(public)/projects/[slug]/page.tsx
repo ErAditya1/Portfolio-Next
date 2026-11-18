@@ -7,6 +7,9 @@ import { ArrowLeft, Github, ExternalLink, Eye, ChevronRight, ChevronLeft } from 
 import { ViewTracker } from "@/components/public/ViewTracker";
 import { ImageCarousel } from "@/components/public/ImageCarousel";
 import { JsonLd } from "@/components/public/JsonLd";
+import { pageMeta, clampDescription } from "@/lib/seo/meta";
+import { graph, webPageNode, breadcrumbNode } from "@/lib/seo/schema";
+import { PERSON_ID, absUrl } from "@/lib/seo/site";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -41,32 +44,24 @@ async function getProjectBySlug(rawSlug: string) {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  if (!project) return { title: "Project Not Found" };
+  if (!project) return { title: "Project not found", robots: { index: false } };
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
-  const title = project.seoTitle || `${project.title} — System Architecture & Case Study | Aditya Kumar`;
-  const description = project.seoDescription || `Detailed system design, tech stack, and production case study of ${project.title} engineered by Aditya Kumar.`;
+  const title = project.seoTitle || `${project.title} — Case Study`;
+  const description = clampDescription(
+    project.seoDescription ||
+      `${project.title}: ${project.description} Built by Aditya Kumar with ${(project.techStack || []).slice(0, 4).join(", ")}.`
+  );
+  const image = project.coverImage || project.images?.[0];
 
   return {
-    title,
-    description,
-    keywords: [...(project.techStack || []), "Aditya Kumar", "Case Study", "System Design", "Backend Engineering", "Next.js Portfolio", "Software Architecture"],
-    alternates: {
-      canonical: `${baseUrl}/projects/${project.slug}`,
-    },
-    openGraph: {
+    ...pageMeta({
       title,
       description,
-      url: `${baseUrl}/projects/${project.slug}`,
-      images: project.images?.[0] ? [{ url: project.images[0] }] : [],
+      path: `/projects/${project.slug}`,
       type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: project.images?.[0] ? [project.images[0]] : [],
-    }
+      ...(image && { images: [{ url: image, alt: `${project.title} screenshot` }] }),
+    }),
+    keywords: [project.title, ...(project.techStack || []).slice(0, 6), "Aditya Kumar", "case study"],
   };
 }
 
@@ -102,32 +97,43 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     console.error("Error fetching prev/next project:", e);
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
-  const projectSchema = {
-    "@context": "https://schema.org",
-    "@type": ["SoftwareApplication", "SoftwareSourceCode"],
-    "name": project.title,
-    "description": project.description,
-    "url": `${baseUrl}/projects/${project.slug}`,
-    "image": project.images?.[0] || `${baseUrl}/images/aditya_profile.png`,
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web, Cloud, Distributed Systems",
-    "programmingLanguage": project.techStack || ["JavaScript", "TypeScript", "Next.js", "Node.js"],
-    "codeRepository": project.githubUrl || "https://github.com/ErAditya1",
-    "author": {
-      "@type": "Person",
-      "name": "Aditya Kumar",
-      "url": baseUrl,
-      "jobTitle": "Full Stack Developer & AI Systems Engineer"
+  const pagePath = `/projects/${project.slug}`;
+  const projectId = `${absUrl(pagePath)}#project`;
+  // Only link a repository when the URL points at an actual repo, not the profile page.
+  const repo =
+    typeof project.githubUrl === "string" && /github\.com\/[^/]+\/[^/]+/.test(project.githubUrl) ? project.githubUrl : undefined;
+  const cover = project.coverImage || project.images?.[0];
+  const projectSchema = graph(
+    webPageNode({
+      path: pagePath,
+      name: `${project.title} — case study by Aditya Kumar`,
+      description: project.seoDescription || project.description,
+      mainEntity: { "@id": projectId },
+      dateModified: project.updatedAt,
+    }),
+    {
+      "@type": "WebApplication",
+      "@id": projectId,
+      name: project.title,
+      description: project.description,
+      url: absUrl(pagePath),
+      ...(project.liveUrl && project.liveUrl !== "#" && { sameAs: project.liveUrl }),
+      ...(cover && { image: cover }),
+      applicationCategory: "WebApplication",
+      operatingSystem: "Web",
+      ...(project.techStack?.length && { keywords: project.techStack.join(", ") }),
+      ...(repo && { isBasedOn: { "@type": "SoftwareSourceCode", codeRepository: repo, programmingLanguage: project.techStack } }),
+      creator: { "@id": PERSON_ID },
+      author: { "@id": PERSON_ID },
+      ...(project.createdAt && { dateCreated: project.createdAt }),
+      ...(project.updatedAt && { dateModified: project.updatedAt }),
     },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "dateCreated": project.createdAt,
-    "dateModified": project.updatedAt
-  };
+    breadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Projects", path: "/projects" },
+      { name: project.title, path: pagePath },
+    ])
+  );
 
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden bg-background">

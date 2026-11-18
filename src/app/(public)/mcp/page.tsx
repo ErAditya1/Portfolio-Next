@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description:
     "Connect Claude, ChatGPT, Cursor, VS Code, Gemini CLI and other AI tools to Aditya Kumar's portfolio through the Model Context Protocol (MCP), using a one-click install, a CLI command or a copy-paste prompt.",
   alternates: { canonical: "/mcp" },
+  openGraph: { url: "/mcp", title: "Connect your AI to Aditya Kumar's portfolio (MCP)" },
 };
 
 export default function McpPage() {

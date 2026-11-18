@@ -107,7 +107,7 @@ export async function POST(req: Request) {
       phone: "+91 9473774390",
       location: "Barabanki / Lucknow, Uttar Pradesh, India",
       github: "https://github.com/ErAditya1",
-      linkedin: "https://linkedin.com/in/eraditya1",
+      linkedin: "https://www.linkedin.com/in/adityaji1/",
     };
 
     let geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "";

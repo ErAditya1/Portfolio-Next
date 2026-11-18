@@ -2,15 +2,22 @@ import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { ISiteSettings } from "@/types";
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode } from "@/lib/seo/schema";
+import { PERSON_ID } from "@/lib/seo/site";
 import { AboutPageClient } from "@/components/public/AboutPageClient";
 
 export const revalidate = 60; // 60s dynamic revalidation
 
-export const metadata: Metadata = {
-  title: "About | Aditya Kumar — Full Stack & Real-Time System Engineer",
+export const metadata: Metadata = pageMeta({
+  title: "About Aditya Kumar — Full Stack Developer, Lucknow",
+  absolute: true,
   description:
-    "Learn about Aditya Kumar — Full Stack Developer & AI Engineer specializing in scalable web systems, low-latency audio telephony, and distributed microservices architectures.",
-};
+    "Who Aditya Kumar is: a Full Stack Developer from Barabanki working in Lucknow, his background, the stack he uses and the products he has built.",
+  path: "/about",
+  type: "profile",
+});
 
 export default async function AboutPage() {
   let settings: ISiteSettings = {} as ISiteSettings;
@@ -22,5 +29,21 @@ export default async function AboutPage() {
     console.error("DB connection error on About page:", e);
   }
 
-  return <AboutPageClient settings={settings} />;
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          webPageNode({
+            type: "ProfilePage",
+            path: "/about",
+            name: "About Aditya Kumar",
+            mainEntity: { "@id": PERSON_ID },
+            dateModified: settings?.updatedAt,
+            extra: { dateCreated: "2026-03-17T18:42:59.518Z" },
+          })
+        )}
+      />
+      <AboutPageClient settings={settings} />
+    </>
+  );
 }
