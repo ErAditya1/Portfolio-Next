@@ -187,7 +187,7 @@ export function FloatingFeatures() {
               initial={{ opacity: 0, x: 10, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 10, scale: 0.9 }}
-              className="flex items-center gap-2 rounded-full border border-border/80 bg-card/95 py-2 pl-3.5 pr-2.5 shadow-xl shadow-emerald-500/10 backdrop-blur-md"
+              className="flex items-center gap-2 rounded-full border border-border/80 bg-card/95 py-1.5 pl-3 pr-2 shadow-xl shadow-emerald-500/10 backdrop-blur-md"
             >
               <button
                 type="button"
@@ -206,7 +206,7 @@ export function FloatingFeatures() {
                   e.stopPropagation();
                   setShowPill(false);
                 }}
-                className="ml-1 rounded-full p-1 text-muted-foreground/60 transition hover:bg-foreground/5 hover:text-foreground"
+                className="ml-0.5 rounded-full p-1 text-muted-foreground/60 transition hover:bg-foreground/5 hover:text-foreground"
                 aria-label="Dismiss greeting"
               >
                 <X className="h-3 w-3" />
@@ -222,14 +222,14 @@ export function FloatingFeatures() {
             setIsOpen((prev) => !prev);
             setShowPill(false);
           }}
-          className="group relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#20ba59] to-[#25D366] text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#25D366]/50 active:scale-95 border border-white/25"
+          className="group relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#20ba59] to-[#25D366] text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#25D366]/50 active:scale-95 border border-white/25"
           title="Chat with Aditya on WhatsApp"
           aria-label="Chat on WhatsApp"
         >
           {/* Beacon ping */}
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+          <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-            <span className="relative inline-flex h-3.5 w-3.5 rounded-full border-2 border-[#20ba59] bg-emerald-400" />
+            <span className="relative inline-flex h-3 w-3 rounded-full border-2 border-[#20ba59] bg-emerald-400" />
           </span>
 
           <AnimatePresence mode="wait">
@@ -241,7 +241,7 @@ export function FloatingFeatures() {
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <X className="h-6 w-6 stroke-[2.5]" />
+                <X className="h-5 w-5 stroke-[2.5]" />
               </motion.div>
             ) : (
               <motion.div
@@ -251,7 +251,7 @@ export function FloatingFeatures() {
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <WhatsAppIcon className="h-7 w-7 text-white drop-shadow-sm" />
+                <WhatsAppIcon className="h-6 w-6 text-white drop-shadow-sm" />
               </motion.div>
             )}
           </AnimatePresence>
