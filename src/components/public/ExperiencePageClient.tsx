@@ -92,6 +92,20 @@ const keyContributions = [
 
 const educationItems = [
   {
+    title: "Bachelor of Technology (B.Tech) — Computer Science & Engineering",
+    institution: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
+    board: "AKTU, Lucknow | 2024 – Present",
+    icon: GraduationCap,
+    highlight: "Undergraduate Degree · Pursuing",
+  },
+  {
+    title: "Diploma in Computer Science & Engineering",
+    institution: "Board of Technical Education Uttar Pradesh (BTEUP)",
+    board: "BTEUP | 2022 – 2025",
+    icon: GraduationCap,
+    highlight: "Engineering Diploma",
+  },
+  {
     title: "Intermediate (Mathematics & Science)",
     institution: "S.S. Inter College, Zaidpur Barabanki",
     board: "Uttar Pradesh Board | 2022",
@@ -129,6 +143,27 @@ const certificationItems = [
 ];
 
 export function ExperiencePageClient({ experiences, companies }: ExperiencePageClientProps) {
+  // Merge any custom academic education entries added in the admin manager
+  const customEducation = experiences
+    .filter((e) => (e.type || "").toLowerCase() === "education")
+    .map((e) => ({
+      title: e.role,
+      institution: e.company,
+      board: e.period,
+      icon: GraduationCap,
+      highlight: e.isCurrent ? "Currently Pursuing" : "Academic Degree",
+    }));
+
+  const displayEducation =
+    customEducation.length > 0
+      ? [
+          ...customEducation,
+          ...educationItems.filter(
+            (base) => !customEducation.some((c) => c.title.toLowerCase().includes(base.title.toLowerCase().slice(0, 15)))
+          ),
+        ]
+      : educationItems;
+
   return (
     <main className="pt-28 pb-20 overflow-hidden bg-background">
       {/* Ambient Background Lights */}
@@ -326,7 +361,7 @@ export function ExperiencePageClient({ experiences, companies }: ExperiencePageC
                 </h3>
 
                 <div className="space-y-4">
-                  {educationItems.map((edu, idx) => {
+                  {displayEducation.map((edu, idx) => {
                     const Icon = edu.icon;
                     return (
                       <div
