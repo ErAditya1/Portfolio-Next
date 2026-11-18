@@ -70,17 +70,35 @@ const initials = (name: string) =>
 
 function CompanyMark({ item, size = "md" }: { item: TimelineExperienceItem; size?: "md" | "lg" }) {
   const box = size === "lg" ? "h-14 w-14 rounded-2xl text-base" : "h-11 w-11 rounded-xl text-sm";
+  // Square-ish logos fill the tile edge to edge; wide/tall wordmarks are
+  // fitted on a white tile so nothing gets cropped. Broken URLs fall back to initials.
+  const [fit, setFit] = useState<"cover" | "contain">("cover");
+  const [broken, setBroken] = useState(false);
+  const showLogo = !!item.companyLogo && !broken;
+
   return (
     <span
-      className={`relative flex ${box} shrink-0 items-center justify-center overflow-hidden border font-black ${
-        item.isCurrent
-          ? "border-indigo-500/40 bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30"
-          : "border-border bg-card text-indigo-600 dark:text-indigo-400"
+      className={`relative flex ${box} shrink-0 items-center justify-center overflow-hidden font-black ${
+        showLogo
+          ? `ring-1 ${item.isCurrent ? "ring-indigo-500/50 shadow-lg shadow-indigo-500/30" : "ring-border"} ${fit === "contain" ? "bg-white" : "bg-card"}`
+          : item.isCurrent
+            ? "border border-indigo-500/40 bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30"
+            : "border border-border bg-card text-indigo-600 dark:text-indigo-400"
       }`}
     >
-      {item.companyLogo ? (
+      {showLogo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.companyLogo} alt="" className="h-full w-full bg-white object-contain p-1.5" />
+        <img
+          src={item.companyLogo}
+          alt={`${item.company} logo`}
+          loading="lazy"
+          onLoad={(e) => {
+            const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+            if (w && h) setFit(w / h > 1.3 || h / w > 1.3 ? "contain" : "cover");
+          }}
+          onError={() => setBroken(true)}
+          className={`h-full w-full rounded-[inherit] ${fit === "cover" ? "object-cover" : "object-contain p-1"}`}
+        />
       ) : (
         initials(item.company)
       )}
