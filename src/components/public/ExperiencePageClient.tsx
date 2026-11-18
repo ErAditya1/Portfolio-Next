@@ -92,13 +92,6 @@ const keyContributions = [
 
 const educationItems = [
   {
-    title: "Diploma in Computer Science & Engineering",
-    institution: "Government Polytechnic Aadanpur, Tanda",
-    board: "BTEUP | 2022 – 2025",
-    icon: GraduationCap,
-    highlight: "Core Computing & Systems",
-  },
-  {
     title: "Intermediate (Mathematics & Science)",
     institution: "S.S. Inter College, Zaidpur Barabanki",
     board: "Uttar Pradesh Board | 2022",

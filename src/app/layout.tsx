@@ -138,7 +138,6 @@ export default function RootLayout({
       "addressCountry": "India"
     },
     "knowsLanguage": ["English", "Hindi"],
-    "alumniOf": "Government Polytechnic Aadanpur Tanda",
     "knowsAbout": [
       "Full-Stack Web Development",
       "Next.js 15 App Router",

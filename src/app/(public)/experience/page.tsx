@@ -98,11 +98,11 @@ const companiesList: CompanyCardItem[] = [
     logo: "/images/companies/softpro_india.svg",
   },
   {
-    id: "c-college",
-    name: "Government Polytechnic",
-    role: "Diploma Systems & LMS Project",
+    id: "c-softpro-python",
+    name: "Softpro India",
+    role: "Python / Django Trainee",
     period: "2024",
-    logo: "/images/companies/polytechnic.svg",
+    logo: "/images/companies/softpro_india.svg",
   },
   {
     id: "c-freelance",
