@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ArrowLeft, Plus, X, Upload } from "lucide-react";
 import Link from "next/link";
+import { RichTextEditor } from "./RichTextEditor";
 
 interface BlogFormData {
   title: string;
@@ -124,6 +125,11 @@ export function BlogForm({ initialData, editId }: BlogFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // The rich-text editor isn't a native input, so check it here.
+    if (!form.content.replace(/<[^>]+>/g, "").trim() && !/<img\b/i.test(form.content)) {
+      toast.error("Please write some content first.");
+      return;
+    }
     setSaving(true);
 
     const url = editId ? `/api/blogs/${editId}` : "/api/blogs";
@@ -196,21 +202,25 @@ export function BlogForm({ initialData, editId }: BlogFormProps) {
               />
             </div>
             <div>
-              <label className="text-sm text-gray-400 mb-1.5 block">Content (Markdown / HTML) *</label>
-              <textarea
+              <label className="text-sm text-gray-400 mb-1.5 block">
+                Content * <span className="text-gray-500">· paste or drop images straight into the text</span>
+              </label>
+              <RichTextEditor
                 value={form.content}
-                onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-                required
-                rows={18}
-                placeholder="# Heading&#10;&#10;Write your blog content in Markdown..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 resize-none font-mono text-sm"
+                onChange={(html) => setForm((f) => ({ ...f, content: html }))}
+                uploadFolder="portfolio/blogs"
               />
             </div>
           </div>
 
           {/* Gallery */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-4">
-            <h2 className="text-white font-semibold">Blog Gallery</h2>
+            <div>
+              <h2 className="text-white font-semibold">Top Carousel Gallery</h2>
+              <p className="mt-1 text-xs text-gray-500">
+                These images show in a slider above the article and replace the cover there. To put an image inside the text, use the image button in the editor instead.
+              </p>
+            </div>
             <div className="flex gap-2">
               <input
                 type="text"
