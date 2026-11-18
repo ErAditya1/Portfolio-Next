@@ -46,7 +46,6 @@ const ProjectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
-ProjectSchema.index({ slug: 1 });
 ProjectSchema.index({ featured: -1 });
 ProjectSchema.index({ status: 1 });
 ProjectSchema.index({ createdAt: -1 });

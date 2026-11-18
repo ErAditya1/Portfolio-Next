@@ -36,7 +36,6 @@ const BlogSchema = new Schema<IBlog>(
 );
 
 // Indexes for common queries
-BlogSchema.index({ slug: 1 });
 BlogSchema.index({ tags: 1 });
 BlogSchema.index({ published: -1, createdAt: -1 });
 BlogSchema.index({ title: "text", excerpt: "text" });
