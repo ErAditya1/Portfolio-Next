@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 
@@ -65,6 +66,10 @@ export async function POST(req: NextRequest) {
     }
 
     const blog = await Blog.create(body);
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+
     return NextResponse.json(blog, { status: 201 });
   } catch (error) {
     console.error("POST /api/blogs error:", error);

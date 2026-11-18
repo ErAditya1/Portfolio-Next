@@ -102,7 +102,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   // Only link a repository when the URL points at an actual repo, not the profile page.
   const repo =
     typeof project.githubUrl === "string" && /github\.com\/[^/]+\/[^/]+/.test(project.githubUrl) ? project.githubUrl : undefined;
-  const cover = project.coverImage || project.images?.[0];
+  const allImages = (Array.isArray(project.images) && project.images.length > 0)
+    ? project.images
+    : (project.coverImage ? [project.coverImage] : []);
+  const cover = (project.coverImage && allImages.includes(project.coverImage))
+    ? project.coverImage
+    : (allImages[0] || project.coverImage || "");
   const projectSchema = graph(
     webPageNode({
       path: pagePath,
@@ -199,9 +204,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
         {/* Content & Visuals */}
         <div className="grid grid-cols-1 gap-12">
-          {project.images?.length > 0 && (
+          {allImages.length > 0 && (
             <div className="space-y-6">
-              <ImageCarousel images={project.images} title={project.title} />
+              <ImageCarousel images={allImages} title={project.title} />
             </div>
           )}
 

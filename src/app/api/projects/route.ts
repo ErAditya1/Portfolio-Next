@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 
@@ -54,7 +55,18 @@ export async function POST(req: NextRequest) {
         .trim();
     }
 
+    // Ensure coverImage is synced
+    if (Array.isArray(body.images) && body.images.length > 0) {
+      if (!body.coverImage || !body.images.includes(body.coverImage)) {
+        body.coverImage = body.images[0];
+      }
+    }
+
     const project = await Project.create(body);
+
+    revalidatePath("/");
+    revalidatePath("/projects");
+
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
     console.error("POST /api/projects error:", error);

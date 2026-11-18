@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 
@@ -28,6 +29,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const blog = await Blog.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     if (!blog) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    if (blog.slug) {
+      revalidatePath(`/blog/${blog.slug}`);
+    }
+
     return NextResponse.json(blog);
   } catch (error) {
     console.error(error);
@@ -41,6 +49,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const { id } = await params;
     const blog = await Blog.findByIdAndDelete(id);
     if (!blog) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    if (blog.slug) {
+      revalidatePath(`/blog/${blog.slug}`);
+    }
+
     return NextResponse.json({ message: "Blog deleted" });
   } catch (error) {
     console.error(error);

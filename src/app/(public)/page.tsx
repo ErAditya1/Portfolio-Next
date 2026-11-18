@@ -76,7 +76,9 @@ export default async function HomePage() {
     desc: p.description,
     live: p.liveUrl || "#",
     repo: p.githubUrl,
-    img: p.coverImage || (p.images && p.images[0]) || "",
+    img: (Array.isArray(p.images) && p.images.length > 0 && p.coverImage && p.images.includes(p.coverImage))
+      ? p.coverImage
+      : ((Array.isArray(p.images) && p.images[0]) || p.coverImage || ""),
     tech: p.techStack || ["Full Stack"],
     tag: p.featured ? "Featured" : "Project",
     slug: p.slug,

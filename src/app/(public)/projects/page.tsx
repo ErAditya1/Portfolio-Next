@@ -30,7 +30,11 @@ export default async function ProjectsPage() {
         title: String(p.title || ""),
         slug: String(p.slug || ""),
         description: String(p.description || ""),
-        coverImage: String(p.coverImage || (Array.isArray(p.images) && p.images[0]) || ""),
+        coverImage: String(
+          (Array.isArray(p.images) && p.images.length > 0 && p.coverImage && p.images.includes(p.coverImage))
+            ? p.coverImage
+            : ((Array.isArray(p.images) && p.images[0]) || p.coverImage || "")
+        ),
         techStack: Array.isArray(p.techStack) ? p.techStack : ["Full Stack"],
         liveUrl: String(p.liveUrl || "#"),
         githubUrl: p.githubUrl ? String(p.githubUrl) : undefined,

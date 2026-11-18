@@ -18,9 +18,9 @@ export function ProjectCard({ project }: { project: IProject }) {
     >
       {/* Preview Image */}
       <div className="relative aspect-video bg-accent/20 overflow-hidden">
-        {p.images?.[0] ? (
+        {((p.coverImage && p.images?.includes(p.coverImage)) ? p.coverImage : (p.images?.[0] || p.coverImage)) ? (
           <Image 
-            src={p.images[0]} 
+            src={(p.coverImage && p.images?.includes(p.coverImage)) ? p.coverImage : (p.images?.[0] || p.coverImage || "")} 
             alt={p.title} 
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

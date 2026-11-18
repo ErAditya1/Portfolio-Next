@@ -15,6 +15,7 @@ interface ProjectFormData {
   techStack: string[];
   githubUrl: string;
   liveUrl: string;
+  coverImage: string;
   images: string[];
   featured: boolean;
   status: string;
@@ -30,6 +31,7 @@ const emptyForm: ProjectFormData = {
   techStack: [],
   githubUrl: "",
   liveUrl: "",
+  coverImage: "",
   images: [],
   featured: false,
   status: "completed",
@@ -43,7 +45,13 @@ interface ProjectFormProps {
 }
 
 export function ProjectForm({ initialData, editId }: ProjectFormProps) {
-  const [form, setForm] = useState<ProjectFormData>({ ...emptyForm, ...initialData });
+  const [form, setForm] = useState<ProjectFormData>(() => {
+    const merged = { ...emptyForm, ...initialData };
+    if (!merged.coverImage && merged.images && merged.images.length > 0) {
+      merged.coverImage = merged.images[0];
+    }
+    return merged;
+  });
   const [techInput, setTechInput] = useState("");
   const [imageInput, setImageInput] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -72,13 +80,23 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
   const addImage = () => {
     const trimmed = imageInput.trim();
     if (trimmed && !form.images.includes(trimmed)) {
-      setForm((f) => ({ ...f, images: [...f.images, trimmed] }));
+      const nextImages = [...form.images, trimmed];
+      setForm((f) => ({
+        ...f,
+        images: nextImages,
+        coverImage: f.coverImage || nextImages[0] || "",
+      }));
       setImageInput("");
     }
   };
 
   const removeImage = (img: string) => {
-    setForm((f) => ({ ...f, images: f.images.filter((i) => i !== img) }));
+    const nextImages = form.images.filter((i) => i !== img);
+    setForm((f) => ({
+      ...f,
+      images: nextImages,
+      coverImage: f.coverImage === img ? (nextImages[0] || "") : f.coverImage,
+    }));
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +113,12 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
       });
       const data = await res.json();
       if (data.url) {
-        setForm((f) => ({ ...f, images: [...f.images, data.url] }));
+        const nextImages = [...form.images, data.url];
+        setForm((f) => ({
+          ...f,
+          images: nextImages,
+          coverImage: f.coverImage || nextImages[0] || "",
+        }));
         toast.success("Image uploaded!");
       } else {
         toast.error("Upload failed");
@@ -112,10 +135,15 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
     const url = editId ? `/api/projects/${editId}` : "/api/projects";
     const method = editId ? "PUT" : "POST";
 
+    const payload = {
+      ...form,
+      coverImage: form.coverImage || form.images[0] || "",
+    };
+
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
 
     setSaving(false);
@@ -221,16 +249,47 @@ export function ProjectForm({ initialData, editId }: ProjectFormProps) {
               </label>
             </div>
             {form.images.length > 0 && (
-              <div className="grid grid-cols-3 gap-3">
-                {form.images.map((img) => (
-                  <div key={img} className="relative group rounded-lg overflow-hidden aspect-video bg-gray-800">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                    <button type="button" onClick={() => removeImage(img)} className="absolute top-1 right-1 w-6 h-6 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <X className="w-3 h-3 text-white" />
-                    </button>
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {form.images.map((img) => {
+                  const isCover = form.coverImage === img || (!form.coverImage && form.images[0] === img);
+                  return (
+                    <div
+                      key={img}
+                      className={`relative group rounded-xl overflow-hidden aspect-video bg-gray-800 border-2 transition-all ${
+                        isCover ? "border-purple-500 shadow-md shadow-purple-500/20" : "border-gray-700/60"
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+
+                      {isCover && (
+                        <div className="absolute top-2 left-2 bg-purple-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow flex items-center gap-1">
+                          <Star className="w-2.5 h-2.5 fill-white" /> Cover Image
+                        </div>
+                      )}
+
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-2">
+                        {!isCover && (
+                          <button
+                            type="button"
+                            onClick={() => setForm((f) => ({ ...f, coverImage: img }))}
+                            className="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-[11px] font-semibold transition-colors"
+                          >
+                            Set as Cover
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => removeImage(img)}
+                          className="w-7 h-7 bg-red-600 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-colors"
+                          title="Delete image"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
