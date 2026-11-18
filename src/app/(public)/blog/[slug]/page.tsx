@@ -208,7 +208,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             prose-blockquote:border-primary prose-blockquote:bg-accent/50 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:text-foreground prose-blockquote:font-medium
             prose-img:rounded-3xl prose-img:border prose-img:border-border prose-img:shadow-md"
           >
-            <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+            <div className="blog-content" dangerouslySetInnerHTML={{ __html: blog.content }} />
           </div>
         </article>
 
