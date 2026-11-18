@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="polyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#polyGrad)"/>
+  <!-- Graduation cap icon -->
+  <path d="M100 45 L165 78 L100 111 L35 78 Z" fill="#ffffff"/>
+  <path d="M55 92.5 L55 130 C55 148 100 158 100 158 C100 158 145 148 145 130 L145 92.5" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M165 80 L165 130" stroke="#fde047" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="165" cy="135" r="5" fill="#fde047"/>
+  <text x="100" y="180" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#ffffff" text-anchor="middle" letter-spacing="1">POLYTECHNIC</text>
+</svg>

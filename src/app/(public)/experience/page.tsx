@@ -34,6 +34,7 @@ const defaultExperiences: TimelineExperienceItem[] = [
   {
     role: "MERN Stack Developer (Internship)",
     company: "Softpro India",
+    companyLogo: "/images/companies/softpro_india.svg",
     period: "Jul 2025 – Feb 2026",
     location: "Lucknow — India",
     description:
@@ -50,6 +51,7 @@ const defaultExperiences: TimelineExperienceItem[] = [
   {
     role: "Python / Django Trainee",
     company: "Softpro India",
+    companyLogo: "/images/companies/softpro_india.svg",
     period: "May 2024 – Jul 2024",
     location: "Lucknow — India",
     description:
@@ -65,6 +67,7 @@ const defaultExperiences: TimelineExperienceItem[] = [
   {
     role: "Freelance Full-Stack Developer",
     company: "Global Clients & Personal Builds",
+    companyLogo: "/images/companies/global_clients.svg",
     period: "2023 – 2024",
     location: "Remote",
     description:
@@ -92,26 +95,21 @@ const companiesList: CompanyCardItem[] = [
     name: "Softpro India",
     role: "MERN Stack Developer (Internship)",
     period: "2025 – 2026",
-    logo: "",
-  },
-  {
-    id: "c-softpro-python",
-    name: "Softpro India",
-    role: "Python / Django Trainee",
-    period: "2024",
-    logo: "",
+    logo: "/images/companies/softpro_india.svg",
   },
   {
     id: "c-college",
     name: "Government Polytechnic",
     role: "Diploma Systems & LMS Project",
     period: "2024",
+    logo: "/images/companies/polytechnic.svg",
   },
   {
     id: "c-freelance",
     name: "Multiple Global Clients",
     role: "Freelance Full-Stack Builds",
     period: "2023 – 2024",
+    logo: "/images/companies/global_clients.svg",
   },
 ];
 
@@ -150,5 +148,32 @@ export default async function ExperiencePage() {
 
   const experiences = mappedDbExperiences.length > 0 ? mappedDbExperiences : defaultExperiences;
 
-  return <ExperiencePageClient experiences={experiences} companies={companiesList} />;
+  // Build companies from experiences and merge with presets so any custom companyLogo filled in admin or DB appears
+  const companiesMap = new Map<string, CompanyCardItem>();
+
+  for (const c of companiesList) {
+    companiesMap.set(c.name.toLowerCase().trim(), { ...c });
+  }
+
+  for (const exp of experiences) {
+    const key = exp.company.toLowerCase().trim();
+    const existing = companiesMap.get(key);
+    if (existing) {
+      if (exp.companyLogo) existing.logo = exp.companyLogo;
+      if (exp.role) existing.role = exp.role;
+      if (exp.period) existing.period = exp.period;
+    } else {
+      companiesMap.set(key, {
+        id: `c-${exp.id}`,
+        name: exp.company,
+        role: exp.role,
+        period: exp.period,
+        logo: exp.companyLogo || "",
+      });
+    }
+  }
+
+  const companies = Array.from(companiesMap.values());
+
+  return <ExperiencePageClient experiences={experiences} companies={companies} />;
 }

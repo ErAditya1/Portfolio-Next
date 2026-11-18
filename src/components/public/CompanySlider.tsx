@@ -67,12 +67,20 @@ export function CompanySlider({ companies }: { companies: CompanyCardItem[] }) {
               transition={{ duration: 0.3 }}
               className="p-8 rounded-3xl bg-card border border-border text-center space-y-4 hover:border-indigo-500/40 transition-all shadow-sm flex flex-col items-center justify-between"
             >
-              {/* Logo / Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+              {/* Logo / Icon - fully fills the logo tile */}
+              <div className="relative w-16 h-16 rounded-2xl bg-white dark:bg-zinc-900 border border-border/80 flex items-center justify-center overflow-hidden shadow-sm group-hover:scale-105 group-hover:border-indigo-500/50 transition-all duration-300">
                 {comp.logo ? (
-                  <img src={comp.logo} alt={comp.name} className="w-8 h-8 object-contain" />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={comp.logo}
+                    alt={comp.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <Building2 className="w-7 h-7" />
+                  <div className="w-full h-full flex items-center justify-center bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-black text-base">
+                    {comp.name.slice(0, 2).toUpperCase()}
+                  </div>
                 )}
               </div>
 

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="globalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#globalGrad)"/>
+  <!-- Globe / Network icon -->
+  <circle cx="100" cy="95" r="45" fill="none" stroke="#ffffff" stroke-width="7"/>
+  <ellipse cx="100" cy="95" rx="20" ry="45" fill="none" stroke="#ffffff" stroke-width="6"/>
+  <line x1="55" y1="95" x2="145" y2="95" stroke="#ffffff" stroke-width="6"/>
+  <line x1="63" y1="75" x2="137" y2="75" stroke="#ffffff" stroke-width="5"/>
+  <line x1="63" y1="115" x2="137" y2="115" stroke="#ffffff" stroke-width="5"/>
+  <text x="100" y="175" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">GLOBAL BUILDS</text>
+</svg>
