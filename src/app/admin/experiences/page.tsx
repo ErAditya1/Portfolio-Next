@@ -55,6 +55,37 @@ export default function AdminExperiencesPage() {
     fetchExperiences();
   }, []);
 
+  // Upload a company logo to Cloudinary and put its URL in the form.
+  const [logoUploading, setLogoUploading] = useState(false);
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return alert("Please choose an image file.");
+    if (file.size > 5 * 1024 * 1024) return alert("Logo must be under 5 MB.");
+    setLogoUploading(true);
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result));
+        r.onerror = () => reject(r.error);
+        r.readAsDataURL(file);
+      });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ file: dataUrl, folder: "portfolio/companies", title: `${formData.company || "company"} logo` }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error || "Upload failed");
+      setFormData((f) => ({ ...f, companyLogo: data.url }));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setLogoUploading(false);
+    }
+  };
+
   const handleEdit = (exp: IExpItem) => {
     setEditingId(exp._id || null);
     setIsCreating(false);
@@ -184,14 +215,45 @@ export default function AdminExperiencesPage() {
             </div>
 
             <div>
-              <label className="font-bold text-foreground block mb-1">Company Logo Path / URL</label>
-              <input
-                type="text"
-                value={formData.companyLogo || ""}
-                onChange={(e) => setFormData({ ...formData, companyLogo: e.target.value })}
-                placeholder="e.g. https://res.cloudinary.com/... or https://example.com/logo.png"
-                className="w-full px-4 py-2.5 rounded-xl bg-accent border border-border text-foreground font-medium"
-              />
+              <label className="font-bold text-foreground block mb-1">Company Logo</label>
+              <div className="flex items-center gap-3">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-accent text-xs font-black text-muted-foreground">
+                  {formData.companyLogo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={formData.companyLogo} alt="Logo preview" className="h-full w-full object-cover" />
+                  ) : (
+                    (formData.company || "?").slice(0, 2).toUpperCase()
+                  )}
+                </span>
+                <input
+                  type="text"
+                  value={formData.companyLogo || ""}
+                  onChange={(e) => setFormData({ ...formData, companyLogo: e.target.value })}
+                  placeholder="Paste a logo URL, or upload one →"
+                  className="min-w-0 flex-1 px-4 py-2.5 rounded-xl bg-accent border border-border text-foreground font-medium"
+                />
+                <label
+                  className={`shrink-0 cursor-pointer rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-500 ${
+                    logoUploading ? "pointer-events-none opacity-60" : ""
+                  }`}
+                >
+                  {logoUploading ? "Uploading…" : "Upload"}
+                  <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} disabled={logoUploading} />
+                </label>
+                {formData.companyLogo && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, companyLogo: "" })}
+                    className="shrink-0 rounded-xl border border-border px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:text-foreground"
+                    title="Remove logo"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Square logos (e.g. 256×256 PNG) fill the circle best. Wide wordmarks are fitted on a white tile automatically. Without a logo, the company initials are shown.
+              </p>
             </div>
 
             <div>
