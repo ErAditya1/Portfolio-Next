@@ -51,6 +51,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Private areas must never be indexed, even if a link to them leaks.
+        source: "/:area(admin|login)/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/:area(admin|login)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         source: "/manifest.json",
         headers: [
           {

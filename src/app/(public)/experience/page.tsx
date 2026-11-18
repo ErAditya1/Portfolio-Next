@@ -1,4 +1,8 @@
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode, breadcrumbNode } from "@/lib/seo/schema";
+import { PERSON_ID } from "@/lib/seo/site";
 import { connectDB } from "@/lib/db";
 import Experience, { IExperience } from "@/models/Experience";
 import { ExperiencePageClient } from "@/components/public/ExperiencePageClient";
@@ -7,11 +11,12 @@ import { CompanyCardItem } from "@/components/public/CompanySlider";
 
 export const revalidate = 60; // Dynamic ISR revalidation every 60 seconds
 
-export const metadata: Metadata = {
-  title: "Experience & Career Chronicle | Aditya Kumar — Full Stack Engineer",
+export const metadata: Metadata = pageMeta({
+  title: "Experience — Full Stack Developer Roles",
   description:
-    "Explore Aditya Kumar's verified engineering roles, full stack accomplishments, AI voice integrations, organizations, education, and technical certifications.",
-};
+    "Aditya Kumar's work history: Full Stack Developer at Feeding Trends (Lucknow), MERN Stack Developer intern and Python/Django trainee at Softpro India, and freelance work.",
+  path: "/experience",
+});
 
 const defaultExperiences: TimelineExperienceItem[] = [
   {
@@ -175,5 +180,15 @@ export default async function ExperiencePage() {
 
   const companies = Array.from(companiesMap.values());
 
-  return <ExperiencePageClient experiences={experiences} companies={companies} />;
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          webPageNode({ path: "/experience", name: "Experience of Aditya Kumar", mainEntity: { "@id": PERSON_ID } }),
+          breadcrumbNode([{ name: "Home", path: "/" }, { name: "Experience", path: "/experience" }])
+        )}
+      />
+      <ExperiencePageClient experiences={experiences} companies={companies} />
+    </>
+  );
 }

@@ -128,19 +128,21 @@ export function HeroSection({ settings }: { settings?: ISiteSettings }) {
 
             {/* 2. Main High-Impact Typography Headline */}
             <motion.div variants={fadeUp} className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.12] tracking-tight">
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.12] tracking-tight">
                 Architecting Scalable Systems &{" "}
                 <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                   Intelligent Web
                 </span>{" "}
                 Experiences.
-              </h1>
-              <div className="text-sm font-mono text-muted-foreground flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-indigo-500" />
+              </p>
+              {/* The H1 carries the entity (name + role + place) for search engines; styling stays subtle. */}
+              <h1 className="text-sm font-mono font-normal text-muted-foreground flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-indigo-500" aria-hidden="true" />
                 <span>
-                  <strong className="text-foreground">{name}</strong> — Engineering at <span className="text-indigo-600 dark:text-indigo-400 font-bold">Feeding Trends</span>
+                  <strong className="text-foreground">{name}</strong> — {title} at{" "}
+                  <span className="text-indigo-600 dark:text-indigo-400 font-bold">Feeding Trends</span>, Lucknow
                 </span>
-              </div>
+              </h1>
             </motion.div>
 
             {/* 3. Concise Enterprise Bio */}

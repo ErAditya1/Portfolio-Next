@@ -4,6 +4,10 @@ import { Container } from "@/components/Container";
 import { ContactForm } from "@/components/public/ContactForm";
 import { ContactInfo } from "@/components/public/ContactInfo";
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode, breadcrumbNode } from "@/lib/seo/schema";
+import { PERSON_ID } from "@/lib/seo/site";
 import { ISiteSettings } from "@/types";
 import { 
   Calendar, 
@@ -23,18 +27,13 @@ import { FAQSection } from "@/components/public/FAQSection";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Contact & Hire Aditya Kumar | Full Stack & AI Systems Engineer",
-  description: "Connect with Aditya Kumar for high-impact full-stack web applications, real-time AI voice telephony, WhatsApp Cloud API SaaS, or schedule a 1-on-1 discovery call.",
-  keywords: [
-    "Contact Aditya Kumar",
-    "Hire Full Stack Developer India",
-    "Aditya Kumar WhatsApp",
-    "Hire AI Voice Telephony Developer",
-    "Next.js Developer Lucknow",
-    "Barabanki Developer Contact"
-  ]
-};
+export const metadata: Metadata = pageMeta({
+  title: "Hire Aditya Kumar — Full Stack Developer (Contact)",
+  absolute: true,
+  description:
+    "Contact Aditya Kumar for full-time roles or freelance work: Next.js and MERN web apps, NestJS backends, AI voice calling and WhatsApp automation. Lucknow or remote.",
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   let settings: ISiteSettings | undefined;
@@ -48,6 +47,12 @@ export default async function ContactPage() {
 
   return (
     <main className="pt-24 pb-20 overflow-hidden">
+      <JsonLd
+        data={graph(
+          webPageNode({ type: "ContactPage", path: "/contact", name: "Contact Aditya Kumar", mainEntity: { "@id": PERSON_ID } }),
+          breadcrumbNode([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])
+        )}
+      />
       <Container>
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
@@ -108,7 +113,7 @@ export default async function ContactPage() {
         </div>
 
         {/* Interactive SEO & GEO FAQ Section */}
-        <FAQSection />
+        <FAQSection preset="contact" title="Before you get in touch" />
       </Container>
     </main>
   );

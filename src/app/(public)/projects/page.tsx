@@ -1,14 +1,19 @@
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode, itemListNode, breadcrumbNode } from "@/lib/seo/schema";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import { ProjectsPageClient, ProjectCardData } from "@/components/public/ProjectsPageClient";
 
 export const revalidate = 60; // Dynamic ISR revalidation every 60 seconds
 
-export const metadata: Metadata = {
-  title: "Projects That Solve Real Problems | Aditya Kumar - Full Stack Developer",
-  description: "Explore Aditya Kumar's showcase of full-stack projects, LMS platforms, open source repos, SaaS applications, and real-time systems.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Projects — Next.js, MERN & AI Case Studies",
+  description:
+    "Case studies of products Aditya Kumar has built: AI voice calling, WhatsApp automation, influencer marketing, LMS and client websites with Next.js, NestJS and MERN.",
+  path: "/projects",
+});
 
 export default async function ProjectsPage() {
   let dbProjects: ProjectCardData[] = [];
@@ -37,5 +42,20 @@ export default async function ProjectsPage() {
     console.error("MongoDB fetching error on Projects Page:", e);
   }
 
-  return <ProjectsPageClient initialProjects={dbProjects} />;
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          webPageNode({
+            type: "CollectionPage",
+            path: "/projects",
+            name: "Projects by Aditya Kumar",
+            mainEntity: itemListNode(dbProjects.map((p) => ({ name: p.title, path: `/projects/${p.slug}` }))),
+          }),
+          breadcrumbNode([{ name: "Home", path: "/" }, { name: "Projects", path: "/projects" }])
+        )}
+      />
+      <ProjectsPageClient initialProjects={dbProjects} />
+    </>
+  );
 }

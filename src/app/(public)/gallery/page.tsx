@@ -1,14 +1,17 @@
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
 import { connectDB } from "@/lib/db";
 import Gallery from "@/models/Gallery";
 import { GalleryPageClient, GalleryCardItem } from "@/components/public/GalleryPageClient";
 
 export const revalidate = 60; // Dynamic ISR revalidation every 60 seconds
 
-export const metadata: Metadata = {
-  title: "Moments That Tell My Journey | Aditya Kumar",
-  description: "A visual showcase of projects, designs, milestones and memories that reflect my passion and growth as a developer.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Gallery — Projects, Designs & Milestones",
+  description:
+    "Screenshots, architecture sketches and milestones from Aditya Kumar's work as a full stack developer: dashboards, system designs and product launches.",
+  path: "/gallery",
+});
 
 export default async function GalleryPage() {
   let dbGallery: GalleryCardItem[] = [];

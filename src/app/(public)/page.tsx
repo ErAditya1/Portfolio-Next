@@ -25,13 +25,20 @@ import { FAQSection } from "@/components/public/FAQSection";
 import { CallToActionSection } from "@/components/public/CallToActionSection";
 import { ISiteSettings, IProject, IBlog, IGallery } from "@/types";
 import { Metadata } from "next";
+import { pageMeta } from "@/lib/seo/meta";
+import { JsonLd } from "@/components/public/JsonLd";
+import { graph, webPageNode } from "@/lib/seo/schema";
+import { PERSON_ID } from "@/lib/seo/site";
 
 export const revalidate = 60; // Dynamic revalidation every 60s for fresh database updates
 
-export const metadata: Metadata = {
-  title: "Aditya Kumar | Full Stack Developer",
-  description: "Portfolio of Aditya Kumar — Full Stack Developer specializing in scalable web applications, modern UIs, and robust backend systems.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Aditya Kumar — Next.js & MERN Full Stack Developer, Lucknow",
+  absolute: true,
+  description:
+    "Aditya Kumar is a Full Stack Developer in Lucknow, India, building Next.js, React, Node.js and NestJS apps, AI voice calling and WhatsApp automation.",
+  path: "/",
+});
 
 export default async function HomePage() {
   let settings: ISiteSettings = {} as ISiteSettings;
@@ -206,6 +213,16 @@ export default async function HomePage() {
 
   return (
     <main className="space-y-16 pb-20">
+      <JsonLd
+        data={graph(
+          webPageNode({
+            path: "/",
+            name: "Aditya Kumar — Full Stack Developer",
+            description: "Portfolio of Aditya Kumar: projects, experience, writing and contact.",
+            mainEntity: { "@id": PERSON_ID },
+          })
+        )}
+      />
       {/* 1. HERO SECTION */}
       <HeroSection settings={settings} />
 
@@ -316,7 +333,7 @@ export default async function HomePage() {
       </section>
 
       {/* 10. SEO & GEO TECHNICAL FAQS SECTION */}
-      <FAQSection />
+      <FAQSection preset="home" />
 
       {/* 11. CALL TO ACTION SECTION */}
       <CallToActionSection />

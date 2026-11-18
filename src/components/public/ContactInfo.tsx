@@ -7,7 +7,7 @@ import { ISiteSettings } from "@/types";
 export function ContactInfo({ settings }: { settings?: ISiteSettings }) {
   const socialLinks = [
     { icon: Github, href: settings?.githubUrl || "https://github.com/ErAditya1", label: "GitHub" },
-    { icon: Linkedin, href: settings?.linkedinUrl || "https://linkedin.com/in/eraditya1", label: "LinkedIn" },
+    { icon: Linkedin, href: settings?.linkedinUrl || "https://www.linkedin.com/in/adityaji1/", label: "LinkedIn" },
     { icon: Twitter, href: settings?.twitterUrl || "https://x.com/Excited_Adi", label: "Twitter" },
     { icon: Instagram, href: settings?.socialLinks?.find((link) => link.platform === "Instagram")?.url || "https://instagram.com/excited_adi", label: "Instagram" },
   ];

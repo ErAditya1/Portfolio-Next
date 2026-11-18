@@ -529,7 +529,7 @@ export function BlogPageClient({ initialBlogs, popularTopics = [] }: BlogPageCli
                     <Github className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://linkedin.com/in/eraditya1"
+                    href="https://www.linkedin.com/in/adityaji1/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full bg-accent border border-border flex items-center justify-center text-muted-foreground hover:text-indigo-500 hover:border-indigo-500/50 transition-colors shadow-sm"

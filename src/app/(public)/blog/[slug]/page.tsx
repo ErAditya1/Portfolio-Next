@@ -7,6 +7,9 @@ import { ArrowLeft, Clock, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { ViewTracker } from "@/components/public/ViewTracker";
 import { ImageCarousel } from "@/components/public/ImageCarousel";
 import { JsonLd } from "@/components/public/JsonLd";
+import { pageMeta, clampDescription } from "@/lib/seo/meta";
+import { graph, webPageNode, breadcrumbNode } from "@/lib/seo/schema";
+import { PERSON_ID, absUrl } from "@/lib/seo/site";
 
 export const revalidate = 3600;
 
@@ -43,33 +46,29 @@ async function getBlogBySlug(rawSlug: string) {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
-  if (!blog) return { title: "Post Not Found" };
+  if (!blog) return { title: "Post not found", robots: { index: false } };
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
-  const title = blog.seoTitle || `${blog.title} | Technical Insights — Aditya Kumar`;
-  const description = blog.seoDescription || blog.excerpt;
-
-  return {
+  const title = blog.seoTitle || blog.title;
+  const description = clampDescription(blog.seoDescription || blog.excerpt);
+  const base = pageMeta({
     title,
     description,
-    keywords: [...(blog.tags || []), "Aditya Kumar Blog", "Developer Insights", "Full-Stack Development", "Tech Articles", "System Architecture", "Next.js 15"],
-    alternates: {
-      canonical: `${baseUrl}/blog/${blog.slug}`,
-    },
+    path: `/blog/${blog.slug}`,
+    type: "article",
+    ...(blog.coverImage && { images: [{ url: blog.coverImage, alt: blog.title }] }),
+  });
+
+  return {
+    ...base,
+    keywords: [...(blog.tags || []).slice(0, 8), "Aditya Kumar"],
+    authors: [{ name: "Aditya Kumar", url: absUrl("/about") }],
     openGraph: {
-      title,
-      description,
-      url: `${baseUrl}/blog/${blog.slug}`,
-      images: blog.coverImage ? [{ url: blog.coverImage }] : [],
+      ...base.openGraph,
       type: "article",
-      authors: ["Aditya Kumar"],
-      publishedTime: blog.createdAt?.toString(),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: blog.coverImage ? [blog.coverImage] : [],
+      authors: [absUrl("/about")],
+      publishedTime: blog.createdAt ? new Date(blog.createdAt).toISOString() : undefined,
+      modifiedTime: blog.updatedAt ? new Date(blog.updatedAt).toISOString() : undefined,
+      tags: blog.tags,
     },
   };
 }
@@ -108,45 +107,37 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   const allImages = blog.images?.length > 0 ? blog.images : (blog.coverImage ? [blog.coverImage] : []);
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://eraditya.vercel.app";
-  const blogSchema = {
-    "@context": "https://schema.org",
-    "@type": ["BlogPosting", "TechArticle"],
-    "headline": blog.title,
-    "description": blog.excerpt,
-    "image": blog.coverImage || `${baseUrl}/images/aditya_profile.png`,
-    "datePublished": blog.createdAt,
-    "dateModified": blog.updatedAt || blog.createdAt,
-    "inLanguage": "en-US",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${baseUrl}/blog/${blog.slug}`
+  const pagePath = `/blog/${blog.slug}`;
+  const postId = `${absUrl(pagePath)}#article`;
+  const wordCount = String(blog.content || "").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  const blogSchema = graph(
+    webPageNode({ path: pagePath, name: blog.title, description: blog.excerpt, mainEntity: { "@id": postId }, dateModified: blog.updatedAt }),
+    {
+      "@type": ["BlogPosting", "TechArticle"],
+      "@id": postId,
+      headline: blog.title,
+      description: blog.seoDescription || blog.excerpt,
+      ...(blog.coverImage && { image: blog.coverImage }),
+      datePublished: blog.createdAt,
+      dateModified: blog.updatedAt || blog.createdAt,
+      inLanguage: "en",
+      mainEntityOfPage: { "@id": `${absUrl(pagePath)}#webpage` },
+      author: { "@id": PERSON_ID },
+      publisher: { "@id": PERSON_ID },
+      keywords: (blog.tags || []).join(", "),
+      wordCount,
+      isPartOf: { "@type": "Blog", "@id": `${absUrl("/blog")}#webpage`, name: "Aditya Kumar's Blog" },
     },
-    "author": {
-      "@type": "Person",
-      "name": "Aditya Kumar",
-      "url": `${baseUrl}/about`,
-      "jobTitle": "Full Stack Developer & AI Systems Engineer"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "Aditya Kumar",
-      "url": baseUrl
-    }
-  };
+    breadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: blog.title, path: pagePath },
+    ])
+  );
 
   return (
     <main className="min-h-screen pt-28 pb-20 relative overflow-hidden">
       <JsonLd data={blogSchema} />
-
-      {/* AI Context Block (Hidden) */}
-      <div className="sr-only" aria-hidden="true">
-        <h2>Technical Article: {blog.title}</h2>
-        <p><strong>Excerpt:</strong> {blog.excerpt}</p>
-        <p><strong>Topics:</strong> {blog.tags?.join(", ")}</p>
-        <p><strong>Author:</strong> Aditya Kumar - System Engineer & Full-Stack Developer</p>
-        <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-      </div>
       {/* Background accents */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px] -z-10" />
@@ -177,10 +168,12 @@ export default async function BlogDetailPage({ params }: PageProps) {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 dark:from-purple-500 dark:to-pink-500 p-[1px]">
                   <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/aditya_profile.png" alt="Aditya" className="w-full h-full object-cover" />
+                    <img src="/images/aditya_profile.png" alt="Aditya Kumar" className="w-full h-full object-cover" />
                   </div>
                 </div>
-                <span className="text-sm font-bold text-foreground">Aditya Kumar</span>
+                <Link href="/about" rel="author" className="text-sm font-bold text-foreground hover:text-indigo-600 dark:hover:text-indigo-400">
+                  Aditya Kumar
+                </Link>
              </div>
              <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground border-l border-border pl-6">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{blog.readTime} min read</span>

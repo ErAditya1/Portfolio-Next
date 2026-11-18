@@ -184,17 +184,18 @@ export function AboutPageClient({ settings }: AboutPageClientProps) {
           >
             {/* Left Narrative */}
             <motion.div variants={fadeUp} className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest shadow-sm">
-                <Sparkles className="w-3.5 h-3.5" />
-                Engineering Philosophy & Story
-              </div>
+              {/* H1 names the entity this page is about; the large line below stays the visual headline. */}
+              <h1 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest shadow-sm">
+                <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
+                About {settings?.ownerName || "Aditya Kumar"} · {title}
+              </h1>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.12] tracking-tight">
+              <p className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.12] tracking-tight">
                 Engineering Scalable Systems with{" "}
                 <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                   Precision & Impact.
                 </span>
-              </h1>
+              </p>
 
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed font-normal max-w-2xl">
                 {bio}
@@ -426,7 +427,7 @@ export function AboutPageClient({ settings }: AboutPageClientProps) {
           </div>
 
           {/* ================= 5. SEO & GEO FAQS ================= */}
-          <FAQSection />
+          <FAQSection preset="about" title="Quick answers about Aditya" />
 
           {/* ================= 6. CALL TO ACTION ================= */}
           <CallToActionSection />

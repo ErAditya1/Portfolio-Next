@@ -1,59 +1,18 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/public/Footer";
 import { FloatingFeatures } from "@/components/public/FloatingFeatures";
-import { connectDB } from "@/lib/db";
-import SiteSettings from "@/models/SiteSettings";
-import { ISiteSettings } from "@/types";
 import { JsonLd } from "@/components/public/JsonLd";
 import { AgentProvider } from "@/components/public/agent/AgentProvider";
+import { getSiteProfile } from "@/lib/seo/site";
+import { siteGraph } from "@/lib/seo/schema";
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-    let settings: ISiteSettings | undefined;
-
-    try {
-        await connectDB();
-        const settingsRaw = await SiteSettings.findOne().lean();
-        settings = settingsRaw ? (JSON.parse(JSON.stringify(settingsRaw)) as ISiteSettings) : undefined;
-    } catch (error) {
-        console.error("DB error in PublicLayout, using default metadata:", error);
-    }
-
-    const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-
-    const personSchema = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": settings?.ownerName || "Aditya Kumar",
-        "jobTitle": settings?.ownerTitle || "Full-Stack Web Developer",
-        "url": baseUrl,
-        "image": settings?.avatarUrl ? `${baseUrl}${settings.avatarUrl}` : undefined,
-        "sameAs": [
-            settings?.githubUrl,
-            settings?.linkedinUrl,
-            settings?.twitterUrl,
-            ...(settings?.socialLinks?.map(link => link.url) || [])
-        ].filter(Boolean),
-        "knowsAbout": settings?.skills?.map(s => s.name) || [
-            "Full-Stack Web Development",
-            "Next.js",
-            "MERN Stack",
-            "Backend Engineering"
-        ],
-        "description": settings?.ownerBio || settings?.siteDescription
-    };
-
-    const websiteSchema = {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": settings?.siteTitle || "Aditya Kumar Portfolio",
-        "url": baseUrl,
-        "description": settings?.siteDescription
-    };
+    const { settings, experiences } = await getSiteProfile();
 
     return (
         <>
-            <JsonLd data={personSchema} />
-            <JsonLd data={websiteSchema} />
+            {/* Single entity graph (WebSite + Person) for every public page; pages reference it by @id. */}
+            <JsonLd data={siteGraph(settings, experiences)} />
             <AgentProvider>
                 <Header />
                 {children}

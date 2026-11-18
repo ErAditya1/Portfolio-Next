@@ -4,8 +4,9 @@ import McpConnectClient from "@/components/public/McpConnectClient";
 export const metadata: Metadata = {
   title: "Connect your AI (MCP)",
   description:
-    "Connect Claude, ChatGPT, Cursor, VS Code, Gemini CLI and other AI tools to Aditya Kumar's portfolio through the Model Context Protocol (MCP), using a one-click install, a CLI command or a copy-paste prompt.",
+    "Connect Claude, ChatGPT, Cursor, VS Code or Gemini CLI to Aditya Kumar's portfolio over MCP, with a one-click install, a CLI command or a copy-paste prompt.",
   alternates: { canonical: "/mcp" },
+  openGraph: { url: "/mcp", title: "Connect your AI to Aditya Kumar's portfolio (MCP)", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
 };
 
 export default function McpPage() {
