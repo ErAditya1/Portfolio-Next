@@ -21,7 +21,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     // The agent now lives on the homepage (inline + full screen), not its own page.
-    return [{ source: "/agent", destination: "/?chat=open", permanent: false }];
+    return [
+      { source: "/agent", destination: "/?chat=open", permanent: false },
+      { source: "/services", destination: "/#services", permanent: false },
+      { source: "/insights", destination: "/blog", permanent: true },
+      { source: "/insights/:slug", destination: "/blog/:slug", permanent: true },
+    ];
   },
   async headers() {
     return [

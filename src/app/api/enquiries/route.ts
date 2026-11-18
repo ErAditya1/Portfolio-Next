@@ -9,6 +9,8 @@ const enquirySchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().optional(),
   subject: z.string().optional(),
+  projectType: z.string().optional(),
+  budget: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 

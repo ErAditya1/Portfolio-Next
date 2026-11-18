@@ -7,18 +7,19 @@ import { SITE_URL, OWNER_NAME, getSiteProfile, twitterHandle } from "@/lib/seo/s
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const DEFAULT_TITLE = "Aditya Kumar — Next.js & MERN Full Stack Developer, Lucknow";

@@ -185,13 +185,15 @@ export function ServicesSection() {
               </p>
             </div>
 
-            <Link
-              href="/contact"
-              className="group px-5 py-3 rounded-2xl bg-card border border-border hover:border-indigo-500/40 text-foreground text-xs font-bold flex items-center gap-2 transition-all shadow-sm shrink-0 hover:bg-accent active:scale-95"
-            >
-              Discuss Your Project
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-indigo-500" />
-            </Link>
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/contact"
+                className="group px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95"
+              >
+                Inquire About a Project
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
           {/* Responsive 3-Column Services Grid */}

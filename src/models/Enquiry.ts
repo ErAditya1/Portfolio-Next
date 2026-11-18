@@ -5,6 +5,8 @@ export interface IEnquiry extends Document {
   email: string;
   phone?: string;
   subject?: string;
+  projectType?: string;
+  budget?: string;
   message: string;
   status: "unread" | "read" | "replied";
   createdAt: Date;
@@ -17,6 +19,8 @@ const EnquirySchema = new Schema<IEnquiry>(
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, trim: true },
     subject: { type: String, trim: true },
+    projectType: { type: String, trim: true },
+    budget: { type: String, trim: true },
     message: { type: String, required: true },
     status: {
       type: String,

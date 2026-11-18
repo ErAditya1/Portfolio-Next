@@ -1,6 +1,6 @@
 // ---------- Config / Data ----------
 export const NAME = 'Aditya Kumar'
-export const ROLE = 'Full‑Stack Web Developer'
+export const ROLE = 'Full Stack Developer'
 export const LOCATION = 'Barabanki / Lucknow, India'
 export const EMAIL = 'mradityaji2@gmail.com'
 export const PHONE = '+91 9473774390'

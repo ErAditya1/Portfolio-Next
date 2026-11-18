@@ -16,11 +16,12 @@ type Node = Record<string, unknown>;
 
 /** Services Aditya offers. Plain descriptions only: no unverified numbers. */
 const SERVICES = [
-  "Full stack web application development (Next.js, React, Node.js)",
-  "MERN stack development",
-  "Backend APIs and job queues (NestJS, Express, BullMQ, Redis)",
-  "AI voice agents and WhatsApp Cloud API automation",
-  "Startup MVP development",
+  "Full stack web and SaaS platform engineering (Next.js, React, Node.js)",
+  "AI voice agents and telephony solutions (ElevenLabs, Deepgram, WebSockets)",
+  "High-throughput backend APIs and distributed queues (NestJS, PostgreSQL, Redis, BullMQ)",
+  "WhatsApp Cloud API and marketing workflow automation",
+  "Next.js architecture, Core Web Vitals and frontend performance optimization",
+  "Containerization, cloud deployment and Linux VPS infrastructure setup",
 ];
 
 function splitLocation(loc?: string) {

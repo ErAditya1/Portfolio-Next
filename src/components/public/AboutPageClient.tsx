@@ -159,10 +159,10 @@ const personalPursuits = [
 
 export function AboutPageClient({ settings }: AboutPageClientProps) {
   const name = settings?.ownerName || "Aditya Kumar";
-  const title = settings?.ownerTitle || "Full Stack & Realtime System Engineer";
+  const title = settings?.ownerTitle || "Full Stack Developer | SaaS & AI Systems Engineer";
   const bio =
     settings?.ownerBio ||
-    "Full-stack software engineer specializing in building high-performance web applications, scalable backend microservices, and AI voice solutions with modern Next.js and Python ecosystems.";
+    "Full-stack software engineer specializing in building high-performance web applications, scalable SaaS architectures, and real-time AI voice integrations with modern Next.js and Python ecosystems.";
   const resumeLink = settings?.resumeUrl || RESUME;
 
   return (

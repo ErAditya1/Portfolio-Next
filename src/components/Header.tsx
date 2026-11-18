@@ -21,19 +21,23 @@ import { ThemeToggle } from "./ThemeToggle";
 const PRIMARY = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
-  { href: "/about", label: "About" },
   { href: "/experience", label: "Experience" },
-  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Insights" },
 ];
 
 /** Secondary pages, tucked into "More" on desktop. */
 const MORE = [
+  { href: "/contact", label: "Contact", desc: "Start a project or interview", icon: Mail },
   { href: "/gallery", label: "Gallery", desc: "Photos & moments", icon: Images },
-  { href: "/contact", label: "Contact", desc: "Send me a message", icon: Mail },
   { href: "/mcp", label: "Connect your AI", desc: "Use my MCP server", icon: Plug },
 ];
 
-const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+const isActive = (pathname: string, href: string) => {
+  if (href === "/") return pathname === "/";
+  if (href === "/blog") return pathname.startsWith("/blog") || pathname.startsWith("/insights");
+  return pathname.startsWith(href);
+};
 
 function AskAIButton({ compact = false, onClick }: { compact?: boolean; onClick: () => void }) {
   return (
@@ -86,7 +90,7 @@ export function Header() {
     </>
   );
   const itemClass = (active: boolean) =>
-    `relative z-0 inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+    `relative z-0 inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs sm:text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 ${
       active ? "font-semibold text-white" : "font-medium text-muted-foreground hover:text-foreground"
     }`;
 
@@ -100,12 +104,12 @@ export function Header() {
         <div className="flex items-center justify-between gap-4">
           {/* Logo + Name */}
           <Link href="/" className="flex shrink-0 items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-1 ring-indigo-500/20 group-hover:ring-indigo-500/40 transition-all bg-indigo-500/10 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-lg">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden ring-1 ring-indigo-500/20 group-hover:ring-indigo-500/40 transition-all bg-indigo-500/10 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-base sm:text-lg">
               AK
             </div>
-            <div className="hidden sm:block lg:hidden xl:block">
-              <div className="text-base font-bold text-foreground leading-tight">{NAME}</div>
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">{ROLE}</div>
+            <div className="hidden sm:block">
+              <div className="text-sm font-bold text-foreground leading-tight tracking-tight">Aditya Kumar</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Full Stack Developer</div>
             </div>
           </Link>
 

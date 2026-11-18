@@ -13,6 +13,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { HeroSection } from "@/components/public/HeroSection";
+import { TrustCredibilityStrip } from "@/components/public/TrustCredibilityStrip";
 import { AskAISection } from "@/components/public/agent/AskAISection";
 import { ProjectSlider, ProjectItem } from "@/components/public/ProjectSlider";
 import { ServicesSection } from "@/components/public/ServicesSection";
@@ -20,7 +21,7 @@ import { TechStackSection } from "@/components/public/TechStackSection";
 import { ExperienceTimeline, TimelineExperienceItem } from "@/components/public/ExperienceTimeline";
 import { GalleryGrid } from "@/components/public/GalleryGrid";
 import { LatestBlogsSection } from "@/components/public/LatestBlogsSection";
-import { TestimonialsSlider } from "@/components/public/TestimonialsSlider";
+import { EngineeringPrinciplesSection } from "@/components/public/EngineeringPrinciplesSection";
 import { FAQSection } from "@/components/public/FAQSection";
 import { CallToActionSection } from "@/components/public/CallToActionSection";
 import { ISiteSettings, IProject, IBlog, IGallery } from "@/types";
@@ -33,10 +34,10 @@ import { PERSON_ID } from "@/lib/seo/site";
 export const revalidate = 60; // Dynamic revalidation every 60s for fresh database updates
 
 export const metadata: Metadata = pageMeta({
-  title: "Aditya Kumar — Next.js & MERN Full Stack Developer, Lucknow",
+  title: "Aditya Kumar | Full Stack Developer & SaaS Engineer",
   absolute: true,
   description:
-    "Aditya Kumar is a Full Stack Developer in Lucknow, India, building Next.js, React, Node.js and NestJS apps, AI voice calling and WhatsApp automation.",
+    "Explore Aditya Kumar's portfolio, featuring full-stack development, Next.js, React, Node.js, Python, SaaS platforms, AI integrations and engineering projects.",
   path: "/",
 });
 
@@ -189,29 +190,6 @@ export default async function HomePage() {
         : "Internship",
   }));
 
-  // 8. Testimonials & Client Reviews
-  const testimonials = [
-    {
-      quote: "Aditya delivered the Geeta Palace website with a stunning UI, smooth navigation, and seamless booking inquiry features. Highly professional developer!",
-      name: "Management Team",
-      role: "Geeta Palace Resort & Events",
-    },
-    {
-      quote: "Working with Aditya on xstudio was an exceptional experience. Outstanding Next.js architecture, fast state management, and pixel-perfect design!",
-      name: "Psy Tech Team",
-      role: "xstudio Client Lead",
-    },
-    {
-      quote: "Aditya initialized our SITM institute platform with impressive SEO schema, responsive shell layouts, and high performance.",
-      name: "Sagar Educational Team",
-      role: "SITM Institute",
-    },
-    {
-      quote: "Aditya's full-stack expertise in building AI voice calling solutions and scalable web portals at Feeding Trends has been remarkable.",
-      name: "Product & Engineering",
-      role: "Feeding Trends",
-    },
-  ];
 
   return (
     <main className="space-y-16 pb-20">
@@ -228,7 +206,10 @@ export default async function HomePage() {
       {/* 1. HERO SECTION */}
       <HeroSection settings={settings} />
 
-      {/* 1b. ASK MY AI AGENT (AG-UI, inline + full screen) */}
+      {/* 2. COMPACT TRUST & CREDIBILITY STRIP */}
+      <TrustCredibilityStrip />
+
+      {/* 2b. ASK MY AI AGENT (AG-UI, inline + full screen) */}
       <AskAISection />
 
       {/* 2. FEATURED PROJECTS SLIDER (DYNAMIC MONGO DB) */}
@@ -315,24 +296,8 @@ export default async function HomePage() {
       {/* 7. LATEST BLOGS SECTION */}
       <LatestBlogsSection blogs={latestBlogs} />
 
-      {/* 9. TESTIMONIALS SLIDER */}
-      <section id="testimonials" className="py-6">
-        <Container>
-          <div className="space-y-8">
-            <div className="text-center max-w-xl mx-auto space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-500 block">
-                TESTIMONIALS
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black text-foreground">
-                What people say about me
-              </h2>
-            </div>
-
-            {/* Interactive Testimonials Carousel Slider */}
-            <TestimonialsSlider testimonials={testimonials} />
-          </div>
-        </Container>
-      </section>
+      {/* 9. ENGINEERING PRINCIPLES & OUTCOMES */}
+      <EngineeringPrinciplesSection />
 
       {/* 10. SEO & GEO TECHNICAL FAQS SECTION */}
       <FAQSection preset="home" />

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { connectDB } from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
 import { Container } from "@/components/Container";
@@ -87,7 +88,9 @@ export default async function ContactPage() {
         {/* Contact Form & Contact Info */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-24 max-w-6xl mx-auto">
           <ContactInfo settings={settings} />
-          <ContactForm />
+          <Suspense fallback={<div className="lg:col-span-8 p-12 rounded-[2.5rem] bg-card border border-border animate-pulse min-h-[500px]" />}>
+            <ContactForm />
+          </Suspense>
         </div>
 
         {/* Book Meeting Banner */}

@@ -6,6 +6,8 @@ interface EnquiryEmailPayload {
   subject?: string;
   message: string;
   phone?: string;
+  projectType?: string;
+  budget?: string;
   source?: "ai_agent" | "contact_portal";
 }
 

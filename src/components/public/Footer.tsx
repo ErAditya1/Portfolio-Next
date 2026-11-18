@@ -10,10 +10,11 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
 
   const footerLinks = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
+    { name: "Services", href: "/#services" },
     { name: "Experience", href: "/experience" },
-    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
+    { name: "Insights", href: "/blog" },
     { name: "Contact", href: "/contact" },
     { name: "Gallery", href: "/gallery" },
   ];
@@ -40,7 +41,7 @@ export function Footer({ settings }: { settings?: ISiteSettings }) {
               ADITYA KUMAR<span className="text-indigo-500">.</span>
             </Link>
             <p className="text-muted-foreground text-xs md:text-sm max-w-sm leading-relaxed">
-              Top Full Stack MERN Developer & System Engineer based in Barabanki / Lucknow, Uttar Pradesh. Transforming complex engineering challenges into elegant digital experiences.
+              Full Stack Developer & SaaS Systems Engineer based in Barabanki / Lucknow, Uttar Pradesh, India. Building scalable web applications, SaaS platforms, and intelligent digital experiences.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social, idx) => {
