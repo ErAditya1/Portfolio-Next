@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
       pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     });
   } catch (error) {
-    console.error(error);
+    console.error("[Enquiries GET Error]:", error);
     return NextResponse.json({ error: "Failed to fetch enquiries" }, { status: 500 });
   }
 }
@@ -56,21 +56,46 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // 1. Save to MongoDB database first
     const enquiry = await Enquiry.create(parsed.data);
 
-    // Send stylized SMTP email notification to Aditya & acknowledgment to visitor
-    sendEnquiryNotification({
-      name: parsed.data.name,
-      email: parsed.data.email,
-      phone: parsed.data.phone,
-      subject: parsed.data.subject,
-      message: parsed.data.message,
-      source: "contact_portal",
-    }).catch((e) => console.error("[Contact API] Mail notification error:", e));
+    // 2. Await sending the SMTP email notification so serverless runtimes (Vercel) do not kill execution mid-flight
+    let emailSent = false;
+    let emailError: string | null = null;
 
-    return NextResponse.json({ message: "Message sent successfully!", id: enquiry._id }, { status: 201 });
+    try {
+      const mailRes = await sendEnquiryNotification({
+        name: parsed.data.name,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        projectType: parsed.data.projectType,
+        budget: parsed.data.budget,
+        subject: parsed.data.subject,
+        message: parsed.data.message,
+        source: "contact_portal",
+      });
+
+      emailSent = mailRes.success;
+      if (!mailRes.success) {
+        emailError = mailRes.error || "SMTP delivery unsuccessful";
+        console.warn("[Contact API] Mail notification skipped or failed:", emailError);
+      }
+    } catch (e) {
+      console.error("[Contact API] Mailer exception:", e);
+      emailError = e instanceof Error ? e.message : "Mailer exception";
+    }
+
+    return NextResponse.json(
+      {
+        message: "Message sent successfully!",
+        id: enquiry._id,
+        emailDelivered: emailSent,
+        ...(emailError ? { emailWarning: emailError } : {}),
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error(error);
+    console.error("[Contact API POST Error]:", error);
     return NextResponse.json({ error: "Failed to send message" }, { status: 500 });
   }
 }

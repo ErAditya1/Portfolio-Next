@@ -12,19 +12,25 @@ interface EnquiryEmailPayload {
 }
 
 function getTransporter() {
-  const user = process.env.SMTP_USER;
+  const user = process.env.SMTP_USER?.trim();
   const pass = process.env.SMTP_PASS?.replace(/\s+/g, "");
 
   if (!user || !pass) {
-    console.warn("[Mailer] SMTP credentials not fully configured in environment.");
+    console.warn("[Mailer] SMTP credentials not fully configured in environment (SMTP_USER or SMTP_PASS missing).");
     return null;
   }
 
+  const port = Number(process.env.SMTP_PORT) || 465;
+  const isSecure = process.env.SMTP_SECURE === "true" || port === 465;
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: Number(process.env.SMTP_PORT) || 465,
-    secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465,
+    port,
+    secure: isSecure,
     auth: { user, pass },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 }
 
@@ -32,9 +38,11 @@ function getTransporter() {
  * Sends a stylized HTML email notification to Aditya when an enquiry is submitted,
  * and an automated warm receipt acknowledgment back to the visitor.
  */
-export async function sendEnquiryNotification(payload: EnquiryEmailPayload) {
+export async function sendEnquiryNotification(payload: EnquiryEmailPayload): Promise<{ success: boolean; messageId?: string; error?: string }> {
   const transporter = getTransporter();
-  if (!transporter) return { success: false, error: "SMTP not configured" };
+  if (!transporter) {
+    return { success: false, error: "SMTP credentials not configured on the server." };
+  }
 
   const adminEmail = process.env.NOTIFICATION_EMAIL || process.env.SMTP_USER || "mradityaji2@gmail.com";
   const fromAddress = process.env.SMTP_FROM || `"Aditya Kumar Portfolio" <${process.env.SMTP_USER}>`;
@@ -114,6 +122,28 @@ export async function sendEnquiryNotification(payload: EnquiryEmailPayload) {
                 </tr>`
                     : ""
                 }
+                ${
+                  payload.projectType
+                    ? `
+                <tr>
+                  <td style="padding-bottom: 10px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;">Project Type:</span><br>
+                    <span style="font-size: 14px; font-weight: 700; color: #c084fc;">${payload.projectType}</span>
+                  </td>
+                </tr>`
+                    : ""
+                }
+                ${
+                  payload.budget
+                    ? `
+                <tr>
+                  <td style="padding-bottom: 10px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;">Estimated Budget:</span><br>
+                    <span style="font-size: 14px; font-weight: 700; color: #34d399;">${payload.budget}</span>
+                  </td>
+                </tr>`
+                    : ""
+                }
                 <tr>
                   <td>
                     <span style="font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;">Subject:</span><br>
@@ -162,7 +192,7 @@ ${payload.message}
           <!-- Footer -->
           <tr>
             <td style="padding: 20px 30px; background-color: #0c121e; border-top: 1px solid #1f2937; text-align: center; font-size: 12px; color: #6b7280;">
-              Sent automatically from your portfolio portal (<a href="https://adityakr.site" style="color: #6366f1; text-decoration: none;">adityakr.site</a>)
+              Sent automatically from your portfolio portal (<a href="https://eraditya.vercel.app" style="color: #6366f1; text-decoration: none;">eraditya.vercel.app</a>)
             </td>
           </tr>
 
@@ -233,7 +263,7 @@ ${payload.message}
                 Warm regards,<br>
                 <strong style="color: #ffffff; font-size: 15px;">Aditya Kumar</strong><br>
                 <span style="font-size: 12px; color: #818cf8;">Full Stack Engineer & AI Systems Architect</span><br>
-                <a href="https://adityakr.site" style="font-size: 12px; color: #9ca3af; text-decoration: none;">adityakr.site</a>
+                <a href="https://eraditya.vercel.app" style="font-size: 12px; color: #9ca3af; text-decoration: none;">eraditya.vercel.app</a>
               </p>
             </td>
           </tr>
@@ -247,29 +277,38 @@ ${payload.message}
 `;
 
   try {
-    // Send admin notification
-    const adminPromise = transporter.sendMail({
+    // 1. Send admin notification first and await confirmation
+    const adminInfo = await transporter.sendMail({
       from: fromAddress,
       to: adminEmail,
       replyTo: payload.email,
       subject: mailSubject,
-      text: `New Enquiry from ${payload.name} (${payload.email}):\n\nSubject: ${payload.subject || "None"}\n\nMessage:\n${payload.message}`,
+      text: `New Enquiry from ${payload.name} (${payload.email}):\n\nProject Type: ${payload.projectType || "N/A"}\nBudget: ${payload.budget || "N/A"}\nPhone: ${payload.phone || "N/A"}\nSubject: ${payload.subject || "None"}\n\nMessage:\n${payload.message}`,
       html: adminHtml,
     });
+    console.log("[Mailer] Admin notification delivered successfully! Message ID:", adminInfo.messageId);
 
-    // Send visitor acknowledgment (in background)
-    const visitorPromise = transporter.sendMail({
-      from: fromAddress,
-      to: payload.email,
-      subject: `Thank you for connecting with Aditya Kumar — We received your inquiry`,
-      text: `Hello ${payload.name},\n\nThank you for reaching out. I have received your message regarding "${payload.subject || "your inquiry"}" and will get back to you within 24 hours.\n\nBest regards,\nAditya Kumar\nhttps://adityakr.site`,
-      html: visitorHtml,
-    });
+    // 2. Send visitor acknowledgment (non-blocking so an invalid visitor email does not fail admin delivery)
+    if (payload.email && payload.email.includes("@")) {
+      transporter
+        .sendMail({
+          from: fromAddress,
+          to: payload.email,
+          subject: `Thank you for connecting with Aditya Kumar — We received your inquiry`,
+          text: `Hello ${payload.name},\n\nThank you for reaching out. I have received your message regarding "${payload.subject || "your inquiry"}" and will get back to you within 24 hours.\n\nBest regards,\nAditya Kumar\nhttps://eraditya.vercel.app`,
+          html: visitorHtml,
+        })
+        .then((info) => {
+          console.log("[Mailer] Visitor acknowledgment delivered! Message ID:", info.messageId);
+        })
+        .catch((visitorErr) => {
+          console.warn("[Mailer] Visitor acknowledgment skipped/failed (non-critical):", visitorErr?.message || visitorErr);
+        });
+    }
 
-    await Promise.allSettled([adminPromise, visitorPromise]);
-    return { success: true };
+    return { success: true, messageId: adminInfo.messageId };
   } catch (err) {
-    console.error("[Mailer] Error sending email notification:", err);
+    console.error("[Mailer] Error delivering admin notification email:", err);
     return { success: false, error: err instanceof Error ? err.message : "Unknown mailer error" };
   }
 }

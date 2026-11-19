@@ -118,7 +118,7 @@ export async function createEnquiry(input: {
   const e = await Enquiry.create({ ...input, subject: input.subject || "Via AI agent" });
 
   // Send stylized SMTP email notification to Aditya & acknowledgment to visitor
-  sendEnquiryNotification({
+  await sendEnquiryNotification({
     name: input.name,
     email: input.email,
     subject: input.subject || "AI Agent Hiring / Collaboration Inquiry",
